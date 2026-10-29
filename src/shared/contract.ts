@@ -329,6 +329,7 @@ export type AuditType =
   | 'member_removed'
   | 'token_created'
   | 'token_revoked'
+  | 'project_created'
   | 'project_updated';
 
 export interface AuditEvent {

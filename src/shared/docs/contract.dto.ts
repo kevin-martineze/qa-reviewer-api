@@ -9,6 +9,18 @@ const PROJECT_ROLES = ['project_admin', 'design_lead', 'designer', 'developer', 
 const REVIEW_STATUSES = ['draft', 'open', 'in_review', 'changes_requested', 'approved', 'closed'];
 const VERDICTS = ['pending', 'approved', 'changes_requested'];
 const PRIORITIES = ['urgent', 'high', 'medium', 'low'];
+const AUDIT_TYPES = [
+  'user_invited',
+  'user_deactivated',
+  'user_reactivated',
+  'role_changed',
+  'member_added',
+  'member_removed',
+  'token_created',
+  'token_revoked',
+  'project_created',
+  'project_updated',
+];
 const NOTIFICATION_TYPES = [
   'review_assigned',
   'round_uploaded',
@@ -333,7 +345,7 @@ export class NotificationPrefsDto implements C.NotificationPrefs {
 
 export class AuditEventDto implements C.AuditEvent {
   @ApiProperty() id: string;
-  @ApiProperty() type: C.AuditType;
+  @ApiProperty({ enum: AUDIT_TYPES }) type: C.AuditType;
   @ApiProperty() actor: string;
   @ApiProperty() target: string;
   @ApiProperty() text: string;

@@ -13,6 +13,7 @@ export const AUDIT_TYPES: readonly AuditType[] = [
   'member_removed',
   'token_created',
   'token_revoked',
+  'project_created',
   'project_updated',
 ];
 

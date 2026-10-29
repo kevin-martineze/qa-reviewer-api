@@ -86,6 +86,17 @@ describe('POST /projects', () => {
       repo: 'acme/portal',
     });
 
+    const audit = await t.call<{ items: Array<{ actor: string; target: string; text: string }> }>(
+      'GET',
+      '/audit?type=project_created',
+      token,
+    );
+    expect(audit.body.data?.items[0]).toMatchObject({
+      actor: 'u2',
+      target: 'portal-web',
+      text: 'creó el proyecto Portal web',
+    });
+
     const again = await t.call('POST', '/projects', token, { id: 'portal-web', name: 'Otro' });
     expect([again.status, again.body.messageKey]).toEqual([409, 'projects.exists']);
   });

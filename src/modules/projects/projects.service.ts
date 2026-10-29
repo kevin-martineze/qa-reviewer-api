@@ -89,21 +89,38 @@ export class ProjectsService {
   }
 
   async create(principal: Principal, input: NewProject): Promise<Envelope<Project>> {
-    this.access.assert(principal.user, 'projects:create', null);
+    const actor = principal.user;
+    this.access.assert(actor, 'projects:create', null);
     const integrations: ProjectIntegrations = structuredClone(DEFAULT_INTEGRATIONS);
     integrations.github.repo = input.repo;
     integrations.plane.projectKey = input.planeKey;
     try {
-      const doc = await this.projects.create({
-        _id: input.id,
-        name: input.name,
-        repo: input.repo,
-        planeKey: input.planeKey,
-        integrations,
-        limits: { ...DEFAULT_LIMITS },
-        createdAt: this.clock.now(),
+      const doc = await this.tx.run(async (session) => {
+        const [created] = await this.projects.create(
+          [
+            {
+              _id: input.id,
+              name: input.name,
+              repo: input.repo,
+              planeKey: input.planeKey,
+              integrations,
+              limits: { ...DEFAULT_LIMITS },
+              createdAt: this.clock.now(),
+            },
+          ],
+          { session },
+        );
+        if (!created) throw new Error('No se creó el proyecto');
+        await this.audit.log(
+          'project_created',
+          actor.id,
+          created._id,
+          `creó el proyecto ${created.name}`,
+          session,
+        );
+        return created.toObject();
       });
-      return envelope('projects.created', toProject(doc.toObject(), 0));
+      return envelope('projects.created', toProject(doc, 0));
     } catch (error) {
       if (isDuplicateKey(error)) {
         throw conflict('projects.exists', 'Ya hay un proyecto con ese identificador.');

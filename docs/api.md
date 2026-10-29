@@ -93,4 +93,4 @@ Las claves de los módulos en construcción se agregan aquí con su endpoint.
 - Quien no ve un proyecto recibe `404` en el proyecto y en sus miembros, nunca `403`.
 - Las reglas por módulo solo apuntan a miembros del proyecto. Quitar a un miembro quita también sus reglas.
 - `reviewsCount` no cuenta borradores ni revisiones vencidas.
-- Cada cambio de personas, roles, miembros y configuración deja una entrada en `GET /audit`.
+- Crear un proyecto y cada cambio de personas, roles, miembros y configuración dejan una entrada en `GET /audit`.

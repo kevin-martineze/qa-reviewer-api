@@ -57,11 +57,15 @@ Se asigna al publicar la ronda 1 y en rondas siguientes solo si la revisión que
 
 El texto del comentario se normaliza (minúsculas, sin tildes). Se busca `@` seguido del nombre completo de un miembro del proyecto o de la parte local de su correo, probando primero los nombres más largos para que «@Ana María» no se quede en «@Ana». O(m × k) con m miembros y k menciones. La mención termina donde no sigue una letra o un número, así «@anabel» no menciona a Ana. Cuentan los miembros activos del proyecto más owner y admin; las cuentas inactivas no.
 
-## Métricas (en construcción)
+## Métricas (implementado)
 
 - **Medianas** de horas (primer envío, aprobación): se ordenan y se toma el centro (promedio de los dos centrales si es par). O(n log n).
 - **Semanas:** seis ventanas de 7 días que terminan hoy; cada revisión cae en la ventana de su `publishedAt` y cada aprobación en la de su envío.
-- **Ajustes por módulo:** suma de veredictos `changes_requested` de todas las rondas, agrupada por `module`.
+- **Ajustes por módulo:** suma de veredictos `changes_requested` de todas las rondas, agrupada por `module`, de mayor a menor.
+- **Horas** desde `publishedAt` (cuando quedó `open`) hasta el primer envío o la primera aprobación, redondeadas a la hora.
+- **Aprobación en primera ronda:** de las revisiones con la ronda 1 enviada, la fracción que salió `approved`.
+- **Pendientes por diseñador:** revisiones `open` o `in_review` por asignado, con cuántas están vencidas.
+- Las reglas viven en `modules/reports/domain/metrics.ts`, sin Nest ni Mongo.
 
 ## Reintentos del outbox (implementado)
 

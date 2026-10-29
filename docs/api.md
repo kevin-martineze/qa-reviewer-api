@@ -39,7 +39,7 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | Feedback        | `PUT /reviews/:id/screens/:key/verdict`, `POST /reviews/:id/submit`, `GET /reviews/:id/comments`, `GET·POST /reviews/:id/screens/:key/comments`, `POST /comments/:id/replies`, `PATCH·DELETE /comments/:id`, `PUT /comments/:id/follow-up` | Implementado    |
 | Notificaciones  | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | Implementado    |
 | Tokens          | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | Implementado    |
-| Métricas        | `GET /reports/overview`                                                                                                                                                                                                                    | En construcción |
+| Métricas        | `GET /reports/overview`                                                                                                                                                                                                                    | Implementado    |
 | Integraciones   | `POST /integrations/github/webhook`                                                                                                                                                                                                        | En construcción |
 
 ## Catálogo de claves de error
@@ -147,6 +147,12 @@ Las claves de los módulos en construcción se agregan aquí con su endpoint.
 - `POST /tokens` exige `tokens:own` en el proyecto; un proyecto que la persona no ve responde 404. El secreto (`qa_pat_` y 32 hex) se entrega una sola vez y se guarda su SHA-256.
 - Cada persona lista y revoca solo sus tokens. Crear y revocar quedan en `GET /audit` (`token_created`, `token_revoked`).
 - Los tokens se administran con sesión: un `qa_pat_` en `/tokens` responde 401 `auth.token_not_allowed`.
+
+## Reglas de métricas
+
+- `GET /reports/overview` con `project` exige `reports:view` en ese proyecto; un proyecto que la persona no ve responde 404. Sin `project`, solo owner y admin, sobre todos los proyectos.
+- Cuentan las revisiones publicadas. `from` y `to` (instantes ISO 8601) filtran por la fecha en que la revisión quedó `open`.
+- Las horas se miden desde que la revisión quedó `open`. Ver [algorithms.md](algorithms.md#métricas-implementado).
 
 ## Flujo de la skill
 

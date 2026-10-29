@@ -9,6 +9,7 @@ import { HealthModule } from './modules/health/health.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { ProjectsModule } from './modules/projects/projects.module';
+import { ReportsModule } from './modules/reports/reports.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { TokensModule } from './modules/tokens/tokens.module';
 import { CoreModule } from './shared/core.module';
@@ -28,6 +29,7 @@ export class AppModule {
         FeedbackModule,
         NotificationsModule,
         TokensModule,
+        ReportsModule,
       ],
     };
   }

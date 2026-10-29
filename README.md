@@ -134,16 +134,16 @@ docs/                       documentación del API
 
 ## Hoja de ruta
 
-| Fase | Entrega                                                                                  | Estado    |
-| ---- | ---------------------------------------------------------------------------------------- | --------- |
-| 1    | Base: configuración, errores, OpenAPI, permisos, storage, correo, outbox                 | Hecho     |
-| 2    | Sesión, cuenta, recuperación e invitaciones                                              | Hecho     |
-| 3    | Semilla de demo compartida con el mock de la web                                         | Hecho     |
-| 4    | Organización, usuarios, auditoría, proyectos y miembros                                  | Hecho     |
-| 5    | Revisiones y endpoints de la skill: manifiesto, idempotencia, rondas, asignación, plazos | Pendiente |
-| 6    | Feedback: veredictos, envío, comentarios, menciones; notificaciones, tokens, métricas    | Pendiente |
-| 7    | Integraciones (GitHub, Plane, correo), webhook y jobs (plazos, borradores, retención)    | Pendiente |
-| 8    | Skill `/design-review`, pruebas de integración, CI y despliegue                          | Pendiente |
+| Fase | Entrega                                                                                  | Estado     |
+| ---- | ---------------------------------------------------------------------------------------- | ---------- |
+| 1    | Base: configuración, errores, OpenAPI, permisos, storage, correo, outbox                 | Hecho      |
+| 2    | Sesión, cuenta, recuperación e invitaciones                                              | Hecho      |
+| 3    | Semilla de demo compartida con el mock de la web                                         | Hecho      |
+| 4    | Organización, usuarios, auditoría, proyectos y miembros                                  | Hecho      |
+| 5    | Revisiones y endpoints de la skill: manifiesto, idempotencia, rondas, asignación, plazos | Hecho      |
+| 6    | Feedback: veredictos, envío, comentarios, menciones; notificaciones, tokens, métricas    | En pruebas |
+| 7    | Integraciones (GitHub, Plane, correo), webhook y jobs (plazos, borradores, retención)    | Pendiente  |
+| 8    | Skill `/design-review`, pruebas de integración, CI y despliegue                          | Pendiente  |
 
 Cada fase cierra con las e2e de la web corriendo contra este API.
 

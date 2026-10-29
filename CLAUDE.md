@@ -49,7 +49,7 @@ Stack: NestJS 11 sobre Fastify, TypeScript estricto, MongoDB con Mongoose, Joi, 
 
 ## 7. Gates
 
-`pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm test` y `pnpm build` en verde antes de cada commit. Las e2e de la web en modo API (`E2E_SOURCE=api pnpm test:e2e` en `qa-reviewer`) antes de cerrar un módulo.
+`pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm test` y `pnpm build` en verde antes de cada commit. Las e2e de la web contra el API (`E2E_API_URL=http://localhost:3000 pnpm test:e2e:api` en `qa-reviewer`) antes de cerrar un módulo, con el API recién arrancado: la suite deja estado.
 
 ## 8. Documentación
 

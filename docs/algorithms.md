@@ -53,9 +53,9 @@ Solo corre mientras diseño tiene la pelota (`open`, `in_review`). Vencida si `d
 
 Se asigna al publicar la ronda 1 y en rondas siguientes solo si la revisión quedó sin asignados.
 
-## Menciones (en construcción)
+## Menciones (implementado)
 
-El texto del comentario se normaliza (minúsculas, sin tildes). Se busca `@` seguido del nombre completo de un miembro del proyecto o de la parte local de su correo, probando primero los nombres más largos para que «@Ana María» no se quede en «@Ana». O(m × k) con m miembros y k menciones.
+El texto del comentario se normaliza (minúsculas, sin tildes). Se busca `@` seguido del nombre completo de un miembro del proyecto o de la parte local de su correo, probando primero los nombres más largos para que «@Ana María» no se quede en «@Ana». O(m × k) con m miembros y k menciones. La mención termina donde no sigue una letra o un número, así «@anabel» no menciona a Ana. Cuentan los miembros activos del proyecto más owner y admin; las cuentas inactivas no.
 
 ## Métricas (en construcción)
 

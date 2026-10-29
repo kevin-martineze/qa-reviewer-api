@@ -65,6 +65,8 @@ expired                         webhook (PR cerrado o fusionado): cualquiera act
 
 `draft` y `expired` no se ven en la web: el listado y el detalle solo muestran revisiones publicadas.
 
+`submit` también aplica desde `open` cuando los veredictos heredados de la ronda anterior ya cubren todas las pantallas.
+
 ## Ciclo de vida
 
 | Dato                                          | Vive                                                     |

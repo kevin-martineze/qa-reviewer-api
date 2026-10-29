@@ -21,7 +21,8 @@ describe('nextStatus', () => {
     expect(nextStatus('submit', 'in_review', 'approved')).toBe('approved');
     expect(nextStatus('submit', 'in_review', 'changes_requested')).toBe('changes_requested');
     expect(nextStatus('submit', 'in_review')).toBeNull();
-    expect(nextStatus('submit', 'open', 'approved')).toBeNull();
+    expect(nextStatus('submit', 'open', 'approved')).toBe('approved');
+    expect(nextStatus('submit', 'approved', 'approved')).toBeNull();
   });
 
   it('reabrir solo aplica a revisiones enviadas', () => {

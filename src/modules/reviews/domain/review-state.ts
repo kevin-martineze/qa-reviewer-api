@@ -42,7 +42,8 @@ const FROM: Record<ReviewCommand, readonly StoredReviewStatus[]> = {
   publish: ['draft'],
   publish_round: ['changes_requested', 'approved'],
   start_review: ['open'],
-  submit: ['in_review'],
+  /** Desde `open` si ya no queda nada pendiente (p. ej. veredictos heredados). */
+  submit: ['open', 'in_review'],
   reopen: ['changes_requested', 'approved'],
   close: ACTIVE_STATUSES,
   expire: ['draft'],

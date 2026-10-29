@@ -37,8 +37,8 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | Revisiones      | `GET /reviews`, `GET·PATCH /reviews/:id`, `GET /reviews/:id/activity`, `PUT /reviews/:id/assignees`, `POST /reviews/:id/reopen`                                                                                                            | Implementado    |
 | Skill           | `POST /reviews`, `POST /reviews/:id/publish`, `POST /reviews/:id/rounds`, `GET /reviews/:id/feedback`                                                                                                                                      | Implementado    |
 | Feedback        | `PUT /reviews/:id/screens/:key/verdict`, `POST /reviews/:id/submit`, `GET /reviews/:id/comments`, `GET·POST /reviews/:id/screens/:key/comments`, `POST /comments/:id/replies`, `PATCH·DELETE /comments/:id`, `PUT /comments/:id/follow-up` | Implementado    |
-| Notificaciones  | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | En construcción |
-| Tokens          | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | En construcción |
+| Notificaciones  | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | Implementado    |
+| Tokens          | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | Implementado    |
 | Métricas        | `GET /reports/overview`                                                                                                                                                                                                                    | En construcción |
 | Integraciones   | `POST /integrations/github/webhook`                                                                                                                                                                                                        | En construcción |
 
@@ -102,6 +102,8 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | `comments.not_found`                                                           | 404       | Comentario inexistente o de una revisión que la persona no ve                                             |
 | `comments.forbidden`                                                           | 403       | Resolver o borrar un comentario ajeno sin `comments:resolve` o `comments:moderate` (`details.permission`) |
 | `comments.not_previous_round`                                                  | 409       | Seguimiento de un comentario de la ronda actual                                                           |
+| `notifications.not_found`                                                      | 404       | Notificación inexistente o de otra persona                                                                |
+| `tokens.not_found`                                                             | 404       | Token inexistente, revocado o de otra persona                                                             |
 | `health.unavailable`                                                           | 503       | Mongo o el storage no responden                                                                           |
 
 Las claves de los módulos en construcción se agregan aquí con su endpoint.
@@ -136,6 +138,15 @@ Las claves de los módulos en construcción se agregan aquí con su endpoint.
 - Resolver: el autor del comentario o quien tenga `comments:resolve`. Borrar: el autor o quien tenga `comments:moderate`.
 - Seguimiento (`PUT /comments/:id/follow-up`) solo sobre comentarios de rondas anteriores y con `verdicts:set`: `resolved` lo resuelve, `still` lo deja abierto.
 - Un comentario de una revisión que la persona no ve responde 404 `comments.not_found`.
+
+## Reglas de notificaciones y tokens
+
+- `GET /notifications` no se pagina: trae las 200 más recientes. `GET /notifications/unread-count` devuelve un número suelto en `data`.
+- Marcar como leída otra vez no cambia `readAt`. Una notificación de otra persona responde 404.
+- `PUT /me/notification-prefs` recibe el objeto completo, con todos los tipos. Sin preferencias guardadas, valen las de fábrica.
+- `POST /tokens` exige `tokens:own` en el proyecto; un proyecto que la persona no ve responde 404. El secreto (`qa_pat_` y 32 hex) se entrega una sola vez y se guarda su SHA-256.
+- Cada persona lista y revoca solo sus tokens. Crear y revocar quedan en `GET /audit` (`token_created`, `token_revoked`).
+- Los tokens se administran con sesión: un `qa_pat_` en `/tokens` responde 401 `auth.token_not_allowed`.
 
 ## Flujo de la skill
 

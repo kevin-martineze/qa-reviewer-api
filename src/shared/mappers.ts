@@ -1,18 +1,22 @@
 import type {
+  ApiToken,
   AuditEvent,
   Comment,
   Invitation,
   InviteStatus,
+  Notification,
   Organization,
   Project,
   ProjectMember,
   User,
 } from './contract';
 import type {
+  ApiTokenDoc,
   AuditDoc,
   CommentDoc,
   InvitationDoc,
   MemberDoc,
+  NotificationDoc,
   OrganizationDoc,
   ProjectDoc,
   UserDoc,
@@ -110,5 +114,30 @@ export function toComment(doc: CommentDoc): Comment {
       createdAt: iso(r.createdAt),
       body: r.body,
     })),
+  };
+}
+
+export function toNotification(doc: NotificationDoc): Notification {
+  return {
+    id: doc._id,
+    type: doc.type,
+    actor: doc.actor,
+    review: doc.review,
+    screen: doc.screen,
+    comment: doc.comment,
+    text: doc.text,
+    createdAt: iso(doc.createdAt),
+    readAt: iso(doc.readAt),
+  };
+}
+
+export function toApiToken(doc: ApiTokenDoc): ApiToken {
+  return {
+    id: doc._id,
+    label: doc.label,
+    prefix: doc.prefix,
+    project: doc.projectId,
+    createdAt: iso(doc.createdAt),
+    lastUsedAt: iso(doc.lastUsedAt),
   };
 }

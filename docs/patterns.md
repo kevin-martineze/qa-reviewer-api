@@ -2,24 +2,24 @@
 
 Qué patrón, qué problema resuelve aquí, dónde vive y cómo se extiende. La columna «Estado» dice si ya está en el código o si se está construyendo.
 
-| Patrón                        | Dónde                                                | Estado                                                             |
-| ----------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------ |
-| Módulos por dominio           | `src/modules/*`                                      | Implementado                                                       |
-| Ports and Adapters            | `shared/storage`, `shared/mail`                      | Implementado                                                       |
-| Guard + Principal             | `shared/auth/auth.guard.ts`                          | Implementado                                                       |
-| Policy (matriz de permisos)   | `shared/auth/permissions.ts`, `AccessService`        | Implementado                                                       |
-| Pipe de validación            | `shared/http/joi.pipe.ts`                            | Implementado                                                       |
-| Exception Filter              | `shared/http/exception.filter.ts`                    | Implementado                                                       |
-| Mapper (documento → contrato) | `shared/mappers.ts`, `modules/*/*.mapper.ts`         | Implementado (usuarios e invitaciones); revisiones en construcción |
-| Transactional Outbox          | `shared/outbox`                                      | Implementado                                                       |
-| Strategy (notificadores)      | `shared/outbox/notifier.ts`, `modules/integrations`  | Worker implementado; notificadores en construcción                 |
-| State (tabla de transiciones) | `modules/reviews/domain/review-state.ts`             | En construcción                                                    |
-| Chain of Responsibility       | `modules/reviews/domain/manifest-checks.ts`          | En construcción                                                    |
-| Strategy (asignación)         | `modules/reviews/domain/assignment.ts`               | En construcción                                                    |
-| Idempotency Key               | `modules/reviews/idempotency.service.ts`             | En construcción                                                    |
-| Snapshot                      | `ReviewDoc.pr`, `ReviewDoc.card`, payload de eventos | Implementado (schema)                                              |
-| Optimistic concurrency        | `findOneAndUpdate({ _id, status })`                  | En construcción (revisiones)                                       |
-| Clock inyectable              | `shared/util/clock.service.ts`                       | Implementado                                                       |
+| Patrón                        | Dónde                                                | Estado                                             |
+| ----------------------------- | ---------------------------------------------------- | -------------------------------------------------- |
+| Módulos por dominio           | `src/modules/*`                                      | Implementado                                       |
+| Ports and Adapters            | `shared/storage`, `shared/mail`                      | Implementado                                       |
+| Guard + Principal             | `shared/auth/auth.guard.ts`                          | Implementado                                       |
+| Policy (matriz de permisos)   | `shared/auth/permissions.ts`, `AccessService`        | Implementado                                       |
+| Pipe de validación            | `shared/http/joi.pipe.ts`                            | Implementado                                       |
+| Exception Filter              | `shared/http/exception.filter.ts`                    | Implementado                                       |
+| Mapper (documento → contrato) | `shared/mappers.ts`, `modules/*/*.mapper.ts`         | Implementado                                       |
+| Transactional Outbox          | `shared/outbox`                                      | Implementado                                       |
+| Strategy (notificadores)      | `shared/outbox/notifier.ts`, `modules/integrations`  | Worker implementado; notificadores en construcción |
+| State (tabla de transiciones) | `modules/reviews/domain/review-state.ts`             | Implementado                                       |
+| Chain of Responsibility       | `modules/reviews/domain/manifest-checks.ts`          | En construcción                                    |
+| Strategy (asignación)         | `modules/reviews/domain/assignment.ts`               | En construcción                                    |
+| Idempotency Key               | `modules/reviews/idempotency.service.ts`             | En construcción                                    |
+| Snapshot                      | `ReviewDoc.pr`, `ReviewDoc.card`, payload de eventos | Implementado (schema)                              |
+| Optimistic concurrency        | `findOneAndUpdate({ _id, status })`                  | Implementado                                       |
+| Clock inyectable              | `shared/util/clock.service.ts`                       | Implementado                                       |
 
 ## Módulos por dominio
 
@@ -62,7 +62,7 @@ El handler lo recibe con `@CurrentPrincipal()`. El `user` ya trae sus membresía
 
 Agregar un canal (Slack) es una clase que implementa `Notifier` y una línea en el registro. El worker no cambia.
 
-## State (en construcción)
+## State
 
 Las transiciones de la revisión son una tabla `{ desde, comando, hacia, guarda }` en una función pura. El servicio pregunta a la tabla si el comando aplica y escribe con `findOneAndUpdate({ _id, status: desde })`. Si otro request cambió el estado entre medio, no actualiza y responde 409: no hay escrituras perdidas.
 

@@ -7,6 +7,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { ProjectsModule } from './modules/projects/projects.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 import { CoreModule } from './shared/core.module';
 
 @Module({})
@@ -20,6 +21,7 @@ export class AppModule {
         AuthModule,
         OrganizationModule,
         ProjectsModule,
+        ReviewsModule,
       ],
     };
   }

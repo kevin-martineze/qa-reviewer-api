@@ -1,3 +1,5 @@
+import type { ObjectInfo, PresignedUpload, StoragePort } from './storage.port';
+
 import {
   DeleteObjectsCommand,
   GetObjectCommand,
@@ -8,7 +10,6 @@ import {
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-import type { ObjectInfo, PresignedUpload, StoragePort } from './storage.port';
 import { URL_TTL_SECONDS } from './storage.port';
 
 export interface S3Options {
@@ -70,7 +71,12 @@ export class S3Storage implements StoragePort {
 
   async put(key: string, body: Buffer, contentType: string): Promise<void> {
     await this.client.send(
-      new PutObjectCommand({ Bucket: this.options.bucket, Key: key, Body: body, ContentType: contentType }),
+      new PutObjectCommand({
+        Bucket: this.options.bucket,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+      }),
     );
   }
 

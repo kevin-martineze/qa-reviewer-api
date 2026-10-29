@@ -1,7 +1,9 @@
+import type { Env } from './config/env';
 import type { DynamicModule } from '@nestjs/common';
+
 import { Module } from '@nestjs/common';
 
-import type { Env } from './config/env';
+import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { CoreModule } from './shared/core.module';
 
@@ -10,7 +12,7 @@ export class AppModule {
   static forRoot(env: Env): DynamicModule {
     return {
       module: AppModule,
-      imports: [CoreModule.forRoot(env), HealthModule],
+      imports: [CoreModule.forRoot(env), HealthModule, AuthModule],
     };
   }
 }

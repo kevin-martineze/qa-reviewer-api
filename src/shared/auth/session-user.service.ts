@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import type { SessionUser } from '../contract';
 import type { Model } from 'mongoose';
 
-import type { SessionUser } from '../contract';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+
 import { MemberDoc, UserDoc } from '../schemas';
 
 @Injectable()

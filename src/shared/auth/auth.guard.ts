@@ -1,15 +1,16 @@
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
+import type { FastifyRequest } from 'fastify';
+import type { Model } from 'mongoose';
+
 import { Inject, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
-import type { FastifyRequest } from 'fastify';
-import type { Model } from 'mongoose';
 
 import { ENV, type Env } from '../../config/env';
 import { unauthorized } from '../http/api-error';
 import { ApiTokenDoc, SessionDoc, UserDoc } from '../schemas';
-import { DAY, MINUTE } from '../util/dates';
 import { ClockService } from '../util/clock.service';
+import { DAY, MINUTE } from '../util/dates';
 import { sha256 } from '../util/ids';
 
 import { API_TOKEN_KEY, bearerOf, PUBLIC_KEY } from './decorators';
@@ -56,9 +57,11 @@ export class AuthGuard implements CanActivate {
     const session = await this.sessions
       .findOne({ tokenHash: sha256(token), revokedAt: null, expiresAt: { $gt: now } })
       .lean();
-    if (!session) throw unauthorized('auth.session_expired', 'Tu sesión venció. Inicia sesión otra vez.');
+    if (!session)
+      throw unauthorized('auth.session_expired', 'Tu sesión venció. Inicia sesión otra vez.');
     const user = await this.sessionUsers.load(session.userId);
-    if (!user) throw unauthorized('auth.session_expired', 'Tu sesión venció. Inicia sesión otra vez.');
+    if (!user)
+      throw unauthorized('auth.session_expired', 'Tu sesión venció. Inicia sesión otra vez.');
 
     // Vencimiento deslizante, sin escribir en cada request.
     if (now.getTime() - session.lastUsedAt.getTime() > MINUTE) {

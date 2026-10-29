@@ -1,6 +1,6 @@
-import { Logger } from '@nestjs/common';
-
 import type { MailMessage, MailPort } from './mail.port';
+
+import { Logger } from '@nestjs/common';
 
 /** Desarrollo: el correo se escribe en el log (incluye los links de invitación y recuperación). */
 export class LogMail implements MailPort {

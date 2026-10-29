@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import type { NotificationPrefs, NotificationType } from '../contract';
 import type { ClientSession, Model } from 'mongoose';
 
-import type { NotificationPrefs, NotificationType } from '../contract';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+
 import { OutboxService } from '../outbox/outbox.service';
 import { NotificationDoc, UserDoc } from '../schemas';
 import { ClockService } from '../util/clock.service';
@@ -68,7 +69,15 @@ export class NotifyService {
     if (created && prefs[type]) {
       await this.outbox.publish(
         'NotificationCreated',
-        { notificationId: created._id, userId, email: user.email, name: user.name, type, text, ...target },
+        {
+          notificationId: created._id,
+          userId,
+          email: user.email,
+          name: user.name,
+          type,
+          text,
+          ...target,
+        },
         session,
       );
     }

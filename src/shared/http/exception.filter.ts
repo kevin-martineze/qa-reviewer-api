@@ -1,6 +1,7 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { Catch, HttpException, Logger } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
+
+import { Catch, HttpException, Logger } from '@nestjs/common';
 
 import { ApiError, type ApiErrorBody } from './api-error';
 
@@ -38,7 +39,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const generic = GENERIC[status] ?? { key: 'common.error', message: 'Error en la petición.' };
       return { statusCode: status, messageKey: generic.key, message: generic.message };
     }
-    this.logger.error(exception instanceof Error ? (exception.stack ?? exception.message) : exception);
+    this.logger.error(
+      exception instanceof Error ? (exception.stack ?? exception.message) : exception,
+    );
     return { statusCode: 500, messageKey: 'common.internal', message: 'Algo salió mal.' };
   }
 }

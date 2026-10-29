@@ -1,24 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import type { Box, Priority, ReviewSummary, ScreenElement, Verdict } from '../contract';
 
-import type {
-  Box,
-  Priority,
-  ReviewSummary,
-  ScreenElement,
-  Verdict,
-} from '../contract';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { nowProp } from './common';
 
 /** Estados guardados: los del contrato más `expired` (borrador que nunca se publicó). */
 export type StoredReviewStatus =
-  | 'draft'
-  | 'open'
-  | 'in_review'
-  | 'changes_requested'
-  | 'approved'
-  | 'closed'
-  | 'expired';
+  'draft' | 'open' | 'in_review' | 'changes_requested' | 'approved' | 'closed' | 'expired';
 
 export interface StoredCapture {
   /** Clave del objeto en el storage. */

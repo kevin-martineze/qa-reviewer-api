@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
 import type { AssignmentStrategy, ModuleRule, ProjectIntegrations, ProjectRole } from '../contract';
+
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { nowProp } from './common';
 

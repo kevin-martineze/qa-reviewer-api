@@ -1,10 +1,10 @@
+import type { Principal } from './principal';
 import type { ExecutionContext } from '@nestjs/common';
-import { createParamDecorator, SetMetadata } from '@nestjs/common';
 import type { FastifyRequest } from 'fastify';
 
-import { unauthorized } from '../http/api-error';
+import { createParamDecorator, SetMetadata } from '@nestjs/common';
 
-import type { Principal } from './principal';
+import { unauthorized } from '../http/api-error';
 
 export const PUBLIC_KEY = 'qa:public';
 export const API_TOKEN_KEY = 'qa:api-token';

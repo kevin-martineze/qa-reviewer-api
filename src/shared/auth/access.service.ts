@@ -1,6 +1,7 @@
+import type { SessionUser } from '../contract';
+
 import { Injectable } from '@nestjs/common';
 
-import type { SessionUser } from '../contract';
 import { forbidden } from '../http/api-error';
 
 import { can, type Permission } from './permissions';

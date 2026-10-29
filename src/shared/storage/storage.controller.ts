@@ -1,6 +1,7 @@
+import type { FastifyReply, FastifyRequest } from 'fastify';
+
 import { Controller, Get, Inject, Put, Req, Res } from '@nestjs/common';
 import { ApiExcludeController } from '@nestjs/swagger';
-import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { Public } from '../auth/decorators';
 import { forbidden, notFound, unprocessable } from '../http/api-error';

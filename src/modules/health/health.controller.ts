@@ -1,7 +1,8 @@
+import type { Connection } from 'mongoose';
+
 import { Controller, Get, Inject, VERSION_NEUTRAL } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import type { Connection } from 'mongoose';
 
 import { Public } from '../../shared/auth/decorators';
 import { ApiError } from '../../shared/http/api-error';

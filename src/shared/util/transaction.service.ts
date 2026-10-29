@@ -1,6 +1,7 @@
+import type { ClientSession, Connection } from 'mongoose';
+
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
-import type { ClientSession, Connection } from 'mongoose';
 
 /** Corre `fn` en una transacción (requiere replica set; el Mongo de desarrollo lo es). */
 @Injectable()

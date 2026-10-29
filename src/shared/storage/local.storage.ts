@@ -1,8 +1,9 @@
+import type { ObjectInfo, PresignedUpload, StoragePort } from './storage.port';
+
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, normalize, resolve, sep } from 'node:path';
 
-import type { ObjectInfo, PresignedUpload, StoragePort } from './storage.port';
 import { URL_TTL_SECONDS } from './storage.port';
 
 const META_SUFFIX = '.meta.json';
@@ -26,7 +27,12 @@ export class LocalStorage implements StoragePort {
   async presignPut(key: string, contentType: string, bytes: number): Promise<PresignedUpload> {
     const exp = this.expiry();
     const sig = this.sign('PUT', key, exp, contentType, bytes);
-    const query = new URLSearchParams({ exp: String(exp), ct: contentType, len: String(bytes), sig });
+    const query = new URLSearchParams({
+      exp: String(exp),
+      ct: contentType,
+      len: String(bytes),
+      sig,
+    });
     return {
       url: `${this.base()}/${encodeKey(key)}?${query.toString()}`,
       method: 'PUT',

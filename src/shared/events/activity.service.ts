@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import type { ActivityType, AuditType } from '../contract';
 import type { ClientSession, Model } from 'mongoose';
 
-import type { ActivityType, AuditType } from '../contract';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+
 import { ActivityDoc, AuditDoc } from '../schemas';
 import { ClockService } from '../util/clock.service';
 

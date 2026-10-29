@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-
 import type { Membership, OrgRole } from '../contract';
+
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { idProp, nowProp } from './common';
 

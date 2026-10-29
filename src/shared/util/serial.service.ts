@@ -1,6 +1,7 @@
+import type { ClientSession, Model } from 'mongoose';
+
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import type { ClientSession, Model } from 'mongoose';
 
 import { CounterDoc } from '../schemas';
 

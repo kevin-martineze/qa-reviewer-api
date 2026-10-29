@@ -1,4 +1,10 @@
 import type { Type } from '@nestjs/common';
+import type {
+  ReferenceObject,
+  SchemaObject,
+} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
+import type * as Joi from 'joi';
+
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -10,11 +16,6 @@ import {
   ApiResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
-import type {
-  ReferenceObject,
-  SchemaObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
-import type * as Joi from 'joi';
 import joiToSwagger from 'joi-to-swagger';
 
 type Shape = Type<unknown> | [Type<unknown>] | SchemaObject;
@@ -34,12 +35,16 @@ export interface EndpointSpec {
   public?: boolean;
 }
 
-function schemaOf(shape: Shape): { schema: SchemaObject | ReferenceObject; models: Type<unknown>[] } {
+function schemaOf(shape: Shape): {
+  schema: SchemaObject | ReferenceObject;
+  models: Type<unknown>[];
+} {
   if (Array.isArray(shape)) {
     const [model] = shape;
     return { schema: { type: 'array', items: { $ref: getSchemaPath(model) } }, models: [model] };
   }
-  if (typeof shape === 'function') return { schema: { $ref: getSchemaPath(shape) }, models: [shape] };
+  if (typeof shape === 'function')
+    return { schema: { $ref: getSchemaPath(shape) }, models: [shape] };
   return { schema: shape, models: [] };
 }
 
@@ -65,7 +70,9 @@ export function Endpoint(spec: EndpointSpec) {
     const swagger = joiToSwagger(spec.query).swagger as SchemaObject;
     const required = new Set(swagger.required ?? []);
     for (const [name, schema] of Object.entries(swagger.properties ?? {})) {
-      decorators.push(ApiQuery({ name, required: required.has(name), schema: schema as SchemaObject }));
+      decorators.push(
+        ApiQuery({ name, required: required.has(name), schema: schema as SchemaObject }),
+      );
     }
   }
   if (spec.ok) {
@@ -93,7 +100,11 @@ export function Endpoint(spec: EndpointSpec) {
   if (spec.body || spec.query) errors[400] = ['common.validation', ...(errors[400] ?? [])];
   for (const [status, keys] of Object.entries(errors)) {
     decorators.push(
-      ApiResponse({ status: Number(status), description: keys.join(' · '), schema: errorSchema(Number(status), keys) }),
+      ApiResponse({
+        status: Number(status),
+        description: keys.join(' · '),
+        schema: errorSchema(Number(status), keys),
+      }),
     );
   }
   return applyDecorators(...decorators);

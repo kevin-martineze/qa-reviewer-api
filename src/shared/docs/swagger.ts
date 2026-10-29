@@ -1,4 +1,5 @@
 import type { INestApplication } from '@nestjs/common';
+
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export function buildOpenApi(app: INestApplication) {
@@ -8,7 +9,11 @@ export function buildOpenApi(app: INestApplication) {
       'Revisiones de UI entre desarrollo y diseño. Respuestas `{ messageKey, data }`; errores `{ statusCode, messageKey, message, details? }`.',
     )
     .setVersion('1')
-    .addBearerAuth({ type: 'http', scheme: 'bearer', description: 'qa_sess_… (web) o qa_pat_… (skill)' })
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      description: 'qa_sess_… (web) o qa_pat_… (skill)',
+    })
     .build();
   return SwaggerModule.createDocument(app, config);
 }

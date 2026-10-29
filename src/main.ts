@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 
+import type { NestFastifyApplication } from '@nestjs/platform-fastify';
+
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import { AppModule } from './app.module';

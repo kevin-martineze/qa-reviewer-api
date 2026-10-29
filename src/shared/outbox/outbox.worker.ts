@@ -1,14 +1,15 @@
+import type { OutboxEvent, OutboxEventType } from './outbox.service';
 import type { OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
+import type { Model } from 'mongoose';
+
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import type { Model } from 'mongoose';
 
 import { ENV, type Env } from '../../config/env';
 import { OutboxDoc } from '../schemas';
 import { ClockService } from '../util/clock.service';
 
 import { NOTIFIERS, type Notifier } from './notifier';
-import type { OutboxEvent, OutboxEventType } from './outbox.service';
 
 export const MAX_ATTEMPTS = 8;
 const BATCH = 20;

@@ -48,7 +48,7 @@ Solo corre mientras diseño tiene la pelota (`open`, `in_review`). Vencida si `d
 ## Asignación (`domain/assignment.ts`)
 
 - **Round robin:** diseñadores y líderes de diseño activos del proyecto, sin el autor, ordenados por id; se elige el siguiente después de `roundRobinLast` (circular). O(n).
-- **Por módulo:** primera regla cuyo patrón coincide (`matchRoute`) con la ruta de alguna pantalla, en el orden en que están las reglas, saltando reglas hacia inactivos o hacia el autor. Sin coincidencia, nadie.
+- **Por módulo:** primera regla cuyo patrón coincide (`matchRoute`) con la ruta de alguna pantalla, en el orden en que están las reglas, saltando reglas hacia inactivos o hacia el autor. Gana la primera en el orden del arreglo, no la más específica. Si ninguna sirve, se reparte por turnos (round robin).
 - **Manual:** nadie; asigna el líder.
 
 Se asigna al publicar la ronda 1 y en rondas siguientes solo si la revisión quedó sin asignados.

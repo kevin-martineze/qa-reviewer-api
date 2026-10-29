@@ -72,7 +72,7 @@ El manifiesto pasa por una cadena de chequeos, cada uno con su clave de error: v
 
 ## Strategy de asignación
 
-`manual` (nadie; asigna el líder), `round_robin` (siguiente diseñador activo después del último asignado) y `by_module` (primera regla cuyo patrón coincide con la ruta de una pantalla). Una estrategia es una función `(contexto) → asignados`; se elige por `project.strategy`.
+`manual` (nadie; asigna el líder), `round_robin` (siguiente diseñador activo después del último asignado) y `by_module` (primera regla, en el orden del arreglo, cuyo patrón coincide con la ruta de una pantalla; si ninguna sirve, round robin). Una estrategia es una función `(contexto) → asignados`; se elige por `project.strategy`.
 
 ## Idempotency Key
 

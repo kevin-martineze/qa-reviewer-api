@@ -194,14 +194,17 @@ describe('assign', () => {
     expect(assign('round_robin', { ...base, author: 'u2' }).assignees).toEqual(['u3']);
   });
 
-  it('por módulo toma la primera regla que coincide con un revisor válido', () => {
+  it('por módulo toma la primera regla que coincide con un revisor válido; si no, por turnos', () => {
     const rules = [
       { pattern: '/pagos/*', userId: 'u2' },
       { pattern: '/compras', userId: 'u8' },
       { pattern: '/compras', userId: 'u3' },
     ];
     expect(assign('by_module', { ...base, rules }).assignees).toEqual(['u3']);
-    expect(assign('by_module', { ...base, rules, routes: ['/caja'] }).assignees).toEqual([]);
+    expect(assign('by_module', { ...base, rules, routes: ['/caja'] })).toEqual({
+      assignees: ['u2'],
+      roundRobinLast: 'u2',
+    });
   });
 });
 

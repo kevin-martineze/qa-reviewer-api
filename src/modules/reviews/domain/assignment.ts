@@ -69,7 +69,10 @@ const STRATEGIES: Record<AssignmentStrategy, (ctx: AssignmentContext) => Assignm
     return { assignees: [chosen], roundRobinLast: chosen };
   },
 
-  /** La primera regla, en su orden, cuya ruta coincide con alguna pantalla. */
+  /**
+   * La primera regla, en el orden del arreglo, cuya ruta coincide con alguna pantalla y cuyo
+   * revisor sirve. Si ninguna sirve, se reparte por turnos.
+   */
   by_module: (ctx) => {
     const pool = new Set(reviewers(ctx));
     for (const rule of ctx.rules) {
@@ -78,7 +81,7 @@ const STRATEGIES: Record<AssignmentStrategy, (ctx: AssignmentContext) => Assignm
         return { assignees: [rule.userId], roundRobinLast: ctx.roundRobinLast };
       }
     }
-    return { assignees: [], roundRobinLast: ctx.roundRobinLast };
+    return STRATEGIES.round_robin(ctx);
   },
 };
 

@@ -35,7 +35,7 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | Organización    | `GET /organization`, `GET /users`, `PATCH /users/:id`, `GET·POST /invitations`, `DELETE /invitations/:id`, `GET /audit`                                                                                                                    | Implementado    |
 | Proyectos       | `GET·POST /projects`, `GET·PATCH /projects/:id`, `GET·POST /projects/:id/members`, `PATCH·DELETE /projects/:id/members/:userId`                                                                                                            | Implementado    |
 | Revisiones      | `GET /reviews`, `GET·PATCH /reviews/:id`, `GET /reviews/:id/activity`, `PUT /reviews/:id/assignees`, `POST /reviews/:id/reopen`                                                                                                            | Implementado    |
-| Skill           | `POST /reviews`, `POST /reviews/:id/publish`, `POST /reviews/:id/rounds`, `GET /reviews/:id/feedback`                                                                                                                                      | En construcción |
+| Skill           | `POST /reviews`, `POST /reviews/:id/publish`, `POST /reviews/:id/rounds`, `GET /reviews/:id/feedback`                                                                                                                                      | Implementado    |
 | Feedback        | `PUT /reviews/:id/screens/:key/verdict`, `POST /reviews/:id/submit`, `GET /reviews/:id/comments`, `GET·POST /reviews/:id/screens/:key/comments`, `POST /comments/:id/replies`, `PATCH·DELETE /comments/:id`, `PUT /comments/:id/follow-up` | En construcción |
 | Notificaciones  | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | En construcción |
 | Tokens          | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | En construcción |
@@ -44,47 +44,58 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 
 ## Catálogo de claves de error
 
-| Clave                                               | Status    | Cuándo                                                                      |
-| --------------------------------------------------- | --------- | --------------------------------------------------------------------------- |
-| `common.validation`                                 | 400       | Body, query o params no cumplen el esquema                                  |
-| `common.bad_request`                                | 400       | JSON mal formado u otro error de forma que detecta Fastify                  |
-| `common.not_found`                                  | 404       | Ruta inexistente                                                            |
-| `common.method_not_allowed`                         | 405       | Método no soportado en la ruta                                              |
-| `common.payload_too_large`                          | 413       | Cuerpo sobre el límite (10 MB para imágenes)                                |
-| `common.unsupported_media`                          | 415       | `Content-Type` no aceptado                                                  |
-| `common.rate_limited`                               | 429       | Límite de peticiones superado                                               |
-| `common.error`                                      | otro      | Error HTTP sin clave propia                                                 |
-| `common.internal`                                   | 500       | Error inesperado (el detalle queda en el log)                               |
-| `auth.required`                                     | 401       | Falta el header `Authorization`                                             |
-| `auth.session_expired`                              | 401       | Sesión vencida, revocada o de un usuario inactivo                           |
-| `auth.invalid_token`                                | 401       | Token de la skill inválido o revocado                                       |
-| `auth.token_not_allowed`                            | 401       | Token de la skill en un endpoint que exige sesión                           |
-| `auth.invalid`                                      | 401       | Login con correo o contraseña incorrectos (o cuenta inactiva)               |
-| `auth.forbidden`                                    | 403       | Falta el permiso (`details.permission`)                                     |
-| `auth.wrong_password` · `auth.same_password`        | 400       | Cambio de contraseña                                                        |
-| `recovery.not_found` · `recovery.gone`              | 404 · 410 | Enlace de recuperación inexistente o vencido/usado                          |
-| `invite.not_found`                                  | 404       | Invitación inexistente                                                      |
-| `invite.expired` · `invite.used` · `invite.revoked` | 410       | Invitación que ya no sirve                                                  |
-| `users.exists`                                      | 409       | Ya hay una cuenta con ese correo                                            |
-| `users.not_found`                                   | 404       | La persona no existe (o la cuenta de la sesión ya no existe)                |
-| `users.self`                                        | 409       | Cambiar el estado o el rol de la propia cuenta                              |
-| `users.owner`                                       | 409       | Desactivar al owner                                                         |
-| `users.changed`                                     | 409       | La cuenta cambió entre la lectura y la escritura                            |
-| `users.inactive`                                    | 409       | Agregar a un proyecto una cuenta desactivada                                |
-| `organization.not_found`                            | 404       | La instalación no tiene organización (falta el bootstrap)                   |
-| `invite.pending`                                    | 409       | Ya hay una invitación vigente para ese correo                               |
-| `invite.invalid_projects`                           | 400       | La invitación nombra proyectos que no existen                               |
-| `projects.not_found`                                | 404       | Proyecto inexistente o que la persona no puede ver                          |
-| `projects.exists`                                   | 409       | Ya hay un proyecto con ese slug                                             |
-| `projects.invalid_rules`                            | 400       | Regla por módulo hacia alguien que no es miembro (`details.userIds`)        |
-| `members.not_found` · `members.exists`              | 404 · 409 | La persona no es miembro, o ya lo es                                        |
-| `members.self`                                      | 409       | Quitarse a uno mismo del proyecto                                           |
-| `reviews.not_found`                                 | 404       | Revisión inexistente, sin publicar o que la persona no ve                   |
-| `reviews.stale_status`                              | 409       | El estado no permite el comando o cambió entre medio                        |
-| `reviews.invalid_assignees`                         | 400       | Asignados que no son diseñadores activos o son el autor (`details.userIds`) |
-| `storage.invalid_signature` · `storage.mismatch`    | 403 · 422 | URL firmada vencida o archivo distinto de lo declarado                      |
-| `storage.not_found` · `storage.empty`               | 404 · 422 | Objeto inexistente o subida sin cuerpo                                      |
-| `health.unavailable`                                | 503       | Mongo o el storage no responden                                             |
+| Clave                                                                          | Status    | Cuándo                                                                            |
+| ------------------------------------------------------------------------------ | --------- | --------------------------------------------------------------------------------- |
+| `common.validation`                                                            | 400       | Body, query o params no cumplen el esquema                                        |
+| `common.bad_request`                                                           | 400       | JSON mal formado u otro error de forma que detecta Fastify                        |
+| `common.not_found`                                                             | 404       | Ruta inexistente                                                                  |
+| `common.method_not_allowed`                                                    | 405       | Método no soportado en la ruta                                                    |
+| `common.payload_too_large`                                                     | 413       | Cuerpo sobre el límite (10 MB para imágenes)                                      |
+| `common.unsupported_media`                                                     | 415       | `Content-Type` no aceptado                                                        |
+| `common.rate_limited`                                                          | 429       | Límite de peticiones superado                                                     |
+| `common.error`                                                                 | otro      | Error HTTP sin clave propia                                                       |
+| `common.internal`                                                              | 500       | Error inesperado (el detalle queda en el log)                                     |
+| `auth.required`                                                                | 401       | Falta el header `Authorization`                                                   |
+| `auth.session_expired`                                                         | 401       | Sesión vencida, revocada o de un usuario inactivo                                 |
+| `auth.invalid_token`                                                           | 401       | Token de la skill inválido o revocado                                             |
+| `auth.token_not_allowed`                                                       | 401       | Token de la skill en un endpoint que exige sesión                                 |
+| `auth.invalid`                                                                 | 401       | Login con correo o contraseña incorrectos (o cuenta inactiva)                     |
+| `auth.forbidden`                                                               | 403       | Falta el permiso (`details.permission`)                                           |
+| `auth.wrong_password` · `auth.same_password`                                   | 400       | Cambio de contraseña                                                              |
+| `recovery.not_found` · `recovery.gone`                                         | 404 · 410 | Enlace de recuperación inexistente o vencido/usado                                |
+| `invite.not_found`                                                             | 404       | Invitación inexistente                                                            |
+| `invite.expired` · `invite.used` · `invite.revoked`                            | 410       | Invitación que ya no sirve                                                        |
+| `users.exists`                                                                 | 409       | Ya hay una cuenta con ese correo                                                  |
+| `users.not_found`                                                              | 404       | La persona no existe (o la cuenta de la sesión ya no existe)                      |
+| `users.self`                                                                   | 409       | Cambiar el estado o el rol de la propia cuenta                                    |
+| `users.owner`                                                                  | 409       | Desactivar al owner                                                               |
+| `users.changed`                                                                | 409       | La cuenta cambió entre la lectura y la escritura                                  |
+| `users.inactive`                                                               | 409       | Agregar a un proyecto una cuenta desactivada                                      |
+| `organization.not_found`                                                       | 404       | La instalación no tiene organización (falta el bootstrap)                         |
+| `invite.pending`                                                               | 409       | Ya hay una invitación vigente para ese correo                                     |
+| `invite.invalid_projects`                                                      | 400       | La invitación nombra proyectos que no existen                                     |
+| `projects.not_found`                                                           | 404       | Proyecto inexistente o que la persona no puede ver                                |
+| `projects.exists`                                                              | 409       | Ya hay un proyecto con ese slug                                                   |
+| `projects.invalid_rules`                                                       | 400       | Regla por módulo hacia alguien que no es miembro (`details.userIds`)              |
+| `members.not_found` · `members.exists`                                         | 404 · 409 | La persona no es miembro, o ya lo es                                              |
+| `members.self`                                                                 | 409       | Quitarse a uno mismo del proyecto                                                 |
+| `reviews.not_found`                                                            | 404       | Revisión inexistente, sin publicar o que la persona no ve                         |
+| `reviews.stale_status`                                                         | 409       | El estado no permite el comando o cambió entre medio                              |
+| `reviews.invalid_assignees`                                                    | 400       | Asignados que no son diseñadores activos o son el autor (`details.userIds`)       |
+| `reviews.exists`                                                               | 409       | El PR ya tiene una revisión publicada: subir una ronda nueva (`details.reviewId`) |
+| `reviews.missing_uploads`                                                      | 422       | Al publicar, faltan capturas o no coinciden en tipo y tamaño (`details.missing`)  |
+| `idempotency.required`                                                         | 400       | Falta `Idempotency-Key` al crear una revisión o una ronda                         |
+| `idempotency.mismatch` · `idempotency.in_progress`                             | 422 · 409 | Clave usada con otro body, o el primer intento sigue en curso                     |
+| `manifest.version_unsupported`                                                 | 422       | `manifestVersion` no soportada (`details.supported`)                              |
+| `manifest.privacy_required`                                                    | 422       | `privacy.masked` no es `true`                                                     |
+| `manifest.project_mismatch`                                                    | 403       | El token de la skill es de otro proyecto                                          |
+| `manifest.too_many_screens` · `manifest.invalid_capture` · `manifest.viewport` | 422       | Fuera de los límites del proyecto (`details.screen`)                              |
+| `manifest.duplicate_screens`                                                   | 422       | Dos pantallas con la misma `key`                                                  |
+| `manifest.pr_mismatch` · `manifest.review_mismatch`                            | 422       | La ronda trae otro PR u otro proyecto que la revisión                             |
+| `manifest.no_changes`                                                          | 422       | Ronda nueva sin pantallas nuevas ni recapturadas                                  |
+| `storage.invalid_signature` · `storage.mismatch`                               | 403 · 422 | URL firmada vencida o archivo distinto de lo declarado                            |
+| `storage.not_found` · `storage.empty`                                          | 404 · 422 | Objeto inexistente o subida sin cuerpo                                            |
+| `health.unavailable`                                                           | 503       | Mongo o el storage no responden                                                   |
 
 Las claves de los módulos en construcción se agregan aquí con su endpoint.
 
@@ -105,4 +116,15 @@ Las claves de los módulos en construcción se agregan aquí con su endpoint.
 - Asignar y cambiar la prioridad no aplican a revisiones cerradas (409).
 - Reabrir solo aplica a `approved` o `changes_requested`: anula el envío de la última ronda, deja el check en `pending`, da un plazo nuevo según el SLA y publica `ReviewReopened`.
 - Toda escritura de la revisión lleva guarda de estado: si cambió entre la lectura y la escritura, 409 `reviews.stale_status`.
+
+## Flujo de la skill
+
+1. `POST /reviews` con el manifiesto v1 e `Idempotency-Key` → borrador (`draft`) con `uploads[]`: una URL `PUT` firmada (15 min, tipo y tamaño fijos) por captura. Si el PR ya tiene un borrador de la misma persona, se reemplaza; si tiene una revisión publicada, 409 `reviews.exists`.
+2. La skill sube cada captura a su URL.
+3. `POST /reviews/:id/publish` verifica con `HEAD` que cada captura exista con el tipo y tamaño declarados, asigna según la estrategia del proyecto (solo en la ronda 1, o si no hay asignados), fija `dueAt` en días hábiles, avisa y publica `ReviewOpened`. Repetirlo no tiene efectos.
+4. Tras un envío de diseño, `POST /reviews/:id/rounds` (con su propia `Idempotency-Key`) calcula el diff de rondas: pide subir solo las pantallas nuevas o con otro `sha256`; las demás heredan captura y veredicto. Se publica igual que la ronda 1.
+5. `GET /reviews/:id/feedback` devuelve la revisión, los comentarios abiertos de la última ronda enviada y un texto listo para la sesión de Claude Code.
+
+El token de la skill (`qa_pat_…`) solo sirve en estos cuatro endpoints y en el proyecto para el que se creó.
+
 - Crear un proyecto y cada cambio de personas, roles, miembros y configuración dejan una entrada en `GET /audit`.

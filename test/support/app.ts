@@ -9,10 +9,10 @@ import { join } from 'node:path';
 
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import { AppModule } from '../../src/app.module';
 import { loadEnv } from '../../src/config/env';
+import { createAdapter } from '../../src/config/http';
 import { startMemoryMongo } from '../../src/config/memory-mongo';
 import { seedDemo } from '../../src/seed/demo-seed';
 
@@ -44,7 +44,10 @@ export interface TestApp {
     url: string,
     token?: string,
     payload?: object,
+    headers?: Record<string, string>,
   ): Promise<Reply<T>>;
+  /** PUT a una URL firmada del storage local (absoluta, como la entrega el API). */
+  upload(url: string, body: Buffer, headers: Record<string, string>): Promise<number>;
   close(): Promise<void>;
 }
 
@@ -61,7 +64,7 @@ export async function startTestApp(): Promise<TestApp> {
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule.forRoot(env),
-    new FastifyAdapter(),
+    createAdapter(env),
     { logger: false, abortOnError: false },
   );
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
@@ -69,14 +72,20 @@ export async function startTestApp(): Promise<TestApp> {
   await app.getHttpAdapter().getInstance().ready();
   await seedDemo(app);
 
-  const call: TestApp['call'] = async (method, url, token, payload) => {
+  const call: TestApp['call'] = async (method, url, token, payload, headers = {}) => {
     const res = await app.inject({
       method: method as 'GET',
       url: `/v1${url}`,
-      headers: token ? { authorization: `Bearer ${token}` } : {},
+      headers: { ...headers, ...(token ? { authorization: `Bearer ${token}` } : {}) },
       payload,
     });
     return { status: res.statusCode, body: res.body ? res.json() : {} };
+  };
+
+  const upload: TestApp['upload'] = async (url, body, headers) => {
+    const { pathname, search } = new URL(url);
+    const res = await app.inject({ method: 'PUT', url: pathname + search, headers, payload: body });
+    return res.statusCode;
   };
 
   const tokens = new Map<string, string>();
@@ -93,7 +102,7 @@ export async function startTestApp(): Promise<TestApp> {
     return token;
   };
 
-  return { app, call, login, close: () => stop(app, replSet, storageDir) };
+  return { app, call, upload, login, close: () => stop(app, replSet, storageDir) };
 }
 
 async function stop(

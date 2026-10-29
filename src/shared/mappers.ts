@@ -1,5 +1,6 @@
 import type {
   AuditEvent,
+  Comment,
   Invitation,
   InviteStatus,
   Organization,
@@ -9,6 +10,7 @@ import type {
 } from './contract';
 import type {
   AuditDoc,
+  CommentDoc,
   InvitationDoc,
   MemberDoc,
   OrganizationDoc,
@@ -86,5 +88,27 @@ export function toAuditEvent(doc: AuditDoc): AuditEvent {
     target: doc.target,
     text: doc.text,
     createdAt: iso(doc.createdAt),
+  };
+}
+
+export function toComment(doc: CommentDoc): Comment {
+  return {
+    id: doc._id,
+    review: doc.reviewId,
+    screen: doc.screenKey,
+    round: doc.round,
+    author: doc.author,
+    createdAt: iso(doc.createdAt),
+    body: doc.body,
+    anchor: doc.anchor ? { x: doc.anchor.x, y: doc.anchor.y } : null,
+    el: doc.el ? { ...doc.el } : null,
+    resolved: doc.resolved,
+    followUp: doc.followUp,
+    replies: doc.replies.map((r) => ({
+      id: r.id,
+      author: r.author,
+      createdAt: iso(r.createdAt),
+      body: r.body,
+    })),
   };
 }

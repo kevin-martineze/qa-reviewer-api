@@ -14,9 +14,9 @@ Qué patrón, qué problema resuelve aquí, dónde vive y cómo se extiende. La 
 | Transactional Outbox          | `shared/outbox`                                      | Implementado                                       |
 | Strategy (notificadores)      | `shared/outbox/notifier.ts`, `modules/integrations`  | Worker implementado; notificadores en construcción |
 | State (tabla de transiciones) | `modules/reviews/domain/review-state.ts`             | Implementado                                       |
-| Chain of Responsibility       | `modules/reviews/domain/manifest-checks.ts`          | En construcción                                    |
-| Strategy (asignación)         | `modules/reviews/domain/assignment.ts`               | En construcción                                    |
-| Idempotency Key               | `modules/reviews/idempotency.service.ts`             | En construcción                                    |
+| Chain of Responsibility       | `modules/reviews/domain/manifest.ts`                 | Implementado                                       |
+| Strategy (asignación)         | `modules/reviews/domain/assignment.ts`               | Implementado                                       |
+| Idempotency Key               | `modules/reviews/idempotency.service.ts`             | Implementado                                       |
 | Snapshot                      | `ReviewDoc.pr`, `ReviewDoc.card`, payload de eventos | Implementado (schema)                              |
 | Optimistic concurrency        | `findOneAndUpdate({ _id, status })`                  | Implementado                                       |
 | Clock inyectable              | `shared/util/clock.service.ts`                       | Implementado                                       |
@@ -66,17 +66,17 @@ Agregar un canal (Slack) es una clase que implementa `Notifier` y una línea en 
 
 Las transiciones de la revisión son una tabla `{ desde, comando, hacia, guarda }` en una función pura. El servicio pregunta a la tabla si el comando aplica y escribe con `findOneAndUpdate({ _id, status: desde })`. Si otro request cambió el estado entre medio, no actualiza y responde 409: no hay escrituras perdidas.
 
-## Chain of Responsibility (en construcción)
+## Chain of Responsibility
 
 El manifiesto pasa por una cadena de chequeos, cada uno con su clave de error: versión soportada → privacidad (`masked`) → proyecto del token → límites (pantallas, bytes, tipos) → viewports → claves únicas → PR coherente con la revisión existente. Un chequeo nuevo es una función más en la lista.
 
-## Strategy de asignación (en construcción)
+## Strategy de asignación
 
 `manual` (nadie; asigna el líder), `round_robin` (siguiente diseñador activo después del último asignado) y `by_module` (primera regla cuyo patrón coincide con la ruta de una pantalla). Una estrategia es una función `(contexto) → asignados`; se elige por `project.strategy`.
 
-## Idempotency Key (en construcción)
+## Idempotency Key
 
-`POST /reviews` y `POST /reviews/:id/rounds` exigen `Idempotency-Key`. Se guarda `<usuario>:<clave>` con el hash canónico del body y la respuesta. Misma clave y mismo body → misma respuesta; misma clave y otro body → 422.
+`POST /reviews` y `POST /reviews/:id/rounds` exigen `Idempotency-Key`. Se guarda `<usuario>:<clave>` con el hash canónico del body y la respuesta. Misma clave y mismo body → misma respuesta; misma clave y otro body → 422 `idempotency.mismatch`; si el primer intento sigue en curso → 409 `idempotency.in_progress`. Un intento que falla libera la clave para el reintento. Las entradas viven 24 h (TTL de Mongo).
 
 ## Snapshot
 

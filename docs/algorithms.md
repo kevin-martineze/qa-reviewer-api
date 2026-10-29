@@ -6,22 +6,22 @@ Los cálculos no triviales, con su complejidad y el porqué de cada decisión. �
 
 Se usa recursión solo cuando la estructura es un árbol y su profundidad está acotada por el dominio. Donde la profundidad la decide quien envía los datos, se usa iteración o se limita antes de recorrer.
 
-| Dónde                                            | Qué recorre                       | Por qué recursivo                                   | Cota de profundidad                                                | Estado          |
-| ------------------------------------------------ | --------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------ | --------------- |
-| `countFiles` (`shared/storage/local.storage.ts`) | Carpetas del storage local        | Un árbol de directorios es recursivo por definición | La ruta de una clave: 6 niveles                                    | Implementado    |
-| `canonicalJson` (idempotencia)                   | El body del request               | JSON anidado; se ordenan las claves en cada nivel   | Joi rechaza el body antes si no cumple el esquema (máx. 4 niveles) | En construcción |
-| `matchRoute` (asignación por módulo)             | Patrón y ruta segmento a segmento | `*` y `**` se resuelven probando sufijos            | Segmentos de una ruta (≤ 20) con memo                              | En construcción |
-| `shiftDates` (`src/seed/shift-dates.ts`)         | El JSON de la demo                | Mueve todas las fechas sin conocer la forma         | Datos propios del repo                                             | Implementado    |
+| Dónde                                            | Qué recorre                       | Por qué recursivo                                   | Cota de profundidad                                                | Estado       |
+| ------------------------------------------------ | --------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------ | ------------ |
+| `countFiles` (`shared/storage/local.storage.ts`) | Carpetas del storage local        | Un árbol de directorios es recursivo por definición | La ruta de una clave: 6 niveles                                    | Implementado |
+| `canonicalJson` (idempotencia)                   | El body del request               | JSON anidado; se ordenan las claves en cada nivel   | Joi rechaza el body antes si no cumple el esquema (máx. 4 niveles) | Implementado |
+| `matchRoute` (asignación por módulo)             | Patrón y ruta segmento a segmento | `*` y `**` se resuelven probando sufijos            | Segmentos de una ruta (≤ 20) con memo                              | Implementado |
+| `shiftDates` (`src/seed/shift-dates.ts`)         | El JSON de la demo                | Mueve todas las fechas sin conocer la forma         | Datos propios del repo                                             | Implementado |
 
 `countFiles`: O(n) en archivos. Se usa al borrar un prefijo para informar cuántas capturas se eliminaron.
 
 `canonicalJson(value)`: si es arreglo, canoniza cada elemento; si es objeto, ordena las claves y canoniza cada valor; si no, `JSON.stringify`. Así dos bodies iguales con claves en otro orden producen el mismo hash. O(n log n) por el orden de claves.
 
-`matchRoute(pattern, route)`: compara segmentos. `*` coincide con exactamente un segmento; `**` con cero o más, lo que obliga a probar cada sufijo restante (recursión). Con memo por par de índices es O(p × r).
+`matchRoute(pattern, route)`: compara segmentos sin distinguir mayúsculas. `*` coincide con exactamente un segmento; `**` con cero o más, lo que obliga a probar cada sufijo restante (recursión). Un `*` al final del patrón cubre todo lo que cuelga del prefijo: `/preorders/*` incluye `/preorders/[id]/products-services`, que es lo que espera quien escribe la regla. Con memo por par de índices es O(p × r).
 
 ## Rondas
 
-### Diff de rondas (`round-diff`, en construcción)
+### Diff de rondas (`domain/round-diff.ts`)
 
 Entrada: pantallas de la ronda anterior y del manifiesto nuevo. Para cada pantalla nueva:
 
@@ -29,7 +29,7 @@ Entrada: pantallas de la ronda anterior y del manifiesto nuevo. Para cada pantal
 - existía y su `after.sha256` es distinto → **cambió**, `pending`, `previous` = captura anterior;
 - existía con el mismo hash → **heredada**: conserva captura, veredicto y `changedIn`; no se sube nada.
 
-Las pantallas que ya no están en el manifiesto salen de la revisión (sus comentarios siguen en el historial). O(n) con un mapa por clave.
+Las pantallas que ya no están en el manifiesto salen de la revisión (sus comentarios siguen en el historial). Una ronda sin pantallas que cambiaron se rechaza (`manifest.no_changes`). O(n) con un mapa por clave.
 
 ### Resultado del envío
 
@@ -45,10 +45,13 @@ Suma de a un día y descuenta solo lunes a viernes, conservando la hora. O(d) co
 
 Solo corre mientras diseño tiene la pelota (`open`, `in_review`). Vencida si `dueAt < ahora`; «por vencer» si faltan menos de 24 h. El job de plazos marca `dueSoonNotifiedAt` / `overdueNotifiedAt` con una escritura condicional antes de notificar, así cada aviso sale una vez por ronda aunque corran varias réplicas.
 
-## Asignación (en construcción)
+## Asignación (`domain/assignment.ts`)
 
-- **Round robin:** diseñadores activos del proyecto ordenados por id; se elige el siguiente después de `roundRobinLast` (circular). O(n).
-- **Por módulo:** primera regla cuyo patrón coincide (`matchRoute`) con la ruta de alguna pantalla, en el orden en que están las reglas. Sin coincidencia, nadie.
+- **Round robin:** diseñadores y líderes de diseño activos del proyecto, sin el autor, ordenados por id; se elige el siguiente después de `roundRobinLast` (circular). O(n).
+- **Por módulo:** primera regla cuyo patrón coincide (`matchRoute`) con la ruta de alguna pantalla, en el orden en que están las reglas, saltando reglas hacia inactivos o hacia el autor. Sin coincidencia, nadie.
+- **Manual:** nadie; asigna el líder.
+
+Se asigna al publicar la ronda 1 y en rondas siguientes solo si la revisión quedó sin asignados.
 
 ## Menciones (en construcción)
 

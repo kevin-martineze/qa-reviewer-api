@@ -1,0 +1,3303 @@
+{
+  "version": 1,
+  "exportedAt": "2026-10-29T01:28:03.699Z",
+  "password": "demo1234",
+  "org": {
+    "id": "pangea",
+    "name": "Pangea"
+  },
+  "users": [
+    {
+      "id": "u1",
+      "name": "Kevin Martínez",
+      "email": "kevin@ejemplo.co",
+      "orgRole": "member",
+      "status": "active",
+      "avatar": "a01",
+      "lastSeenAt": "2026-10-29T01:23:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u2",
+      "name": "Laura Ríos",
+      "email": "laura.rios@ejemplo.co",
+      "orgRole": "admin",
+      "status": "active",
+      "avatar": "a02",
+      "lastSeenAt": "2026-10-29T01:16:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u3",
+      "name": "Andrés Peña",
+      "email": "andres.pena@ejemplo.co",
+      "orgRole": "member",
+      "status": "active",
+      "avatar": "a03",
+      "lastSeenAt": "2026-10-28T22:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u4",
+      "name": "Sofía Vargas",
+      "email": "sofia.vargas@ejemplo.co",
+      "orgRole": "member",
+      "status": "active",
+      "avatar": "a04",
+      "lastSeenAt": "2026-10-28T01:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u5",
+      "name": "Mateo Cárdenas",
+      "email": "mateo.cardenas@ejemplo.co",
+      "orgRole": "member",
+      "status": "active",
+      "avatar": "a05",
+      "lastSeenAt": "2026-10-28T23:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u6",
+      "name": "Camila Torres",
+      "email": "camila.torres@ejemplo.co",
+      "orgRole": "member",
+      "status": "active",
+      "avatar": "a06",
+      "lastSeenAt": "2026-10-26T01:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u7",
+      "name": "Valentina Ruiz",
+      "email": "valentina.ruiz@ejemplo.co",
+      "orgRole": "owner",
+      "status": "active",
+      "avatar": "a07",
+      "lastSeenAt": "2026-10-28T23:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    },
+    {
+      "id": "u8",
+      "name": "Julián Ospina",
+      "email": "julian.ospina@ejemplo.co",
+      "orgRole": "member",
+      "status": "inactive",
+      "avatar": "a08",
+      "lastSeenAt": "2026-08-28T01:28:03.551Z",
+      "createdAt": "2026-07-01T01:28:03.551Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "lideris",
+      "name": "Lideris",
+      "repo": "pangea-soluciones/lideris-v2",
+      "planeKey": "LIDER",
+      "slaDays": 2,
+      "strategy": "by_module",
+      "moduleRules": [
+        {
+          "pattern": "/preorders/*",
+          "userId": "u2"
+        },
+        {
+          "pattern": "/requests/*",
+          "userId": "u3"
+        },
+        {
+          "pattern": "/suppliers/*",
+          "userId": "u4"
+        },
+        {
+          "pattern": "/authorizations/*",
+          "userId": "u4"
+        }
+      ],
+      "integrations": {
+        "github": {
+          "connected": true,
+          "repo": "pangea-soluciones/lideris-v2",
+          "checkName": "design-review",
+          "commentOnPr": true
+        },
+        "plane": {
+          "connected": true,
+          "projectKey": "LIDER",
+          "commentOnCard": true
+        }
+      },
+      "maskSelectors": [
+        "[data-patient-name]",
+        "[data-document-number]",
+        "input[type=\"email\"]"
+      ],
+      "designRules": [
+        "Botones con type=\"button\" salvo el submit del formulario.",
+        "Íconos solo de lucide; nada de emojis.",
+        "Sin desbordes horizontales a 1024 px.",
+        "Contraste AA en texto y estados."
+      ],
+      "reviewsCount": 6
+    },
+    {
+      "id": "auralis",
+      "name": "Auralis",
+      "repo": "pangea-soluciones/auralis-admin",
+      "planeKey": "AUR",
+      "slaDays": 3,
+      "strategy": "round_robin",
+      "moduleRules": [],
+      "integrations": {
+        "github": {
+          "connected": true,
+          "repo": "pangea-soluciones/auralis-admin",
+          "checkName": "design-review",
+          "commentOnPr": false
+        },
+        "plane": {
+          "connected": false,
+          "projectKey": "AUR",
+          "commentOnCard": false
+        }
+      },
+      "maskSelectors": [],
+      "designRules": [
+        "Contraste AA en texto y estados."
+      ],
+      "reviewsCount": 2
+    }
+  ],
+  "memberships": [
+    {
+      "userId": "u1",
+      "projectId": "lideris",
+      "role": "developer"
+    },
+    {
+      "userId": "u2",
+      "projectId": "lideris",
+      "role": "design_lead"
+    },
+    {
+      "userId": "u3",
+      "projectId": "lideris",
+      "role": "designer"
+    },
+    {
+      "userId": "u4",
+      "projectId": "lideris",
+      "role": "designer"
+    },
+    {
+      "userId": "u5",
+      "projectId": "lideris",
+      "role": "developer"
+    },
+    {
+      "userId": "u6",
+      "projectId": "lideris",
+      "role": "viewer"
+    },
+    {
+      "userId": "u7",
+      "projectId": "lideris",
+      "role": "project_admin"
+    },
+    {
+      "userId": "u8",
+      "projectId": "lideris",
+      "role": "designer"
+    },
+    {
+      "userId": "u1",
+      "projectId": "auralis",
+      "role": "project_admin"
+    },
+    {
+      "userId": "u2",
+      "projectId": "auralis",
+      "role": "designer"
+    },
+    {
+      "userId": "u3",
+      "projectId": "auralis",
+      "role": "developer"
+    },
+    {
+      "userId": "u5",
+      "projectId": "auralis",
+      "role": "viewer"
+    }
+  ],
+  "invites": [
+    {
+      "id": "i1",
+      "token": "invite-valid-0001",
+      "email": "mariana@ejemplo.co",
+      "inviter": "u2",
+      "role": "member",
+      "projects": [
+        {
+          "projectId": "lideris",
+          "role": "designer"
+        }
+      ],
+      "createdAt": "2026-10-29T00:28:03.551Z",
+      "expiresAt": "2026-11-05T00:28:03.551Z",
+      "used": false,
+      "revoked": false
+    },
+    {
+      "id": "i2",
+      "token": "invite-expired-0001",
+      "email": "luis@ejemplo.co",
+      "inviter": "u2",
+      "role": "member",
+      "projects": [
+        {
+          "projectId": "lideris",
+          "role": "viewer"
+        }
+      ],
+      "createdAt": "2026-10-21T01:28:03.551Z",
+      "expiresAt": "2026-10-28T01:28:03.551Z",
+      "used": false,
+      "revoked": false
+    },
+    {
+      "id": "i3",
+      "token": "invite-used-0001",
+      "email": "caro@ejemplo.co",
+      "inviter": "u7",
+      "role": "member",
+      "projects": [
+        {
+          "projectId": "auralis",
+          "role": "developer"
+        }
+      ],
+      "createdAt": "2026-10-26T01:28:03.551Z",
+      "expiresAt": "2026-11-02T01:28:03.551Z",
+      "used": true,
+      "revoked": false
+    },
+    {
+      "id": "i4",
+      "token": "invite-revoked-0001",
+      "email": "pablo@ejemplo.co",
+      "inviter": "u2",
+      "role": "admin",
+      "projects": [],
+      "createdAt": "2026-10-27T01:28:03.551Z",
+      "expiresAt": "2026-11-03T01:28:03.551Z",
+      "used": false,
+      "revoked": true
+    }
+  ],
+  "recoveries": [
+    {
+      "token": "recover-valid-0001",
+      "userId": "u1",
+      "expiresAt": "2026-10-29T02:28:03.551Z",
+      "used": false
+    },
+    {
+      "token": "recover-expired-0001",
+      "userId": "u2",
+      "expiresAt": "2026-10-29T00:28:03.551Z",
+      "used": false
+    },
+    {
+      "token": "recover-used-0001",
+      "userId": "u3",
+      "expiresAt": "2026-10-29T02:28:03.551Z",
+      "used": true
+    }
+  ],
+  "tokens": [
+    {
+      "id": "t1",
+      "owner": "u1",
+      "label": "MacBook · Lideris",
+      "prefix": "qa_pat_7f3a",
+      "project": "lideris",
+      "createdAt": "2026-10-17T01:28:03.551Z",
+      "lastUsedAt": "2026-10-28T20:28:03.551Z"
+    },
+    {
+      "id": "t2",
+      "owner": "u1",
+      "label": "MacBook · Auralis",
+      "prefix": "qa_pat_c91e",
+      "project": "auralis",
+      "createdAt": "2026-09-19T01:28:03.551Z",
+      "lastUsedAt": null
+    },
+    {
+      "id": "t3",
+      "owner": "u5",
+      "label": "Portátil Mateo",
+      "prefix": "qa_pat_02bd",
+      "project": "lideris",
+      "createdAt": "2026-10-09T01:28:03.551Z",
+      "lastUsedAt": "2026-10-27T01:28:03.551Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "QR-0012",
+      "title": "Edición en bloque de las cantidades aprobadas",
+      "context": "Pre-orden · pestaña Productos / Servicios",
+      "card": "LIDER-628",
+      "pr": {
+        "number": 868,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/868",
+        "base": "develop",
+        "head": "feature/LIDER-628-pre-order-items-edit-develop",
+        "state": "open",
+        "check": "pending",
+        "commit": "2187418"
+      },
+      "project": "lideris",
+      "module": "Compras",
+      "author": "u1",
+      "assignees": [
+        "u2"
+      ],
+      "status": "open",
+      "round": 2,
+      "priority": "medium",
+      "dueAt": "2026-10-29T21:28:03.551Z",
+      "createdAt": "2026-10-27T22:28:03.551Z",
+      "updatedAt": "2026-10-28T23:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Vista normal de Productos / Servicios",
+          "lead": "Así se ve la pestaña antes de editar.",
+          "viewport": "1280 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 1,
+          "inherited": true,
+          "roundNote": null,
+          "changes": [
+            "Nuevo botón «Editar cantidades» (outline, ícono lápiz) junto al buscador.",
+            "Solo aparece si la pre-orden no tiene cotizaciones y el usuario tiene permiso."
+          ],
+          "questions": [
+            "¿Variante, tamaño y ubicación del botón están bien?"
+          ],
+          "img": "asset:po-normal.png",
+          "previous": null,
+          "before": null,
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-1",
+              "box": {
+                "x": 0.6039,
+                "y": 0.4611,
+                "w": 0.2188,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "Button · Editar cantidades",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 400,
+              "selector": "button:has(svg.lucide-pencil)",
+              "id": "400-real-2",
+              "box": {
+                "x": 0.832,
+                "y": 0.4611,
+                "w": 0.1367,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-3",
+              "box": {
+                "x": 0.2313,
+                "y": 0.5444,
+                "w": 0.7375,
+                "h": 0.2778
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-4",
+              "box": {
+                "x": 0.2313,
+                "y": 0.8444,
+                "w": 0.7375,
+                "h": 0.1556
+              }
+            }
+          ],
+          "diff": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Modo edición, sin cambios",
+          "lead": "Después de pulsar «Editar cantidades».",
+          "viewport": "1280 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 1,
+          "inherited": true,
+          "roundNote": null,
+          "changes": [
+            "«Cantidad aprobada» pasa a un stepper (− / campo centrado / +).",
+            "Mínimo 1, máximo la cantidad solicitada; el botón se deshabilita en el límite.",
+            "Barra fija: «Sin cambios», ayuda de límites, Cancelar y Guardar (deshabilitado)."
+          ],
+          "questions": [
+            "¿La ayuda de límites va en la barra o mejor por fila?"
+          ],
+          "img": "asset:po-edit.png",
+          "previous": null,
+          "before": "asset:po-normal.png",
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-1",
+              "box": {
+                "x": 0.75,
+                "y": 0.4611,
+                "w": 0.2188,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-2",
+              "box": {
+                "x": 0.2313,
+                "y": 0.5444,
+                "w": 0.7375,
+                "h": 0.2778
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-3",
+              "box": {
+                "x": 0.6962,
+                "y": 0.6931,
+                "w": 0.0438,
+                "h": 0.0444
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-4",
+              "box": {
+                "x": 0.2313,
+                "y": 0.8444,
+                "w": 0.7375,
+                "h": 0.1556
+              }
+            },
+            {
+              "name": "Barra de guardado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 454,
+              "selector": "form[action=\"?/updateItems\"]",
+              "id": "454-real-5",
+              "box": {
+                "x": 0.2281,
+                "y": 0.8236,
+                "w": 0.7438,
+                "h": 0.1042
+              }
+            },
+            {
+              "name": "Contador de cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 462,
+              "selector": "form[action=\"?/updateItems\"] .t-sm-medium",
+              "id": "462-real-6",
+              "box": {
+                "x": 0.2414,
+                "y": 0.8472,
+                "w": 0.2091,
+                "h": 0.0292
+              }
+            },
+            {
+              "name": "Button · Guardar cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 475,
+              "selector": "form[action=\"?/updateItems\"] button[type=\"submit\"]",
+              "id": "475-real-7",
+              "box": {
+                "x": 0.8429,
+                "y": 0.8507,
+                "w": 0.1157,
+                "h": 0.05
+              }
+            }
+          ],
+          "diff": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "c",
+          "title": "Filas modificadas",
+          "lead": "Primera fila de 10 a 7 y segunda de 17 a 12.",
+          "viewport": "1280 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": "Ronda 2: la fila editada lleva fondo primary/5 y borde de 2 px (antes, anillo primary/60).",
+          "changes": [
+            "Fila modificada: fondo suave y borde en color primario, con «Antes: N» bajo el stepper.",
+            "«Cantidad adjudicada» y totales se recalculan con la cantidad nueva.",
+            "La barra cuenta los cambios y habilita «Guardar cambios»."
+          ],
+          "questions": [
+            "¿El fondo primary/5 con borde de 2 px ya se distingue lo suficiente?"
+          ],
+          "img": "asset:po-changed-r2.png",
+          "previous": "asset:po-changed-r2.png",
+          "before": "asset:po-edit.png",
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-1",
+              "box": {
+                "x": 0.75,
+                "y": 0.4611,
+                "w": 0.2188,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-2",
+              "box": {
+                "x": 0.2313,
+                "y": 0.5444,
+                "w": 0.7375,
+                "h": 0.2778
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-3",
+              "box": {
+                "x": 0.6962,
+                "y": 0.6778,
+                "w": 0.0438,
+                "h": 0.0444
+              }
+            },
+            {
+              "name": "Texto «Antes: N»",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 307,
+              "selector": "[data-slot=\"card\"] .t-xs-regular",
+              "id": "307-real-4",
+              "box": {
+                "x": 0.6704,
+                "y": 0.7292,
+                "w": 0.0813,
+                "h": 0.025
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-5",
+              "box": {
+                "x": 0.2313,
+                "y": 0.8444,
+                "w": 0.7375,
+                "h": 0.1556
+              }
+            },
+            {
+              "name": "Barra de guardado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 454,
+              "selector": "form[action=\"?/updateItems\"]",
+              "id": "454-real-6",
+              "box": {
+                "x": 0.2281,
+                "y": 0.8236,
+                "w": 0.7438,
+                "h": 0.1042
+              }
+            },
+            {
+              "name": "Contador de cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 462,
+              "selector": "form[action=\"?/updateItems\"] .t-sm-medium",
+              "id": "462-real-7",
+              "box": {
+                "x": 0.2414,
+                "y": 0.8472,
+                "w": 0.2091,
+                "h": 0.0292
+              }
+            },
+            {
+              "name": "Button · Guardar cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 475,
+              "selector": "form[action=\"?/updateItems\"] button[type=\"submit\"]",
+              "id": "475-real-8",
+              "box": {
+                "x": 0.8429,
+                "y": 0.8507,
+                "w": 0.1157,
+                "h": 0.05
+              }
+            }
+          ],
+          "diff": [
+            {
+              "x": 0.2313,
+              "y": 0.5444,
+              "w": 0.7375,
+              "h": 0.2778
+            },
+            {
+              "x": 0.2313,
+              "y": 0.8444,
+              "w": 0.7375,
+              "h": 0.1556
+            }
+          ],
+          "verdict": "pending"
+        },
+        {
+          "key": "d",
+          "title": "Desplazamiento a 1280 × 720",
+          "lead": "La segunda fila modificada, después de bajar en la lista.",
+          "viewport": "1280 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": "Ronda 2: la fila editada lleva fondo primary/5 y borde de 2 px (antes, anillo primary/60). La barra no cambió: ver el comentario abierto.",
+          "changes": [
+            "Encabezado, pestañas y alerta no se desplazan; la lista corre en el espacio restante.",
+            "Con la barra fija, a 720 px de alto se ven dos tarjetas a la vez."
+          ],
+          "questions": [
+            "¿Barra más compacta o alerta colapsable para ganar alto?"
+          ],
+          "img": "asset:po-scroll-r2.png",
+          "previous": "asset:po-scroll-r2.png",
+          "before": null,
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-1",
+              "box": {
+                "x": 0.2313,
+                "y": 0,
+                "w": 0.7375,
+                "h": 0.0931
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-2",
+              "box": {
+                "x": 0.6682,
+                "y": 0.3514,
+                "w": 0.0437,
+                "h": 0.0444
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 3",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-3",
+              "box": {
+                "x": 0.2313,
+                "y": 0.1153,
+                "w": 0.7375,
+                "h": 0.4528
+              }
+            },
+            {
+              "name": "Barra de guardado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 454,
+              "selector": "form[action=\"?/updateItems\"]",
+              "id": "454-real-4",
+              "box": {
+                "x": 0.2281,
+                "y": 0.8236,
+                "w": 0.7438,
+                "h": 0.1042
+              }
+            },
+            {
+              "name": "Contador de cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 462,
+              "selector": "form[action=\"?/updateItems\"] .t-sm-medium",
+              "id": "462-real-5",
+              "box": {
+                "x": 0.2414,
+                "y": 0.8472,
+                "w": 0.2091,
+                "h": 0.0292
+              }
+            },
+            {
+              "name": "Button · Guardar cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 475,
+              "selector": "form[action=\"?/updateItems\"] button[type=\"submit\"]",
+              "id": "475-real-6",
+              "box": {
+                "x": 0.8429,
+                "y": 0.8507,
+                "w": 0.1157,
+                "h": 0.05
+              }
+            }
+          ],
+          "diff": [
+            {
+              "x": 0.2313,
+              "y": 0,
+              "w": 0.7375,
+              "h": 0.0931
+            }
+          ],
+          "verdict": "pending"
+        },
+        {
+          "key": "e",
+          "title": "Modo edición a 1440 × 810",
+          "lead": "Mismo estado con más espacio.",
+          "viewport": "1440 × 810",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": "Ronda 2: la fila editada lleva fondo primary/5 y borde de 2 px (antes, anillo primary/60).",
+          "changes": [
+            "Caben tres filas y la columna del producto respira."
+          ],
+          "questions": [],
+          "img": "asset:po-wide-r2.png",
+          "previous": "asset:po-wide-r2.png",
+          "before": null,
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2,
+                "y": 0.0988,
+                "w": 0.7778,
+                "h": 0.0704
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-1",
+              "box": {
+                "x": 0.7778,
+                "y": 0.4099,
+                "w": 0.1944,
+                "h": 0.0444
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-2",
+              "box": {
+                "x": 0.2056,
+                "y": 0.484,
+                "w": 0.7667,
+                "h": 0.1691
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-3",
+              "box": {
+                "x": 0.6728,
+                "y": 0.5636,
+                "w": 0.0389,
+                "h": 0.0395
+              }
+            },
+            {
+              "name": "Texto «Antes: N»",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 307,
+              "selector": "[data-slot=\"card\"] .t-xs-regular",
+              "id": "307-real-4",
+              "box": {
+                "x": 0.6499,
+                "y": 0.6093,
+                "w": 0.0722,
+                "h": 0.0222
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-5",
+              "box": {
+                "x": 0.2056,
+                "y": 0.6728,
+                "w": 0.7667,
+                "h": 0.1951
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-6",
+              "box": {
+                "x": 0.6728,
+                "y": 0.7654,
+                "w": 0.0389,
+                "h": 0.0395
+              }
+            },
+            {
+              "name": "Texto «Antes: N»",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 307,
+              "selector": "[data-slot=\"card\"] .t-xs-regular",
+              "id": "307-real-7",
+              "box": {
+                "x": 0.6499,
+                "y": 0.8111,
+                "w": 0.0722,
+                "h": 0.0222
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 3",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-8",
+              "box": {
+                "x": 0.2056,
+                "y": 0.8877,
+                "w": 0.7667,
+                "h": 0.1123
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-9",
+              "box": {
+                "x": 0.6728,
+                "y": 0.9809,
+                "w": 0.0389,
+                "h": 0.0191
+              }
+            },
+            {
+              "name": "Barra de guardado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 454,
+              "selector": "form[action=\"?/updateItems\"]",
+              "id": "454-real-10",
+              "box": {
+                "x": 0.2028,
+                "y": 0.8432,
+                "w": 0.7722,
+                "h": 0.0926
+              }
+            },
+            {
+              "name": "Contador de cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 462,
+              "selector": "form[action=\"?/updateItems\"] .t-sm-medium",
+              "id": "462-real-11",
+              "box": {
+                "x": 0.2146,
+                "y": 0.8642,
+                "w": 0.1859,
+                "h": 0.0259
+              }
+            },
+            {
+              "name": "Button · Guardar cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 475,
+              "selector": "form[action=\"?/updateItems\"] button[type=\"submit\"]",
+              "id": "475-real-12",
+              "box": {
+                "x": 0.8604,
+                "y": 0.8673,
+                "w": 0.1028,
+                "h": 0.0444
+              }
+            }
+          ],
+          "diff": [
+            {
+              "x": 0.2056,
+              "y": 0.484,
+              "w": 0.7667,
+              "h": 0.1691
+            },
+            {
+              "x": 0.2056,
+              "y": 0.6728,
+              "w": 0.7667,
+              "h": 0.1951
+            }
+          ],
+          "verdict": "pending"
+        },
+        {
+          "key": "f",
+          "title": "Modo edición a 1024 × 720",
+          "lead": "Ancho mínimo del rango objetivo.",
+          "viewport": "1024 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": "Ronda 2: la fila editada lleva fondo primary/5 y borde de 2 px (antes, anillo primary/60).",
+          "changes": [
+            "Bajo 1280 px la fila pasa a tarjeta apilada.",
+            "La barra fija tapa parte de la segunda tarjeta."
+          ],
+          "questions": [
+            "¿Aceptable así o la tarjeta debería ser más compacta?"
+          ],
+          "img": "asset:po-narrow-r2.png",
+          "previous": "asset:po-narrow-r2.png",
+          "before": null,
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2813,
+                "y": 0.1111,
+                "w": 0.6875,
+                "h": 0.0736
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-1",
+              "box": {
+                "x": 0.6875,
+                "y": 0.4889,
+                "w": 0.2734,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-2",
+              "box": {
+                "x": 0.2891,
+                "y": 0.5722,
+                "w": 0.6719,
+                "h": 0.3875
+              }
+            },
+            {
+              "name": "QuantityStepper",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 298,
+              "selector": "[data-slot=\"card\"] [data-slot=\"input\"]",
+              "id": "298-real-3",
+              "box": {
+                "x": 0.7744,
+                "y": 0.775,
+                "w": 0.0547,
+                "h": 0.0444
+              }
+            },
+            {
+              "name": "Texto «Antes: N»",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 307,
+              "selector": "[data-slot=\"card\"] .t-xs-regular",
+              "id": "307-real-4",
+              "box": {
+                "x": 0.7422,
+                "y": 0.8264,
+                "w": 0.2031,
+                "h": 0.025
+              }
+            },
+            {
+              "name": "itemRow · Card, fila 2",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-5",
+              "box": {
+                "x": 0.2891,
+                "y": 0.9819,
+                "w": 0.6719,
+                "h": 0.0181
+              }
+            },
+            {
+              "name": "Barra de guardado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 454,
+              "selector": "form[action=\"?/updateItems\"]",
+              "id": "454-real-6",
+              "box": {
+                "x": 0.2852,
+                "y": 0.8236,
+                "w": 0.6797,
+                "h": 0.1042
+              }
+            },
+            {
+              "name": "Contador de cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 462,
+              "selector": "form[action=\"?/updateItems\"] .t-sm-medium",
+              "id": "462-real-7",
+              "box": {
+                "x": 0.3018,
+                "y": 0.8472,
+                "w": 0.2614,
+                "h": 0.0292
+              }
+            },
+            {
+              "name": "Button · Guardar cambios",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 475,
+              "selector": "form[action=\"?/updateItems\"] button[type=\"submit\"]",
+              "id": "475-real-8",
+              "box": {
+                "x": 0.8036,
+                "y": 0.8507,
+                "w": 0.1446,
+                "h": 0.05
+              }
+            }
+          ],
+          "diff": [
+            {
+              "x": 0.2891,
+              "y": 0.5722,
+              "w": 0.6719,
+              "h": 0.3875
+            },
+            {
+              "x": 0.2891,
+              "y": 0.9819,
+              "w": 0.6719,
+              "h": 0.0181
+            }
+          ],
+          "verdict": "pending"
+        },
+        {
+          "key": "g",
+          "title": "Pre-orden ya cotizada (no editable)",
+          "lead": "PRE-000117, con cotizaciones.",
+          "viewport": "1280 × 720",
+          "route": "/preorders/[id]/products-services",
+          "changedIn": 1,
+          "inherited": true,
+          "roundNote": null,
+          "changes": [
+            "Sin botón de edición; se muestra un texto gris explicando por qué."
+          ],
+          "questions": [
+            "¿Texto suelto, alerta informativa o botón deshabilitado con tooltip?"
+          ],
+          "img": "asset:po-quoted.png",
+          "previous": null,
+          "before": null,
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            },
+            {
+              "name": "Texto «no editable»",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 409,
+              "selector": "main p.t-sm-regular",
+              "id": "409-real-1",
+              "box": {
+                "x": 0.2625,
+                "y": 0.1611,
+                "w": 0.305,
+                "h": 0.0292
+              }
+            },
+            {
+              "name": "TextField · Buscar productos",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 388,
+              "selector": "input[name=\"search\"]",
+              "id": "388-real-2",
+              "box": {
+                "x": 0.75,
+                "y": 0.4611,
+                "w": 0.2188,
+                "h": 0.05
+              }
+            },
+            {
+              "name": "itemRow · Card",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 316,
+              "selector": "[data-slot=\"card\"]",
+              "id": "316-real-3",
+              "box": {
+                "x": 0.2313,
+                "y": 0.6069,
+                "w": 0.7375,
+                "h": 0.1903
+              }
+            },
+            {
+              "name": "Presupuesto",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 436,
+              "selector": "main .bg-secondary",
+              "id": "436-real-4",
+              "box": {
+                "x": 0.2438,
+                "y": 0.8917,
+                "w": 0.5645,
+                "h": 0.0139
+              }
+            },
+            {
+              "name": "Total aproximado",
+              "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+              "line": 443,
+              "selector": "main .bg-accent",
+              "id": "443-real-5",
+              "box": {
+                "x": 0.8395,
+                "y": 0.8306,
+                "w": 0.1292,
+                "h": 0.1111
+              }
+            }
+          ],
+          "diff": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-10-27T22:28:03.551Z",
+          "note": "Primera versión: 7 pantallas capturadas por la skill.",
+          "changed": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g"
+          ],
+          "verdicts": {
+            "a": "approved",
+            "b": "approved",
+            "c": "changes_requested",
+            "d": "changes_requested",
+            "e": "approved",
+            "f": "approved",
+            "g": "approved"
+          },
+          "submission": {
+            "by": "u2",
+            "createdAt": "2026-10-28T01:28:03.551Z",
+            "result": "changes_requested",
+            "approved": 5,
+            "changes": 2,
+            "body": "Buen trabajo. Dos ajustes: la fila editada necesita más contraste y la barra pesa mucho a 720 px de alto."
+          }
+        },
+        {
+          "n": 2,
+          "by": "u1",
+          "createdAt": "2026-10-28T23:28:03.551Z",
+          "note": "Fila editada con fondo primary/5 y borde de 2 px. La barra compacta la propongo para otra tarjeta (respuesta en el comentario de «Desplazamiento»).",
+          "changed": [
+            "c",
+            "d",
+            "e",
+            "f"
+          ],
+          "verdicts": {
+            "a": "approved",
+            "b": "approved",
+            "g": "approved"
+          },
+          "submission": null
+        }
+      ],
+      "summary": {
+        "steps": [
+          {
+            "title": "Editar",
+            "body": "Pulsa «Editar cantidades»; todas las filas pasan a stepper."
+          },
+          {
+            "title": "Ajustar",
+            "body": "Cambia las cantidades en cualquier página o búsqueda."
+          },
+          {
+            "title": "Revisar",
+            "body": "Cada fila cambiada muestra su valor anterior; la barra cuenta los cambios."
+          },
+          {
+            "title": "Guardar",
+            "body": "Un solo «Guardar cambios» envía todo junto."
+          }
+        ],
+        "rules": [
+          "Rango por fila: de 1 hasta la cantidad solicitada.",
+          "Solo sin cotizaciones.",
+          "Requiere permiso para editar pre-órdenes."
+        ]
+      },
+      "notCaptured": [
+        "Guardando: spinner en «Guardar cambios».",
+        "Guardado: toast y salida del modo edición.",
+        "Error: mensaje en rojo dentro de la barra.",
+        "Sin permiso: no aparece el botón."
+      ]
+    },
+    {
+      "id": "QR-0011",
+      "title": "2.ª navegación en las páginas hijas de los módulos",
+      "context": "Compras, Pagos, Proveedores, Citas y Atención",
+      "card": "LIDER-631",
+      "pr": {
+        "number": 870,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/870",
+        "base": "develop",
+        "head": "feature/LIDER-631-module-nav-child-pages",
+        "state": "open",
+        "check": "pending",
+        "commit": "219b087"
+      },
+      "project": "lideris",
+      "module": "Navegación",
+      "author": "u1",
+      "assignees": [
+        "u3"
+      ],
+      "status": "open",
+      "round": 1,
+      "priority": "high",
+      "dueAt": "2026-10-31T05:28:03.551Z",
+      "createdAt": "2026-10-28T22:28:03.551Z",
+      "updatedAt": "2026-10-29T00:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Detalle de pre-orden",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0011-a.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.0792
+              }
+            }
+          ],
+          "changes": [
+            "Se agrega la 2.ª navegación del módulo en la página hija."
+          ],
+          "questions": [],
+          "verdict": "pending"
+        },
+        {
+          "key": "b",
+          "title": "Nueva cotización",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0011-b.svg",
+          "before": "asset:qr-0011-b-base.svg",
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            },
+            {
+              "name": "ModuleNav · NavTabs",
+              "file": "src/lib/components/molecules/navigation/NavTabs.svelte",
+              "line": 18,
+              "selector": "main nav[aria-label]",
+              "id": "18-256-84",
+              "box": {
+                "x": 0.2,
+                "y": 0.1167,
+                "w": 0.7813,
+                "h": 0.0556
+              }
+            }
+          ],
+          "changes": [
+            "Se agrega la 2.ª navegación del módulo en la página hija."
+          ],
+          "questions": [],
+          "verdict": "pending"
+        },
+        {
+          "key": "c",
+          "title": "Detalle de proveedor",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0011-c.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.1222
+              }
+            }
+          ],
+          "changes": [
+            "Se agrega la 2.ª navegación del módulo en la página hija."
+          ],
+          "questions": [],
+          "verdict": "pending"
+        },
+        {
+          "key": "d",
+          "title": "Nuevo proveedor",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0011-d.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.1097
+              }
+            }
+          ],
+          "changes": [
+            "Se agrega la 2.ª navegación del módulo en la página hija."
+          ],
+          "questions": [],
+          "verdict": "pending"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-10-28T22:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "verdicts": {},
+          "submission": null
+        }
+      ],
+      "summary": {
+        "steps": [
+          {
+            "title": "Entrar",
+            "body": "Abre cualquier página hija de un módulo (detalle o formulario)."
+          },
+          {
+            "title": "Navegar",
+            "body": "La 2.ª navegación del módulo sigue visible bajo el encabezado."
+          }
+        ],
+        "rules": [
+          "Aplica a todos los módulos con dos navegaciones."
+        ]
+      },
+      "notCaptured": [
+        "Módulos de Citas y Atención: mismas reglas."
+      ]
+    },
+    {
+      "id": "QR-0010",
+      "title": "Alerta de documentos faltantes del proveedor",
+      "context": "Proveedores · detalle",
+      "card": "LIDER-629",
+      "pr": {
+        "number": 859,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/859",
+        "base": "develop",
+        "head": "feat/LIDER-629-supplier-missing-docs-alert-develop",
+        "state": "open",
+        "check": "failure",
+        "commit": "212e425"
+      },
+      "project": "lideris",
+      "module": "Proveedores",
+      "author": "u5",
+      "assignees": [
+        "u4"
+      ],
+      "status": "changes_requested",
+      "round": 1,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-10-27T01:28:03.551Z",
+      "updatedAt": "2026-10-28T03:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Alerta en el detalle",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/proveedores",
+          "img": "asset:qr-0010-a.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.1222
+              }
+            }
+          ],
+          "changes": [
+            "Nueva alerta cuando faltan documentos."
+          ],
+          "questions": [],
+          "verdict": "changes_requested"
+        },
+        {
+          "key": "b",
+          "title": "Alerta en el listado",
+          "lead": "Compara con develop para ver el cambio.",
+          "viewport": "1280 × 720",
+          "route": "/proveedores",
+          "img": "asset:qr-0010-b.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2625,
+                "y": 0.1111,
+                "w": 0.7125,
+                "h": 0.0861
+              }
+            }
+          ],
+          "changes": [
+            "Nueva alerta cuando faltan documentos."
+          ],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "c",
+          "title": "Documento cargado",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/proveedores",
+          "img": "asset:qr-0010-c.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.1222
+              }
+            }
+          ],
+          "changes": [
+            "Nueva alerta cuando faltan documentos."
+          ],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u5",
+          "createdAt": "2026-10-27T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b",
+            "c"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u4",
+            "createdAt": "2026-10-28T03:28:03.551Z",
+            "result": "changes_requested",
+            "approved": 2,
+            "changes": 1,
+            "body": "La alerta del detalle compite con el encabezado; bajémosla a la tarjeta de documentos."
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0009",
+      "title": "Corrección del director en solicitudes",
+      "context": "Compras · solicitudes",
+      "card": "LIDER-624",
+      "pr": {
+        "number": 855,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/855",
+        "base": "develop",
+        "head": "feat/LIDER-624-requests-director",
+        "state": "open",
+        "check": "pending",
+        "commit": "2106b47"
+      },
+      "project": "lideris",
+      "module": "Compras",
+      "author": "u5",
+      "assignees": [
+        "u3"
+      ],
+      "status": "in_review",
+      "round": 1,
+      "priority": "urgent",
+      "dueAt": "2026-10-28T01:28:03.551Z",
+      "createdAt": "2026-10-26T01:28:03.551Z",
+      "updatedAt": "2026-10-27T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Solicitud con corrección",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0009-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Diálogo de corrección",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0009-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "pending"
+        },
+        {
+          "key": "c",
+          "title": "Historial",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0009-c.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2625,
+                "y": 0.1111,
+                "w": 0.7125,
+                "h": 0.0861
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "pending"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u5",
+          "createdAt": "2026-10-26T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b",
+            "c"
+          ],
+          "verdicts": {},
+          "submission": null
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0008",
+      "title": "Filtros de autorizaciones en el rail",
+      "context": "Autorizaciones · listado",
+      "card": "LIDER-621",
+      "pr": {
+        "number": 850,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/850",
+        "base": "develop",
+        "head": "feat/LIDER-621-authorizations-filters",
+        "state": "open",
+        "check": "success",
+        "commit": "20d5432"
+      },
+      "project": "lideris",
+      "module": "Autorizaciones",
+      "author": "u1",
+      "assignees": [
+        "u4"
+      ],
+      "status": "approved",
+      "round": 2,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-10-23T01:28:03.551Z",
+      "updatedAt": "2026-10-25T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Rail con filtros",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/autorizaciones",
+          "img": "asset:qr-0008-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Filtros aplicados",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/autorizaciones",
+          "img": "asset:qr-0008-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-10-23T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u4",
+            "createdAt": "2026-10-24T01:28:03.551Z",
+            "result": "changes_requested",
+            "approved": 1,
+            "changes": 1,
+            "body": null
+          }
+        },
+        {
+          "n": 2,
+          "by": "u1",
+          "createdAt": "2026-10-24T22:28:03.551Z",
+          "note": "Contador de filtros activos en el botón.",
+          "changed": [
+            "b"
+          ],
+          "verdicts": {
+            "a": "approved",
+            "b": "approved"
+          },
+          "submission": {
+            "by": "u4",
+            "createdAt": "2026-10-25T01:28:03.551Z",
+            "result": "approved",
+            "approved": 2,
+            "changes": 0,
+            "body": null
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0007",
+      "title": "Monto en el diálogo de aprobación",
+      "context": "Pagos · solicitudes de pago",
+      "card": "LIDER-605",
+      "pr": {
+        "number": 830,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/830",
+        "base": "develop",
+        "head": "fix/LIDER-605-approve-dialog-amount",
+        "state": "merged",
+        "check": "success",
+        "commit": "200f7dc"
+      },
+      "project": "lideris",
+      "module": "Pagos",
+      "author": "u1",
+      "assignees": [
+        "u2"
+      ],
+      "status": "closed",
+      "round": 1,
+      "priority": "low",
+      "dueAt": null,
+      "createdAt": "2026-10-19T01:28:03.551Z",
+      "updatedAt": "2026-10-21T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Diálogo de aprobación",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/pagos",
+          "img": "asset:qr-0007-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-10-19T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u2",
+            "createdAt": "2026-10-20T01:28:03.551Z",
+            "result": "approved",
+            "approved": 1,
+            "changes": 0,
+            "body": null
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0013",
+      "title": "Tablero de conversaciones del asistente",
+      "context": "Auralis · tablero",
+      "card": "AUR-88",
+      "pr": {
+        "number": 141,
+        "url": "https://github.com/pangea-soluciones/auralis-admin/pull/141",
+        "base": "develop",
+        "head": "feat/AUR-88-conversations-board",
+        "state": "open",
+        "check": "pending",
+        "commit": "57248e0"
+      },
+      "project": "auralis",
+      "module": "Tablero",
+      "author": "u3",
+      "assignees": [
+        "u2"
+      ],
+      "status": "open",
+      "round": 1,
+      "priority": "medium",
+      "dueAt": "2026-11-01T01:28:03.551Z",
+      "createdAt": "2026-10-28T20:28:03.551Z",
+      "updatedAt": "2026-10-28T20:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Listado de conversaciones",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/tablero",
+          "img": "asset:qr-0013-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "pending"
+        },
+        {
+          "key": "b",
+          "title": "Detalle de conversación",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/tablero",
+          "img": "asset:qr-0013-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "pending"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u3",
+          "createdAt": "2026-10-28T20:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b"
+          ],
+          "verdicts": {},
+          "submission": null
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0006",
+      "title": "Formulario de alta de clínicas",
+      "context": "Auralis · configuración",
+      "card": "AUR-71",
+      "pr": {
+        "number": 132,
+        "url": "https://github.com/pangea-soluciones/auralis-admin/pull/132",
+        "base": "develop",
+        "head": "feat/AUR-71-clinic-form",
+        "state": "merged",
+        "check": "success",
+        "commit": "51949ab"
+      },
+      "project": "auralis",
+      "module": "Configuración",
+      "author": "u3",
+      "assignees": [
+        "u2"
+      ],
+      "status": "approved",
+      "round": 1,
+      "priority": "low",
+      "dueAt": null,
+      "createdAt": "2026-10-15T01:28:03.551Z",
+      "updatedAt": "2026-10-17T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Formulario",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/configuración",
+          "img": "asset:qr-0006-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Confirmación",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/configuración",
+          "img": "asset:qr-0006-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u3",
+          "createdAt": "2026-10-15T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u2",
+            "createdAt": "2026-10-17T01:28:03.551Z",
+            "result": "approved",
+            "approved": 2,
+            "changes": 0,
+            "body": null
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0005",
+      "title": "Filtros del listado de proveedores",
+      "context": "Proveedores · filtros del listado de proveedores",
+      "card": "LIDER-571",
+      "pr": {
+        "number": 802,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/802",
+        "base": "develop",
+        "head": "feat/LIDER-571",
+        "state": "merged",
+        "check": "success",
+        "commit": "1efa9cb"
+      },
+      "project": "lideris",
+      "module": "Proveedores",
+      "author": "u5",
+      "assignees": [
+        "u3"
+      ],
+      "status": "closed",
+      "round": 2,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-10-11T01:28:03.551Z",
+      "updatedAt": "2026-10-14T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Proveedores · vista 1",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/proveedores",
+          "img": "asset:qr-0005-a.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2625,
+                "y": 0.1111,
+                "w": 0.7125,
+                "h": 0.0861
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Proveedores · vista 2",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/proveedores",
+          "img": "asset:qr-0005-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u5",
+          "createdAt": "2026-10-11T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u3",
+            "createdAt": "2026-10-12T01:28:03.551Z",
+            "result": "changes_requested",
+            "approved": 1,
+            "changes": 1,
+            "body": "Un ajuste de espaciado en la primera vista."
+          }
+        },
+        {
+          "n": 2,
+          "by": "u5",
+          "createdAt": "2026-10-13T01:28:03.551Z",
+          "note": "Espaciado corregido.",
+          "changed": [
+            "a"
+          ],
+          "verdicts": {
+            "b": "approved"
+          },
+          "submission": {
+            "by": "u3",
+            "result": "approved",
+            "approved": 2,
+            "changes": 0,
+            "body": null,
+            "createdAt": "2026-10-14T01:28:03.551Z"
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0004",
+      "title": "Agenda semanal de citas",
+      "context": "Citas · agenda semanal de citas",
+      "card": "LIDER-548",
+      "pr": {
+        "number": 795,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/795",
+        "base": "develop",
+        "head": "feat/LIDER-548",
+        "state": "merged",
+        "check": "success",
+        "commit": "1eb5646"
+      },
+      "project": "lideris",
+      "module": "Citas",
+      "author": "u1",
+      "assignees": [
+        "u4"
+      ],
+      "status": "closed",
+      "round": 1,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-10-07T01:28:03.551Z",
+      "updatedAt": "2026-10-08T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Citas · vista 1",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/citas",
+          "img": "asset:qr-0004-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Citas · vista 2",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/citas",
+          "img": "asset:qr-0004-b.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "c",
+          "title": "Citas · vista 3",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/citas",
+          "img": "asset:qr-0004-c.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-10-07T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b",
+            "c"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u4",
+            "result": "approved",
+            "approved": 3,
+            "changes": 0,
+            "body": null,
+            "createdAt": "2026-10-08T01:28:03.551Z"
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0003",
+      "title": "Detalle de la orden de compra",
+      "context": "Compras · detalle de la orden de compra",
+      "card": "LIDER-540",
+      "pr": {
+        "number": 781,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/781",
+        "base": "develop",
+        "head": "feat/LIDER-540",
+        "state": "merged",
+        "check": "success",
+        "commit": "1e2af3e"
+      },
+      "project": "lideris",
+      "module": "Compras",
+      "author": "u5",
+      "assignees": [
+        "u2"
+      ],
+      "status": "closed",
+      "round": 2,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-10-02T01:28:03.551Z",
+      "updatedAt": "2026-10-05T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Compras · vista 1",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/compras",
+          "img": "asset:qr-0003-a.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 2,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.225,
+                "y": 0.1111,
+                "w": 0.75,
+                "h": 0.1556
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u5",
+          "createdAt": "2026-10-02T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u2",
+            "createdAt": "2026-10-03T01:28:03.551Z",
+            "result": "changes_requested",
+            "approved": 0,
+            "changes": 1,
+            "body": "Un ajuste de espaciado en la primera vista."
+          }
+        },
+        {
+          "n": 2,
+          "by": "u5",
+          "createdAt": "2026-10-04T01:28:03.551Z",
+          "note": "Espaciado corregido.",
+          "changed": [
+            "a"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u2",
+            "result": "approved",
+            "approved": 1,
+            "changes": 0,
+            "body": null,
+            "createdAt": "2026-10-05T01:28:03.551Z"
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0002",
+      "title": "Caja menor: registro de gastos",
+      "context": "Caja menor · caja menor: registro de gastos",
+      "card": "LIDER-546",
+      "pr": {
+        "number": 770,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/770",
+        "base": "develop",
+        "head": "feat/LIDER-546",
+        "state": "open",
+        "check": "success",
+        "commit": "1dbe2dc"
+      },
+      "project": "lideris",
+      "module": "Caja menor",
+      "author": "u1",
+      "assignees": [
+        "u3"
+      ],
+      "status": "approved",
+      "round": 1,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-09-26T01:28:03.551Z",
+      "updatedAt": "2026-09-27T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Caja menor · vista 1",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/caja menor",
+          "img": "asset:qr-0002-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        },
+        {
+          "key": "b",
+          "title": "Caja menor · vista 2",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/caja menor",
+          "img": "asset:qr-0002-b.png",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-real-0",
+              "box": {
+                "x": 0.2625,
+                "y": 0.1111,
+                "w": 0.7125,
+                "h": 0.0861
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u1",
+          "createdAt": "2026-09-26T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a",
+            "b"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u3",
+            "result": "approved",
+            "approved": 2,
+            "changes": 0,
+            "body": null,
+            "createdAt": "2026-09-27T01:28:03.551Z"
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    },
+    {
+      "id": "QR-0001",
+      "title": "Listado de bancos",
+      "context": "Pagos · listado de bancos",
+      "card": "LIDER-485",
+      "pr": {
+        "number": 742,
+        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/742",
+        "base": "develop",
+        "head": "feat/LIDER-485",
+        "state": "merged",
+        "check": "success",
+        "commit": "1ca94ca"
+      },
+      "project": "lideris",
+      "module": "Pagos",
+      "author": "u5",
+      "assignees": [
+        "u4"
+      ],
+      "status": "closed",
+      "round": 1,
+      "priority": "medium",
+      "dueAt": null,
+      "createdAt": "2026-09-18T01:28:03.551Z",
+      "updatedAt": "2026-09-19T01:28:03.551Z",
+      "screens": [
+        {
+          "key": "a",
+          "title": "Pagos · vista 1",
+          "lead": "Pantalla nueva.",
+          "viewport": "1280 × 720",
+          "route": "/pagos",
+          "img": "asset:qr-0001-a.svg",
+          "before": null,
+          "previous": null,
+          "changedIn": 1,
+          "inherited": false,
+          "roundNote": null,
+          "diff": [],
+          "elements": [
+            {
+              "name": "PageHeader",
+              "file": "src/lib/components/molecules/headers/PageHeader.svelte",
+              "line": 24,
+              "selector": "main header",
+              "id": "24-256-20",
+              "box": {
+                "x": 0.2,
+                "y": 0.0278,
+                "w": 0.7813,
+                "h": 0.0667
+              }
+            }
+          ],
+          "changes": [],
+          "questions": [],
+          "verdict": "approved"
+        }
+      ],
+      "rounds": [
+        {
+          "n": 1,
+          "by": "u5",
+          "createdAt": "2026-09-18T01:28:03.551Z",
+          "note": null,
+          "changed": [
+            "a"
+          ],
+          "verdicts": {},
+          "submission": {
+            "by": "u4",
+            "result": "approved",
+            "approved": 1,
+            "changes": 0,
+            "body": null,
+            "createdAt": "2026-09-19T01:28:03.551Z"
+          }
+        }
+      ],
+      "summary": {
+        "steps": [],
+        "rules": []
+      },
+      "notCaptured": []
+    }
+  ],
+  "comments": [
+    {
+      "id": "c1",
+      "review": "QR-0012",
+      "screen": "c",
+      "round": 1,
+      "author": "u2",
+      "createdAt": "2026-10-28T01:16:03.551Z",
+      "body": "El anillo primary/60 se pierde con brillo alto. Probemos un fondo primary/5 en la fila editada, además del borde.",
+      "anchor": {
+        "x": 0.6,
+        "y": 0.683
+      },
+      "el": {
+        "name": "itemRow · Card",
+        "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+        "line": 316,
+        "selector": "[data-slot=\"card\"]"
+      },
+      "resolved": false,
+      "followUp": null,
+      "replies": [
+        {
+          "id": "r1",
+          "author": "u1",
+          "createdAt": "2026-10-28T23:27:03.551Z",
+          "body": "Hecho en la ronda 2: fondo primary/5 y borde de 2 px."
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "review": "QR-0012",
+      "screen": "d",
+      "round": 1,
+      "author": "u2",
+      "createdAt": "2026-10-28T01:20:03.551Z",
+      "body": "A 720 px la barra se come mucho alto. ¿La bajamos a una sola línea con el contador a la izquierda?",
+      "anchor": {
+        "x": 0.6,
+        "y": 0.876
+      },
+      "el": {
+        "name": "Barra de guardado",
+        "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+        "line": 454,
+        "selector": "form[action=\"?/updateItems\"]"
+      },
+      "resolved": false,
+      "followUp": null,
+      "replies": [
+        {
+          "id": "r2",
+          "author": "u1",
+          "createdAt": "2026-10-28T23:27:03.551Z",
+          "body": "La barra es la misma en todas las pantallas de edición; propongo hacerla en otra tarjeta para no frenar esta."
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "review": "QR-0012",
+      "screen": "a",
+      "round": 1,
+      "author": "u2",
+      "createdAt": "2026-10-28T00:58:03.551Z",
+      "body": "Botón correcto. Variante outline está bien junto al buscador.",
+      "anchor": {
+        "x": 0.9,
+        "y": 0.486
+      },
+      "el": {
+        "name": "Button · Editar cantidades",
+        "file": "src/lib/components/organisms/preorders/detail/PreOrderProductsTab.svelte",
+        "line": 400,
+        "selector": "button:has(svg.lucide-pencil)"
+      },
+      "resolved": true,
+      "followUp": "resolved",
+      "replies": []
+    },
+    {
+      "id": "c4",
+      "review": "QR-0010",
+      "screen": "a",
+      "round": 1,
+      "author": "u4",
+      "createdAt": "2026-10-28T02:28:03.551Z",
+      "body": "@Laura la alerta compite con el encabezado. ¿La llevamos a la tarjeta de documentos?",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.15
+      },
+      "el": null,
+      "resolved": false,
+      "followUp": null,
+      "replies": []
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n1",
+      "user": "u2",
+      "screen": null,
+      "comment": null,
+      "type": "round_uploaded",
+      "actor": "u1",
+      "review": "QR-0012",
+      "text": "Kevin Martínez subió la ronda 2 de QR-0012: 4 pantallas cambiaron",
+      "createdAt": "2026-10-28T23:28:03.551Z",
+      "readAt": null
+    },
+    {
+      "id": "n2",
+      "user": "u2",
+      "screen": "d",
+      "comment": "c2",
+      "type": "reply",
+      "actor": "u1",
+      "review": "QR-0012",
+      "text": "Kevin Martínez respondió tu comentario en «Desplazamiento a 1280 × 720»",
+      "createdAt": "2026-10-28T23:27:03.551Z",
+      "readAt": null
+    },
+    {
+      "id": "n3",
+      "user": "u2",
+      "screen": null,
+      "comment": null,
+      "type": "review_assigned",
+      "actor": null,
+      "review": "QR-0013",
+      "text": "Te asignaron QR-0013 · Tablero de conversaciones del asistente",
+      "createdAt": "2026-10-28T20:28:03.551Z",
+      "readAt": null
+    },
+    {
+      "id": "n4",
+      "user": "u2",
+      "screen": null,
+      "comment": null,
+      "type": "overdue",
+      "actor": null,
+      "review": "QR-0009",
+      "text": "QR-0009 venció: Andrés Peña tiene la revisión asignada",
+      "createdAt": "2026-10-28T01:28:03.551Z",
+      "readAt": "2026-10-28T05:28:03.551Z"
+    },
+    {
+      "id": "n5",
+      "user": "u2",
+      "screen": "a",
+      "comment": "c4",
+      "type": "mention",
+      "actor": "u4",
+      "review": "QR-0010",
+      "text": "Sofía Vargas te mencionó en QR-0010: «¿La llevamos a la tarjeta de documentos?»",
+      "createdAt": "2026-10-28T02:28:03.551Z",
+      "readAt": "2026-10-28T03:28:03.551Z"
+    },
+    {
+      "id": "n6",
+      "user": "u1",
+      "screen": null,
+      "comment": null,
+      "type": "review_submitted",
+      "actor": "u2",
+      "review": "QR-0012",
+      "text": "Laura Ríos envió la ronda 1 de QR-0012: 5 aprobadas, 2 con ajuste",
+      "createdAt": "2026-10-28T01:28:03.551Z",
+      "readAt": "2026-10-28T22:28:03.551Z"
+    },
+    {
+      "id": "n7",
+      "user": "u1",
+      "screen": null,
+      "comment": null,
+      "type": "review_assigned",
+      "actor": null,
+      "review": "QR-0011",
+      "text": "QR-0011 quedó asignada a Andrés Peña (regla por módulo)",
+      "createdAt": "2026-10-28T22:28:03.551Z",
+      "readAt": null
+    },
+    {
+      "id": "n8",
+      "user": "u3",
+      "screen": null,
+      "comment": null,
+      "type": "overdue",
+      "actor": null,
+      "review": "QR-0009",
+      "text": "QR-0009 venció hace 1 día",
+      "createdAt": "2026-10-28T01:28:03.551Z",
+      "readAt": null
+    },
+    {
+      "id": "n9",
+      "user": "u3",
+      "screen": null,
+      "comment": null,
+      "type": "review_assigned",
+      "actor": null,
+      "review": "QR-0011",
+      "text": "Te asignaron QR-0011 · 2.ª navegación en las páginas hijas",
+      "createdAt": "2026-10-28T22:28:03.551Z",
+      "readAt": null
+    }
+  ],
+  "activity": [
+    {
+      "id": "a1",
+      "type": "round_uploaded",
+      "actor": "u1",
+      "review": "QR-0012",
+      "text": "subió la ronda 2 desde la skill (4 pantallas cambiaron)",
+      "createdAt": "2026-10-28T23:28:03.551Z"
+    },
+    {
+      "id": "a2",
+      "type": "comment_replied",
+      "actor": "u1",
+      "review": "QR-0012",
+      "text": "respondió 2 comentarios de la ronda 1",
+      "createdAt": "2026-10-28T23:27:03.551Z"
+    },
+    {
+      "id": "a3",
+      "type": "review_submitted",
+      "actor": "u2",
+      "review": "QR-0012",
+      "text": "envió la ronda 1: 5 aprobadas, 2 con ajuste",
+      "createdAt": "2026-10-28T01:28:03.551Z"
+    },
+    {
+      "id": "a4",
+      "type": "review_assigned",
+      "actor": "u2",
+      "review": "QR-0012",
+      "text": "quedó asignada por la regla de módulo /preorders/*",
+      "createdAt": "2026-10-27T22:29:03.551Z"
+    },
+    {
+      "id": "a5",
+      "type": "review_published",
+      "actor": "u1",
+      "review": "QR-0012",
+      "text": "publicó la revisión (7 pantallas) desde la skill",
+      "createdAt": "2026-10-27T22:28:03.551Z"
+    },
+    {
+      "id": "a6",
+      "type": "review_published",
+      "actor": "u1",
+      "review": "QR-0011",
+      "text": "publicó la revisión (4 pantallas) desde la skill",
+      "createdAt": "2026-10-28T22:28:03.551Z"
+    },
+    {
+      "id": "a7",
+      "type": "review_submitted",
+      "actor": "u4",
+      "review": "QR-0010",
+      "text": "envió la revisión con 1 ajuste",
+      "createdAt": "2026-10-28T03:28:03.551Z"
+    },
+    {
+      "id": "a8",
+      "type": "review_published",
+      "actor": "u3",
+      "review": "QR-0013",
+      "text": "publicó la revisión (2 pantallas) desde la skill",
+      "createdAt": "2026-10-28T20:28:03.551Z"
+    }
+  ],
+  "audit": [
+    {
+      "id": "au1",
+      "type": "user_invited",
+      "actor": "u2",
+      "target": "mariana@ejemplo.co",
+      "text": "invitó a mariana@ejemplo.co como diseñadora en Lideris",
+      "createdAt": "2026-10-29T00:28:03.551Z"
+    },
+    {
+      "id": "au2",
+      "type": "token_created",
+      "actor": "u1",
+      "target": "qa_pat_7f3a",
+      "text": "creó el token «MacBook · Lideris»",
+      "createdAt": "2026-10-17T01:28:03.551Z"
+    },
+    {
+      "id": "au3",
+      "type": "role_changed",
+      "actor": "u7",
+      "target": "u2",
+      "text": "cambió el rol de Laura Ríos a admin de la organización",
+      "createdAt": "2026-10-09T01:28:03.551Z"
+    },
+    {
+      "id": "au5",
+      "type": "project_updated",
+      "actor": "u7",
+      "target": "lideris",
+      "text": "cambió la asignación de Lideris a «por módulo»",
+      "createdAt": "2026-09-29T01:28:03.551Z"
+    },
+    {
+      "id": "au4",
+      "type": "user_deactivated",
+      "actor": "u7",
+      "target": "u8",
+      "text": "desactivó a Julián Ospina",
+      "createdAt": "2026-08-30T01:28:03.551Z"
+    }
+  ]
+}

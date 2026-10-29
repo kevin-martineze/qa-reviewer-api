@@ -40,6 +40,26 @@ Se validan con Joi al arrancar (`src/config/env.ts`): si falta algo obligatorio,
 | `JOBS_ENABLED`                                                                                                  | `true`                  | `false` apaga worker y jobs (pruebas, réplicas solo HTTP) |
 | `RETENTION_DAYS`                                                                                                | `90`                    | Días que se conservan las capturas de revisiones cerradas |
 
+## Semilla de demo
+
+`seed/demo/` trae los mismos datos que el mock de la web: `data.json` (forma del contrato) y `assets/` (capturas anonimizadas y escenas SVG). Se regenera desde la web con `pnpm seed:export` en `qa-reviewer`; así ambos modos muestran lo mismo y las e2e sirven contra los dos.
+
+Al cargar (`SEED=demo` o `pnpm seed`), `src/seed/demo-seed.ts`:
+
+1. Borra la base y las capturas bajo `projects/`.
+2. Corre todas las fechas en `ahora − exportedAt` (`shiftDates`): «hace 2 h» y «vence mañana» siguen siendo ciertos.
+3. Guarda las contraseñas con Argon2id y los tokens de invitación, recuperación y skill como SHA-256, igual que en producción.
+4. Sube cada captura a su clave del storage y lleva el contador `QR-` hasta la revisión más alta.
+
+| Dato de prueba                     | Valor                                                                                         |
+| ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| Contraseña de todas las cuentas    | `demo1234`                                                                                    |
+| Invitaciones                       | `/invite/invite-valid-0001`, `invite-expired-0001`, `invite-used-0001`, `invite-revoked-0001` |
+| Recuperación                       | `/recover/recover-valid-0001`, `recover-expired-0001`, `recover-used-0001`                    |
+| Token de la skill (Kevin, Lideris) | `qa_pat_7f3a_demo_t1`                                                                         |
+
+`pnpm seed` no corre con `NODE_ENV=production` ni con `MONGO_URI=memory`.
+
 ## Primer arranque en producción
 
 1. Configura las variables (al menos `MONGO_URI`, `PUBLIC_WEB_URL`, `PUBLIC_API_URL`, el storage y `STORAGE_SECRET` si es local).

@@ -11,7 +11,7 @@ Se usa recursión solo cuando la estructura es un árbol y su profundidad está 
 | `countFiles` (`shared/storage/local.storage.ts`) | Carpetas del storage local        | Un árbol de directorios es recursivo por definición | La ruta de una clave: 6 niveles                                    | Implementado    |
 | `canonicalJson` (idempotencia)                   | El body del request               | JSON anidado; se ordenan las claves en cada nivel   | Joi rechaza el body antes si no cumple el esquema (máx. 4 niveles) | En construcción |
 | `matchRoute` (asignación por módulo)             | Patrón y ruta segmento a segmento | `*` y `**` se resuelven probando sufijos            | Segmentos de una ruta (≤ 20) con memo                              | En construcción |
-| `shiftDates` (semilla de demo)                   | El JSON de la demo                | Mueve todas las fechas sin conocer la forma         | Datos propios del repo                                             | En construcción |
+| `shiftDates` (`src/seed/shift-dates.ts`)         | El JSON de la demo                | Mueve todas las fechas sin conocer la forma         | Datos propios del repo                                             | Implementado    |
 
 `countFiles`: O(n) en archivos. Se usa al borrar un prefijo para informar cuántas capturas se eliminaron.
 

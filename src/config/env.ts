@@ -10,7 +10,7 @@ export interface Env {
   SEED: '' | 'demo';
   /** URL pública del frontend: links de correos, PR y tarjetas. */
   PUBLIC_WEB_URL: string;
-  /** URL pública de este API: la usa el storage local para firmar URLs. */
+  /** URL pública de este API: la usa el storage local para firmar URLs. Por defecto, `http://localhost:<PORT>`. */
   PUBLIC_API_URL: string;
   CORS_ORIGINS: string;
   SESSION_TTL_DAYS: number;
@@ -60,7 +60,10 @@ export const envSchema = Joi.object<Env>({
     .required(),
   SEED: notInProduction(Joi.string().valid('', 'demo')).default(''),
   PUBLIC_WEB_URL: Joi.string().uri().default('http://localhost:5173'),
-  PUBLIC_API_URL: Joi.string().uri().default('http://localhost:3000'),
+  PUBLIC_API_URL: Joi.string()
+    .uri()
+    .empty('')
+    .default((env: { PORT: number }) => `http://localhost:${env.PORT}`),
   CORS_ORIGINS: Joi.string().allow('').default(''),
   SESSION_TTL_DAYS: Joi.number().integer().min(1).max(30).default(7),
 

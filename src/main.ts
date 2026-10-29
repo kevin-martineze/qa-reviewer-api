@@ -57,7 +57,9 @@ async function bootstrap(): Promise<void> {
   }
 
   await app.listen(env.PORT, '0.0.0.0');
-  logger.log(`API en ${env.PUBLIC_API_URL} · documentación en ${env.PUBLIC_API_URL}/docs`);
+  logger.log(
+    `API escuchando en el puerto ${env.PORT} · URL pública ${env.PUBLIC_API_URL} · documentación en ${env.PUBLIC_API_URL}/docs`,
+  );
 }
 
 bootstrap().catch((error: unknown) => {

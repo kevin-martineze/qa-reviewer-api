@@ -27,7 +27,7 @@ Se validan con Joi al arrancar (`src/config/env.ts`): si falta algo obligatorio,
 | `MONGO_URI`                                                                                                     | —                       | Obligatoria. `memory` = Mongo en memoria                  |
 | `SEED`                                                                                                          | vacío                   | `demo` borra la base y carga la demo al arrancar          |
 | `PUBLIC_WEB_URL`                                                                                                | `http://localhost:5173` | Links en correos, PR y tarjetas; origen CORS por defecto  |
-| `PUBLIC_API_URL`                                                                                                | `http://localhost:3000` | Base de las URLs firmadas del storage local               |
+| `PUBLIC_API_URL`                                                                                                | `http://localhost:PORT` | Base de las URLs firmadas del storage local               |
 | `CORS_ORIGINS`                                                                                                  | vacío                   | Orígenes extra separados por coma                         |
 | `SESSION_TTL_DAYS`                                                                                              | `7`                     | Vencimiento deslizante de la sesión                       |
 | `STORAGE_DRIVER`                                                                                                | `local`                 | `local` o `s3`                                            |

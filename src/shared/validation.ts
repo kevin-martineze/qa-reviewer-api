@@ -31,3 +31,13 @@ export const id = Joi.string().trim().min(1).max(64);
 export const page = Joi.number().integer().min(1).default(1);
 export const limit = Joi.number().integer().min(1).max(100).default(20);
 export const membership = Joi.object({ projectId: id.required(), role: projectRole.required() });
+
+/** Slug de proyecto (ADR 0010): minúsculas, números y guiones; no cambia. */
+export const projectSlug = Joi.string()
+  .trim()
+  .lowercase()
+  .min(2)
+  .max(40)
+  .pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'slug');
+export const projectName = Joi.string().trim().min(1).max(80);
+export const userStatus = Joi.string().valid('active', 'inactive');

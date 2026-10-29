@@ -139,7 +139,7 @@ docs/                       documentación del API
 | 1    | Base: configuración, errores, OpenAPI, permisos, storage, correo, outbox                 | Hecho     |
 | 2    | Sesión, cuenta, recuperación e invitaciones                                              | Hecho     |
 | 3    | Semilla de demo compartida con el mock de la web                                         | Hecho     |
-| 4    | Organización, usuarios, auditoría, proyectos y miembros                                  | Pendiente |
+| 4    | Organización, usuarios, auditoría, proyectos y miembros                                  | Hecho     |
 | 5    | Revisiones y endpoints de la skill: manifiesto, idempotencia, rondas, asignación, plazos | Pendiente |
 | 6    | Feedback: veredictos, envío, comentarios, menciones; notificaciones, tokens, métricas    | Pendiente |
 | 7    | Integraciones (GitHub, Plane, correo), webhook y jobs (plazos, borradores, retención)    | Pendiente |

@@ -36,7 +36,15 @@ export class AuditService {
     private readonly clock: ClockService,
   ) {}
 
-  async log(type: AuditType, actor: string, target: string, text: string): Promise<void> {
-    await this.audit.create({ type, actor, target, text, createdAt: this.clock.now() });
+  async log(
+    type: AuditType,
+    actor: string,
+    target: string,
+    text: string,
+    session?: ClientSession,
+  ): Promise<void> {
+    await this.audit.create([{ type, actor, target, text, createdAt: this.clock.now() }], {
+      session,
+    });
   }
 }

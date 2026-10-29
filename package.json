@@ -100,10 +100,22 @@
           "tsconfig": "tsconfig.json",
           "isolatedModules": true
         }
+      ],
+      "^.+/cookie@2[^/]*/node_modules/cookie/.+\\.js$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "allowJs": true
+          },
+          "isolatedModules": true
+        }
       ]
     },
     "testEnvironment": "node",
     "maxWorkers": 1,
-    "testTimeout": 30000
+    "testTimeout": 30000,
+    "transformIgnorePatterns": [
+      "^(?!.*/cookie@2[^/]*/).*/node_modules/"
+    ]
   }
 }

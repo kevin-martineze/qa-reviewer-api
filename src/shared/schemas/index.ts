@@ -1,5 +1,6 @@
 import { ApiTokenDoc, ApiTokenSchema } from './api-token.schema';
 import { CommentDoc, CommentSchema } from './comment.schema';
+import { DeviceDoc, DeviceSchema, RateLimitDoc, RateLimitSchema } from './device.schema';
 import { InvitationDoc, InvitationSchema, RecoveryDoc, RecoverySchema } from './invitation.schema';
 import { ActivityDoc, ActivitySchema, AuditDoc, AuditSchema } from './log.schema';
 import { NotificationDoc, NotificationSchema } from './notification.schema';
@@ -12,6 +13,7 @@ import { CredentialDoc, CredentialSchema, UserDoc, UserSchema } from './user.sch
 
 export * from './api-token.schema';
 export * from './comment.schema';
+export * from './device.schema';
 export * from './invitation.schema';
 export * from './log.schema';
 export * from './notification.schema';
@@ -36,6 +38,8 @@ export const MODELS = [
   { name: ReviewDoc.name, schema: ReviewSchema },
   { name: CounterDoc.name, schema: CounterSchema },
   { name: CommentDoc.name, schema: CommentSchema },
+  { name: DeviceDoc.name, schema: DeviceSchema },
+  { name: RateLimitDoc.name, schema: RateLimitSchema },
   { name: NotificationDoc.name, schema: NotificationSchema },
   { name: ActivityDoc.name, schema: ActivitySchema },
   { name: AuditDoc.name, schema: AuditSchema },

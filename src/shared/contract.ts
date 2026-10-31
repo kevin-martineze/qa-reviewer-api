@@ -359,6 +359,50 @@ export interface CreatedToken {
   secret: string;
 }
 
+/* ── Login de la skill por navegador (device flow, RFC 8628) ─────────── */
+
+export type DeviceStatus = 'pending' | 'approved' | 'denied' | 'expired';
+
+/** Equipo desde el que la skill pide acceso. Lo informa la skill: es texto, no prueba nada. */
+export interface DeviceClient {
+  name: string;
+  version: string;
+  hostname: string;
+}
+
+export interface DeviceRequest {
+  /** `ABCD-EFGH`, el código que la terminal muestra a la persona. */
+  userCode: string;
+  status: DeviceStatus;
+  expiresAt: string;
+  client: DeviceClient;
+  /** `owner/repo` del remoto de git donde corre la skill. */
+  repo: string | null;
+  /** Proyecto con ese repo en el que la persona puede publicar (`tokens:own`). */
+  suggestedProjectId: string | null;
+}
+
+/** `POST /skill/device`: lo que la skill muestra y con qué sondea. */
+export interface DeviceAuthorization {
+  /** Secreto de la skill para sondear; el API guarda su SHA-256. */
+  deviceCode: string;
+  userCode: string;
+  verificationUri: string;
+  verificationUriComplete: string;
+  /** Segundos de vida del código. */
+  expiresIn: number;
+  /** Segundos mínimos entre sondeos. */
+  interval: number;
+}
+
+/** `POST /skill/device/token` aprobado: se entrega una sola vez. */
+export interface DeviceGrant {
+  secret: string;
+  token: ApiToken;
+  project: { id: string; name: string };
+  user: { id: string; name: string; email: string };
+}
+
 /* ── Métricas ────────────────────────────────────────────────────────── */
 
 export interface ReportFilters {

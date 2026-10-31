@@ -2,7 +2,7 @@
 // Cada clase implementa su interfaz del contrato, así TypeScript avisa si se desalinean.
 import type * as C from '../contract';
 
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiSchema } from '@nestjs/swagger';
 
 const ORG_ROLES = ['owner', 'admin', 'member'];
 const PROJECT_ROLES = ['project_admin', 'design_lead', 'designer', 'developer', 'viewer'];
@@ -369,6 +369,59 @@ export class ApiTokenDto implements C.ApiToken {
 export class CreatedTokenDto implements C.CreatedToken {
   @ApiProperty({ type: ApiTokenDto }) token: ApiTokenDto;
   @ApiProperty({ example: 'qa_pat_…', description: 'Solo se entrega una vez' }) secret: string;
+}
+
+/* ── Login de la skill por navegador ──────────────────────────────── */
+
+@ApiSchema({ name: 'DeviceClient' })
+export class DeviceClientDto implements C.DeviceClient {
+  @ApiProperty({ example: 'design-review' }) name: string;
+  @ApiProperty({ example: '0.1.0' }) version: string;
+  @ApiProperty({ example: 'macbook-kevin' }) hostname: string;
+}
+
+@ApiSchema({ name: 'DeviceRequest' })
+export class DeviceRequestDto implements C.DeviceRequest {
+  @ApiProperty({ example: 'ABCD-EFGH' }) userCode: string;
+  @ApiProperty({ enum: ['pending', 'approved', 'denied', 'expired'], enumName: 'DeviceStatus' })
+  status: C.DeviceStatus;
+  @ApiProperty({ format: 'date-time' }) expiresAt: string;
+  @ApiProperty({ type: DeviceClientDto }) client: DeviceClientDto;
+  @ApiProperty({ type: String, nullable: true, example: 'estudio-norte/lideris-v2' })
+  repo: string | null;
+  @ApiProperty({ type: String, nullable: true }) suggestedProjectId: string | null;
+}
+
+@ApiSchema({ name: 'DeviceAuthorization' })
+export class DeviceAuthorizationDto implements C.DeviceAuthorization {
+  @ApiProperty({ description: 'Secreto de la skill para sondear' }) deviceCode: string;
+  @ApiProperty({ example: 'ABCD-EFGH' }) userCode: string;
+  @ApiProperty({ example: 'http://localhost:5173/device' }) verificationUri: string;
+  @ApiProperty({ example: 'http://localhost:5173/device?code=ABCD-EFGH' })
+  verificationUriComplete: string;
+  @ApiProperty({ example: 600 }) expiresIn: number;
+  @ApiProperty({ example: 5 }) interval: number;
+}
+
+@ApiSchema({ name: 'DeviceProject' })
+class DeviceProjectDto {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+}
+
+@ApiSchema({ name: 'DeviceUser' })
+class DeviceUserDto {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+  @ApiProperty() email: string;
+}
+
+@ApiSchema({ name: 'DeviceGrant' })
+export class DeviceGrantDto implements C.DeviceGrant {
+  @ApiProperty({ example: 'qa_pat_…', description: 'Solo se entrega una vez' }) secret: string;
+  @ApiProperty({ type: ApiTokenDto }) token: ApiTokenDto;
+  @ApiProperty({ type: DeviceProjectDto }) project: DeviceProjectDto;
+  @ApiProperty({ type: DeviceUserDto }) user: DeviceUserDto;
 }
 
 /* ── Métricas ─────────────────────────────────────────────────────── */

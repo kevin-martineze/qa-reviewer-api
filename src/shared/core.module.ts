@@ -22,6 +22,7 @@ import { S3Storage } from './storage/s3.storage';
 import { StorageController } from './storage/storage.controller';
 import { STORAGE } from './storage/storage.port';
 import { ClockService } from './util/clock.service';
+import { RateLimitService } from './util/rate-limit.service';
 import { SerialService } from './util/serial.service';
 import { TransactionService } from './util/transaction.service';
 
@@ -33,6 +34,7 @@ const SHARED: Provider[] = [
   AuditService,
   NotifyService,
   OutboxService,
+  RateLimitService,
   SerialService,
   TransactionService,
 ];

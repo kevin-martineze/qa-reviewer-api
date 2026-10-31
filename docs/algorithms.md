@@ -71,6 +71,15 @@ El texto del comentario se normaliza (minúsculas, sin tildes). Se busca `@` seg
 
 Espera antes del intento n: `min(5 s × 2^(n−1), 30 min)` → 5 s, 10 s, 20 s, 40 s, 80 s… A los 8 intentos fallidos el evento queda `dead`.
 
+## Login de la skill
+
+`modules/device/domain/device-codes.ts`.
+
+- **Código de usuario:** 8 caracteres de un alfabeto de 32 sin 0, O, 1 ni I (32⁸ ≈ 10¹² combinaciones), con `crypto.randomInt`. Se muestra como `ABCD-EFGH`; al buscarlo se pasa a mayúsculas y se quitan guion y espacios. Si choca con uno vigente (índice único), se genera otro.
+- **Estados:** `pending` → `approved` o `denied` desde la web; `approved` → `used` en el sondeo que entrega el token, con `findOneAndUpdate({ _id, status: 'approved' })` en la misma transacción que crea el token. La web ve `used` como `approved`, y un `pending` vencido como `expired`.
+- **Sondeo:** si llega antes de 5 s desde el anterior, `device.slow_down` (el cliente suma 5 s). Primero se revisa si existe, si ya se usó y si venció; después el ritmo, y al final el estado.
+- **Límites de uso:** ventanas fijas en `qa_rate_limits` (`RateLimitService`): `hit` suma con `$inc` y upsert, `reached` solo lee. 10 solicitudes por minuto por IP (hash de la IP) y 20 códigos inexistentes por persona en 10 minutos. Una ventana fija deja pasar hasta el doble en el borde entre dos ventanas; para estos límites alcanza.
+
 ## Seguridad
 
 - **Tokens:** 32 bytes aleatorios en base64url; se guarda el SHA-256. Buscar por hash es una lectura por índice único; un token filtrado de la base no sirve.

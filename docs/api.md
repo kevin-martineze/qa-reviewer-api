@@ -19,28 +19,30 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 
 ## Autenticación
 
-| Cliente | Header                            | Dónde sirve                            |
-| ------- | --------------------------------- | -------------------------------------- |
-| Web     | `Authorization: Bearer qa_sess_…` | Todo el API                            |
-| Skill   | `Authorization: Bearer qa_pat_…`  | Solo endpoints marcados para la skill  |
-| GitHub  | `X-Hub-Signature-256`             | `POST /v1/integrations/github/webhook` |
+| Cliente         | Header                            | Dónde sirve                                                             |
+| --------------- | --------------------------------- | ----------------------------------------------------------------------- |
+| Web             | `Authorization: Bearer qa_sess_…` | Todo el API                                                             |
+| Skill           | `Authorization: Bearer qa_pat_…`  | Solo endpoints marcados para la skill                                   |
+| Skill sin token | Ninguno                           | `POST /skill/device` y `POST /skill/device/token` (login por navegador) |
+| GitHub          | `X-Hub-Signature-256`             | `POST /v1/integrations/github/webhook`                                  |
 
 ## Endpoints por grupo
 
-| Grupo           | Endpoints                                                                                                                                                                                                                                  | Estado          |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- |
-| Salud           | `GET /healthcheck`, `GET /healthcheck/readiness-probe`                                                                                                                                                                                     | Implementado    |
-| Sesión y cuenta | `POST /auth/login`, `/auth/logout`, `/auth/logout-all`, `/auth/recovery`, `GET·POST /auth/recovery/:token`, `GET /invitations/:token`, `POST /invitations/:token/accept`, `GET·PATCH /me`, `PUT /me/password`                              | Implementado    |
-| Storage local   | `GET·PUT /storage/*` (URLs firmadas; solo con `STORAGE_DRIVER=local`)                                                                                                                                                                      | Implementado    |
-| Organización    | `GET /organization`, `GET /users`, `PATCH /users/:id`, `GET·POST /invitations`, `DELETE /invitations/:id`, `GET /audit`                                                                                                                    | Implementado    |
-| Proyectos       | `GET·POST /projects`, `GET·PATCH /projects/:id`, `GET·POST /projects/:id/members`, `PATCH·DELETE /projects/:id/members/:userId`                                                                                                            | Implementado    |
-| Revisiones      | `GET /reviews`, `GET·PATCH /reviews/:id`, `GET /reviews/:id/activity`, `PUT /reviews/:id/assignees`, `POST /reviews/:id/reopen`                                                                                                            | Implementado    |
-| Skill           | `POST /reviews`, `POST /reviews/:id/publish`, `POST /reviews/:id/rounds`, `GET /reviews/:id/feedback`                                                                                                                                      | Implementado    |
-| Feedback        | `PUT /reviews/:id/screens/:key/verdict`, `POST /reviews/:id/submit`, `GET /reviews/:id/comments`, `GET·POST /reviews/:id/screens/:key/comments`, `POST /comments/:id/replies`, `PATCH·DELETE /comments/:id`, `PUT /comments/:id/follow-up` | Implementado    |
-| Notificaciones  | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | Implementado    |
-| Tokens          | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | Implementado    |
-| Métricas        | `GET /reports/overview`                                                                                                                                                                                                                    | Implementado    |
-| Integraciones   | `POST /integrations/github/webhook`                                                                                                                                                                                                        | En construcción |
+| Grupo             | Endpoints                                                                                                                                                                                                                                  | Estado          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- |
+| Salud             | `GET /healthcheck`, `GET /healthcheck/readiness-probe`                                                                                                                                                                                     | Implementado    |
+| Sesión y cuenta   | `POST /auth/login`, `/auth/logout`, `/auth/logout-all`, `/auth/recovery`, `GET·POST /auth/recovery/:token`, `GET /invitations/:token`, `POST /invitations/:token/accept`, `GET·PATCH /me`, `PUT /me/password`                              | Implementado    |
+| Storage local     | `GET·PUT /storage/*` (URLs firmadas; solo con `STORAGE_DRIVER=local`)                                                                                                                                                                      | Implementado    |
+| Organización      | `GET /organization`, `GET /users`, `PATCH /users/:id`, `GET·POST /invitations`, `DELETE /invitations/:id`, `GET /audit`                                                                                                                    | Implementado    |
+| Proyectos         | `GET·POST /projects`, `GET·PATCH /projects/:id`, `GET·POST /projects/:id/members`, `PATCH·DELETE /projects/:id/members/:userId`                                                                                                            | Implementado    |
+| Revisiones        | `GET /reviews`, `GET·PATCH /reviews/:id`, `GET /reviews/:id/activity`, `PUT /reviews/:id/assignees`, `POST /reviews/:id/reopen`                                                                                                            | Implementado    |
+| Skill             | `POST /reviews`, `POST /reviews/:id/publish`, `POST /reviews/:id/rounds`, `GET /reviews/:id/feedback`                                                                                                                                      | Implementado    |
+| Feedback          | `PUT /reviews/:id/screens/:key/verdict`, `POST /reviews/:id/submit`, `GET /reviews/:id/comments`, `GET·POST /reviews/:id/screens/:key/comments`, `POST /comments/:id/replies`, `PATCH·DELETE /comments/:id`, `PUT /comments/:id/follow-up` | Implementado    |
+| Notificaciones    | `GET /notifications`, `GET /notifications/unread-count`, `POST /notifications/:id/read`, `POST /notifications/read-all`, `GET·PUT /me/notification-prefs`                                                                                  | Implementado    |
+| Tokens            | `GET·POST /tokens`, `DELETE /tokens/:id`                                                                                                                                                                                                   | Implementado    |
+| Login de la skill | `POST /skill/device`, `POST /skill/device/token` (públicos), `GET /device/:userCode`, `POST /device/:userCode/approve`, `POST /device/:userCode/deny`                                                                                      | Implementado    |
+| Métricas          | `GET /reports/overview`                                                                                                                                                                                                                    | Implementado    |
+| Integraciones     | `POST /integrations/github/webhook`                                                                                                                                                                                                        | En construcción |
 
 ## Catálogo de claves de error
 
@@ -104,6 +106,13 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | `comments.not_previous_round`                                                  | 409       | Seguimiento de un comentario de la ronda actual                                                           |
 | `notifications.not_found`                                                      | 404       | Notificación inexistente o de otra persona                                                                |
 | `tokens.not_found`                                                             | 404       | Token inexistente, revocado o de otra persona                                                             |
+| `device.not_found`                                                             | 404       | Código de usuario o `deviceCode` inexistente                                                              |
+| `device.pending`                                                               | 400       | La persona todavía no aprueba: seguir sondeando                                                           |
+| `device.slow_down`                                                             | 429       | Sondeo antes de `interval`: sumar 5 s a la espera                                                         |
+| `device.denied`                                                                | 403       | La persona rechazó el acceso, o perdió `tokens:own` antes del sondeo                                      |
+| `device.expired`                                                               | 410       | Pasaron los 10 minutos                                                                                    |
+| `device.used`                                                                  | 409       | El token ya se entregó, o la solicitud ya se aprobó o rechazó                                             |
+| `device.rate_limited`                                                          | 429       | Más de 10 solicitudes por minuto por IP, o 20 códigos inexistentes en 10 minutos                          |
 | `health.unavailable`                                                           | 503       | Mongo o el storage no responden                                                                           |
 
 Las claves de los módulos en construcción se agregan aquí con su endpoint.
@@ -153,6 +162,17 @@ Las claves de los módulos en construcción se agregan aquí con su endpoint.
 - `GET /reports/overview` con `project` exige `reports:view` en ese proyecto; un proyecto que la persona no ve responde 404. Sin `project`, solo owner y admin, sobre todos los proyectos.
 - Cuentan las revisiones publicadas. `from` y `to` (instantes ISO 8601) filtran por la fecha en que la revisión quedó `open`.
 - Las horas se miden desde que la revisión quedó `open`. Ver [algorithms.md](algorithms.md#métricas-implementado).
+
+## Login de la skill por navegador
+
+Device flow del RFC 8628: la persona no copia ningún token.
+
+1. La skill llama `POST /skill/device` (público) con `{ client: { name, version, hostname }, repo }` y recibe `deviceCode`, `userCode` (`ABCD-EFGH`, sin 0/O/1/I), `verificationUriComplete` (`<PUBLIC_WEB_URL>/device?code=…`), `expiresIn: 600` e `interval: 5`.
+2. Abre la URL. La persona inicia sesión, ve el equipo y el repo, elige el proyecto (`suggestedProjectId`: el que tiene ese repo y donde puede publicar) y aprueba con `POST /device/:userCode/approve`. Exige `tokens:own` en el proyecto.
+3. La skill sondea `POST /skill/device/token` cada `interval` segundos. Mientras tanto recibe `device.pending`; si sondea antes de tiempo, `device.slow_down`.
+4. En el primer sondeo después de aprobar se crea el token (misma lógica y auditoría que `POST /tokens`) y se entrega una sola vez: `{ secret, token, project, user }`. Crearlo recién ahí evita guardar el secreto en claro.
+
+Del `deviceCode` y del `userCode` se guarda solo el SHA-256. Aprobar o rechazar no cambia una vez hecho (409 `device.used`). Ver [algorithms.md](algorithms.md#login-de-la-skill).
 
 ## Flujo de la skill
 

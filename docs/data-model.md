@@ -12,25 +12,27 @@ MongoDB, una base por instalación. Todas las colecciones empiezan con `qa_`. Lo
 
 ## Colecciones
 
-| Colección          | Contenido                                                                                        | Índices                                                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `qa_organizations` | Nombre de la organización (una por instalación)                                                  | —                                                                                                                 |
-| `qa_users`         | Nombre, correo, rol de organización, estado, avatar, último acceso, preferencias de correo       | `email` único                                                                                                     |
-| `qa_credentials`   | Hash Argon2id de la contraseña; `_id` = id del usuario                                           | —                                                                                                                 |
-| `qa_sessions`      | Hash del token, usuario, último uso, vencimiento, revocación                                     | `tokenHash` único · `userId` · TTL sobre `expiresAt` (+1 día)                                                     |
-| `qa_api_tokens`    | Hash del token de la skill, prefijo visible, etiqueta, usuario, proyecto, último uso, revocación | `hash` único · `userId`                                                                                           |
-| `qa_projects`      | Configuración del proyecto, límites de captura y cursor del round robin                          | —                                                                                                                 |
-| `qa_members`       | `projectId`, `userId`, rol                                                                       | `projectId + userId` único · `userId`                                                                             |
-| `qa_invitations`   | Hash del token, correo, rol, proyectos iniciales, quién invitó, vencimiento, uso, revocación     | `tokenHash` único · `email`                                                                                       |
-| `qa_recoveries`    | Hash del token, usuario, vencimiento (1 h), uso                                                  | `tokenHash` único                                                                                                 |
-| `qa_reviews`       | La revisión con pantallas, rondas, envíos y la ronda pendiente de publicar (ver abajo)           | `projectId + pr.number` único **solo entre revisiones activas** · `projectId` · `status` · `author` · `updatedAt` |
-| `qa_counters`      | Seriales (`reviews` → `QR-`)                                                                     | —                                                                                                                 |
-| `qa_comments`      | Comentario con ancla, componente, ronda, estado, seguimiento y respuestas embebidas              | `reviewId + screenKey + createdAt`                                                                                |
-| `qa_notifications` | Aviso in-app por persona                                                                         | `userId + createdAt`                                                                                              |
-| `qa_activity`      | Línea de tiempo de cada revisión                                                                 | `review + createdAt`                                                                                              |
-| `qa_audit`         | Registro de la organización                                                                      | `createdAt`                                                                                                       |
-| `qa_outbox`        | Eventos por entregar: estado, intentos, próximo intento, notificadores que ya lo recibieron      | `status + nextAttemptAt`                                                                                          |
-| `qa_idempotency`   | `<usuario>:<Idempotency-Key>` → hash del request y respuesta                                     | TTL 24 h sobre `createdAt`                                                                                        |
+| Colección          | Contenido                                                                                                                                                                                 | Índices                                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `qa_organizations` | Nombre de la organización (una por instalación)                                                                                                                                           | —                                                                                                                 |
+| `qa_users`         | Nombre, correo, rol de organización, estado, avatar, último acceso, preferencias de correo                                                                                                | `email` único                                                                                                     |
+| `qa_credentials`   | Hash Argon2id de la contraseña; `_id` = id del usuario                                                                                                                                    | —                                                                                                                 |
+| `qa_sessions`      | Hash del token, usuario, último uso, vencimiento, revocación                                                                                                                              | `tokenHash` único · `userId` · TTL sobre `expiresAt` (+1 día)                                                     |
+| `qa_api_tokens`    | Hash del token de la skill, prefijo visible, etiqueta, usuario, proyecto, último uso, revocación                                                                                          | `hash` único · `userId`                                                                                           |
+| `qa_projects`      | Configuración del proyecto, límites de captura y cursor del round robin                                                                                                                   | —                                                                                                                 |
+| `qa_members`       | `projectId`, `userId`, rol                                                                                                                                                                | `projectId + userId` único · `userId`                                                                             |
+| `qa_invitations`   | Hash del token, correo, rol, proyectos iniciales, quién invitó, vencimiento, uso, revocación                                                                                              | `tokenHash` único · `email`                                                                                       |
+| `qa_recoveries`    | Hash del token, usuario, vencimiento (1 h), uso                                                                                                                                           | `tokenHash` único                                                                                                 |
+| `qa_reviews`       | La revisión con pantallas, rondas, envíos y la ronda pendiente de publicar (ver abajo)                                                                                                    | `projectId + pr.number` único **solo entre revisiones activas** · `projectId` · `status` · `author` · `updatedAt` |
+| `qa_counters`      | Seriales (`reviews` → `QR-`)                                                                                                                                                              | —                                                                                                                 |
+| `qa_comments`      | Comentario con ancla, componente, ronda, estado, seguimiento y respuestas embebidas                                                                                                       | `reviewId + screenKey + createdAt`                                                                                |
+| `qa_notifications` | Aviso in-app por persona                                                                                                                                                                  | `userId + createdAt`                                                                                              |
+| `qa_activity`      | Línea de tiempo de cada revisión                                                                                                                                                          | `review + createdAt`                                                                                              |
+| `qa_audit`         | Registro de la organización                                                                                                                                                               | `createdAt`                                                                                                       |
+| `qa_outbox`        | Eventos por entregar: estado, intentos, próximo intento, notificadores que ya lo recibieron                                                                                               | `status + nextAttemptAt`                                                                                          |
+| `qa_devices`       | Login de la skill: SHA-256 del `deviceCode` y del `userCode`, cliente, repo, estado (`pending`, `approved`, `denied`, `used`), quién aprobó, proyecto y etiqueta del token, último sondeo | `deviceCodeHash` único · `userCodeHash` único · TTL 1 h sobre `expiresAt`                                         |
+| `qa_rate_limits`   | Contador por clave y ventana fija (`<clave>:<inicio>`)                                                                                                                                    | TTL sobre `expiresAt` (fin de la ventana)                                                                         |
+| `qa_idempotency`   | `<usuario>:<Idempotency-Key>` → hash del request y respuesta                                                                                                                              | TTL 24 h sobre `createdAt`                                                                                        |
 
 ## La revisión por dentro
 
@@ -69,15 +71,17 @@ expired                         webhook (PR cerrado o fusionado): cualquiera act
 
 ## Ciclo de vida
 
-| Dato                                          | Vive                                                     |
-| --------------------------------------------- | -------------------------------------------------------- |
-| Sesión                                        | 7 días desde el último uso; Mongo la borra 1 día después |
-| Enlace de recuperación                        | 1 hora, un uso                                           |
-| Invitación                                    | 7 días, un uso                                           |
-| Borrador sin publicar                         | 24 h; luego `expired` y se borran sus capturas           |
-| Capturas de revisión cerrada                  | `RETENTION_DAYS` (90 por defecto)                        |
-| Entrada de idempotencia                       | 24 h                                                     |
-| Comentarios, veredictos, actividad, auditoría | Siempre                                                  |
+| Dato                                          | Vive                                                               |
+| --------------------------------------------- | ------------------------------------------------------------------ |
+| Sesión                                        | 7 días desde el último uso; Mongo la borra 1 día después           |
+| Enlace de recuperación                        | 1 hora, un uso                                                     |
+| Invitación                                    | 7 días, un uso                                                     |
+| Borrador sin publicar                         | 24 h; luego `expired` y se borran sus capturas                     |
+| Capturas de revisión cerrada                  | `RETENTION_DAYS` (90 por defecto)                                  |
+| Entrada de idempotencia                       | 24 h                                                               |
+| Solicitud de login de la skill                | 10 min para aprobar y recoger el token; Mongo la borra 1 h después |
+| Contador de límite de uso                     | Hasta el fin de su ventana                                         |
+| Comentarios, veredictos, actividad, auditoría | Siempre                                                            |
 
 ## Rutas de objetos en el storage
 

@@ -4,6 +4,7 @@ import type { DynamicModule } from '@nestjs/common';
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { DeviceModule } from './modules/device/device.module';
 import { FeedbackModule } from './modules/feedback/feedback.module';
 import { HealthModule } from './modules/health/health.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
@@ -29,6 +30,7 @@ export class AppModule {
         FeedbackModule,
         NotificationsModule,
         TokensModule,
+        DeviceModule,
         ReportsModule,
       ],
     };

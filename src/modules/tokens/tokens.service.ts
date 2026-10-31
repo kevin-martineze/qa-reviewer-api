@@ -1,6 +1,6 @@
 import type { Principal } from '../../shared/auth/principal';
-import type { ApiToken, CreatedToken } from '../../shared/contract';
-import type { Model } from 'mongoose';
+import type { ApiToken, CreatedToken, SessionUser } from '../../shared/contract';
+import type { ClientSession, Model } from 'mongoose';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -49,28 +49,38 @@ export class TokensService {
     const actor = principal.user;
     const project = await this.projects.findVisible(actor, projectId);
     this.access.assert(actor, 'tokens:own', project._id);
+    const created = await this.tx.run((session) => this.issue(actor, project._id, label, session));
+    return envelope('tokens.created', created);
+  }
 
+  /**
+   * Crea el token y su entrada de auditoría dentro de la transacción del llamador. Los permisos
+   * los revisa quien llama (POST /tokens o el login por navegador).
+   */
+  async issue(
+    actor: SessionUser,
+    projectId: string,
+    label: string,
+    session: ClientSession,
+  ): Promise<CreatedToken> {
     const secret = `${PAT_PREFIX}${randomHex(16)}`;
     const prefix = secret.slice(0, PREFIX_LENGTH);
-    const doc = await this.tx.run(async (session) => {
-      const [created] = await this.tokens.create(
-        [
-          {
-            hash: sha256(secret),
-            prefix,
-            label,
-            userId: actor.id,
-            projectId: project._id,
-            createdAt: this.clock.now(),
-          },
-        ],
-        { session },
-      );
-      if (!created) throw new Error('No se creó el token');
-      await this.audit.log('token_created', actor.id, prefix, `creó el token «${label}»`, session);
-      return created.toObject();
-    });
-    return envelope('tokens.created', { token: toApiToken(doc), secret });
+    const [created] = await this.tokens.create(
+      [
+        {
+          hash: sha256(secret),
+          prefix,
+          label,
+          userId: actor.id,
+          projectId,
+          createdAt: this.clock.now(),
+        },
+      ],
+      { session },
+    );
+    if (!created) throw new Error('No se creó el token');
+    await this.audit.log('token_created', actor.id, prefix, `creó el token «${label}»`, session);
+    return { token: toApiToken(created.toObject()), secret };
   }
 
   async revoke(principal: Principal, id: string): Promise<void> {

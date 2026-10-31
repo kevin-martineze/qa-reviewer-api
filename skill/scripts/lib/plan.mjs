@@ -22,7 +22,11 @@ function checkStep(step, where, errors) {
     }
   } else if (kind === 'fill' || kind === 'press') {
     const field = kind === 'fill' ? 'value' : 'key';
-    if (!isObject(value) || typeof value.selector !== 'string' || typeof value[field] !== 'string') {
+    if (
+      !isObject(value) ||
+      typeof value.selector !== 'string' ||
+      typeof value[field] !== 'string'
+    ) {
       errors.push(`${where}: ${kind} lleva { selector, ${field} }.`);
     }
   } else if (typeof value !== 'string' || !value.trim()) {

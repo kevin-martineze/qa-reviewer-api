@@ -1,22 +1,23 @@
 ---
 name: design-review
-description: Captura las pantallas que tocó la feature (antes y después), redacta qué mirar en cada una y las sube a QA Reviewer para que diseño las revise. Úsala cuando el dev pida /design-review, «mandar a revisión de diseño» o subir una ronda nueva tras corregir. Con «status» trae el feedback de diseño a la sesión.
+description: Captura las pantallas que tocó la feature (antes y después), redacta qué mirar en cada una y las sube a QA Reviewer para que diseño las revise. Úsala cuando el dev pida /design-review o /qa-reviewer:design-review, «mandar a revisión de diseño» o subir una ronda nueva tras corregir. Con «status» trae el feedback de diseño a la sesión.
 ---
 
 # /design-review
 
 Sube a QA Reviewer las pantallas que cambió la feature para que diseño (UI/UX) las revise antes de producción. Cada vez que se corre sobre el mismo PR nace una ronda nueva, y solo se revisa lo que cambió.
 
-- `/design-review`: captura, redacta y publica (ronda 1 o ronda siguiente).
-- `/design-review status`: trae el feedback de la última ronda enviada.
+- `/qa-reviewer:design-review`: captura, redacta y publica (ronda 1 o ronda siguiente).
+- `/qa-reviewer:design-review status`: trae el feedback de la última ronda enviada.
 
-Los scripts viven junto a este archivo, en `scripts/`. `SKILL_DIR` es la carpeta de esta skill.
+La skill viene en el plugin `qa-reviewer`. Sus scripts están en `${CLAUDE_PLUGIN_ROOT}/scripts/`, y Claude Code instala sus dependencias (Playwright y pngjs) al instalar el plugin.
 
 ## Antes de empezar
 
-1. Necesitas `QA_REVIEWER_TOKEN` (token `qa_pat_…` del proyecto, se crea en QA Reviewer → Cuenta → Tokens) y `QA_REVIEWER_API_URL`. Si falta alguno, pídelo y no sigas.
-2. `.design-review/` va en el `.gitignore` del repo del producto: guarda la sesión del navegador (`auth.json`) y capturas. Si no está, agrégalo antes de capturar.
-3. Las dependencias de la skill se instalan una vez: `cd SKILL_DIR && pnpm install && pnpm exec playwright install chromium`.
+1. **API:** `${user_config.api_url}`. Se configura al instalar el plugin (`/plugin configure qa-reviewer@qa-reviewer` la cambia), y la variable `QA_REVIEWER_API_URL` tiene prioridad.
+2. **Cuenta:** no hace falta copiar ningún token. La primera vez, el cliente del API abre QA Reviewer en el navegador. El dev entra con su cuenta, elige el proyecto y aprueba. La skill guarda el token en `~/.config/qa-reviewer/credentials.json` (ver «API»). En CI, `QA_REVIEWER_TOKEN` lo reemplaza.
+3. **`.gitignore`:** `.design-review/` va en el `.gitignore` del repo del producto, porque guarda la sesión del navegador (`auth.json`) y las capturas. Si no está, agrégalo antes de capturar.
+4. **Chromium**, una vez por equipo: `node "${CLAUDE_PLUGIN_ROOT}/node_modules/playwright/cli.js" install chromium`. Si falta `node_modules` (plugin cargado con `--plugin-dir`), antes corre `cd "${CLAUDE_PLUGIN_ROOT}" && npm ci`.
 
 ## Flujo
 
@@ -76,7 +77,7 @@ Escribe `.design-review/plan.json`:
 Si la app pide login y no hay `.design-review/auth.json`:
 
 ```bash
-node SKILL_DIR/scripts/capture.mjs login http://localhost:5173/login --state .design-review/auth.json
+node "${CLAUDE_PLUGIN_ROOT}/scripts/capture.mjs" login http://localhost:5173/login --state .design-review/auth.json
 ```
 
 Se abre un navegador: el dev inicia sesión con un usuario de prueba y cierra la pestaña.
@@ -84,7 +85,7 @@ Se abre un navegador: el dev inicia sesión con un usuario de prueba y cierra la
 ### 5. Capturar
 
 ```bash
-node SKILL_DIR/scripts/capture.mjs run .design-review/plan.json
+node "${CLAUDE_PLUGIN_ROOT}/scripts/capture.mjs" run .design-review/plan.json
 ```
 
 Deja `.design-review/out/captures/*.png` y `.design-review/out/screens.json`: por pantalla, `key`, `route`, `viewport`, `captures` (archivo, bytes y SHA-256), `elements` con su caja y, si hay ronda anterior en `.design-review/last/`, `diff` con las zonas que cambiaron.
@@ -111,12 +112,12 @@ Escribe `.design-review/manifest.json` (manifiesto v1). Toma de `screens.json` l
 Ver «API». Si la publicación salió bien, guarda las capturas como ronda anterior:
 
 ```bash
-node SKILL_DIR/scripts/capture.mjs keep .design-review
+node "${CLAUDE_PLUGIN_ROOT}/scripts/capture.mjs" keep .design-review
 ```
 
 Muestra al dev el enlace de la revisión, la ronda y cuántas pantallas cambiaron.
 
-## /design-review status
+## /qa-reviewer:design-review status
 
 Ver «API». Muestra el texto tal cual y propone el plan de corrección por pantalla, con archivo y línea. No corrijas sin que el dev lo pida.
 

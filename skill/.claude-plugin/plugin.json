@@ -1,0 +1,18 @@
+{
+  "name": "qa-reviewer",
+  "displayName": "QA Reviewer",
+  "version": "0.1.0",
+  "description": "Skill /qa-reviewer:design-review: captura las pantallas que tocó la feature y las sube a QA Reviewer para que diseño las revise. Entra con tu cuenta de QA Reviewer desde el navegador.",
+  "author": { "name": "Kevin Martínez E" },
+  "repository": "https://github.com/kevin-martineze/qa-reviewer-api",
+  "keywords": ["design-review", "qa", "ui", "playwright", "screenshots"],
+  "userConfig": {
+    "api_url": {
+      "type": "string",
+      "title": "URL del API de QA Reviewer",
+      "description": "La del API de tu organización, p. ej. https://api.qa-reviewer.tu-empresa.com. En local: http://localhost:3000.",
+      "required": true,
+      "default": "http://localhost:3000"
+    }
+  }
+}

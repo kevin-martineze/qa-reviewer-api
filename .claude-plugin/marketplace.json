@@ -1,0 +1,12 @@
+{
+  "name": "qa-reviewer",
+  "description": "Plugins de QA Reviewer para Claude Code.",
+  "owner": { "name": "Kevin Martínez E" },
+  "plugins": [
+    {
+      "name": "qa-reviewer",
+      "source": "./skill",
+      "description": "Manda a revisión de diseño las pantallas que cambió tu feature y trae el feedback a la sesión."
+    }
+  ]
+}

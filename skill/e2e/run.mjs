@@ -215,21 +215,31 @@ async function main() {
   const creds = JSON.parse(await login);
   check(creds.project.id === PROJECT, `credenciales guardadas para ${creds.project.name}`);
   const project = JSON.parse(await run('client.mjs', ['project'], { env, cwd: work }));
-  check(project.maskSelectors.length > 0, `proyecto con ${project.maskSelectors.length} selectores a tapar`);
+  check(
+    project.maskSelectors.length > 0,
+    `proyecto con ${project.maskSelectors.length} selectores a tapar`,
+  );
 
   step('Ronda 1: captura y publicación');
   await productSession(join(work, 'auth.json'));
   const r1 = await captureRound(work, project, 1);
   check(r1.screens.screens.length === 3, '3 pantallas capturadas');
   const pub1 = JSON.parse(
-    await run('client.mjs', ['submit', r1.manifestPath, '--captures', join(work, 'out', 'captures')], {
-      env,
-      cwd: work,
-    }),
+    await run(
+      'client.mjs',
+      ['submit', r1.manifestPath, '--captures', join(work, 'out', 'captures')],
+      {
+        env,
+        cwd: work,
+      },
+    ),
   );
   check(pub1.created && pub1.round === 1, `revisión ${pub1.id} creada en la ronda 1`);
   check(pub1.uploaded === 3, 'se subieron las 3 capturas');
-  check(r1.screens.maskSelectors.includes('#email'), 'la captura tapó el correo del perfil (#email)');
+  check(
+    r1.screens.maskSelectors.includes('#email'),
+    'la captura tapó el correo del perfil (#email)',
+  );
   await run('capture.mjs', ['keep', work]);
 
   step('Diseño revisa: aprueba notificaciones y pide ajustes en el perfil');
@@ -256,7 +266,12 @@ async function main() {
     body: {
       body: commentBody,
       anchor: { x: anchorX, y: anchorY },
-      el: { name: element.name, file: element.file, line: element.line, selector: element.selector },
+      el: {
+        name: element.name,
+        file: element.file,
+        line: element.line,
+        selector: element.selector,
+      },
     },
   });
   const submitted = await api('POST', `/reviews/${pub1.id}/submit`, {
@@ -278,10 +293,14 @@ async function main() {
     `la captura marca zonas de cambio solo en el perfil (${changedLocally.join(', ')})`,
   );
   const pub2 = JSON.parse(
-    await run('client.mjs', ['submit', r2.manifestPath, '--captures', join(work, 'out', 'captures')], {
-      env,
-      cwd: work,
-    }),
+    await run(
+      'client.mjs',
+      ['submit', r2.manifestPath, '--captures', join(work, 'out', 'captures')],
+      {
+        env,
+        cwd: work,
+      },
+    ),
   );
   check(!pub2.created && pub2.id === pub1.id && pub2.round === 2, `ronda 2 de ${pub2.id}`);
   check(

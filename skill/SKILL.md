@@ -91,7 +91,8 @@ node "${CLAUDE_PLUGIN_ROOT}/scripts/capture.mjs" run .design-review/plan.json
 Deja `.design-review/out/captures/*.png` y `.design-review/out/screens.json`: por pantalla, `key`, `route`, `viewport`, `captures` (archivo, bytes y SHA-256), `elements` con su caja y, si hay ronda anterior en `.design-review/last/`, `diff` con las zonas que cambiaron.
 
 - Revisa los avisos (`!`): un componente que no se ve suele ser un selector mal escrito o un paso que falta.
-- **Mira cada captura** (léela como imagen) antes de seguir: que muestre el estado pedido, que no haya datos reales sin tapar y que no salga un error o un spinner. Si algo está mal, corrige el plan y vuelve a capturar.
+- **Mira cada captura** (léela como imagen) antes de seguir: que muestre el estado pedido y que no salga un error ni un spinner. Si algo está mal, corrige el plan y vuelve a capturar.
+- **Busca datos personales sin tapar** en cada captura: correos, nombres, documentos, teléfonos, direcciones o montos de clientes. Los selectores del proyecto no cubren todo. Por ejemplo, `input[type="email"]` no tapa un correo en un input sin ese tipo o en un texto suelto. Si encuentras uno, agrega su selector a `maskSelectors` en el plan (por ejemplo `#email` o `[data-user-email]`) y vuelve a capturar. No publiques hasta que ninguna captura muestre un dato así.
 
 ### 6. Redactar el manifiesto
 

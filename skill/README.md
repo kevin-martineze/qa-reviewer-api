@@ -36,11 +36,14 @@ claude plugin validate ./skill           # y `claude plugin validate .` para el 
 
 ## Scripts
 
-| Script                       | Qué hace                                                                                    |
-| ---------------------------- | ------------------------------------------------------------------------------------------- |
-| `scripts/capture.mjs login`  | Abre un navegador para iniciar sesión a mano y guarda la sesión para las capturas.          |
-| `scripts/capture.mjs run`    | Captura las pantallas del plan, tapa lo sensible, mide componentes y compara con la ronda anterior. |
-| `scripts/capture.mjs keep`   | Guarda las capturas publicadas como ronda anterior.                                         |
-| `scripts/client.mjs`         | Habla con el API: configuración del proyecto, publicar y traer el feedback.                 |
+| Script                       | Qué hace                                                                                              |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `scripts/capture.mjs login`  | Abre un navegador para iniciar sesión a mano y guarda la sesión para las capturas.                    |
+| `scripts/capture.mjs run`    | Captura las pantallas del plan, tapa lo sensible, mide componentes y compara con la ronda anterior.   |
+| `scripts/capture.mjs keep`   | Guarda las capturas publicadas como ronda anterior.                                                   |
+| `scripts/client.mjs project` | Trae la configuración del proyecto: selectores a tapar, reglas de diseño y límites.                   |
+| `scripts/client.mjs submit`  | Crea la revisión (o la ronda), sube las capturas y publica.                                           |
+| `scripts/client.mjs status`  | Trae el feedback de la última ronda enviada, en texto.                                                |
+| `scripts/client.mjs login`   | Entra con el navegador (device flow) y guarda el token; `whoami` y `logout` lo consultan y lo borran. |
 
-`npm test` corre las pruebas de `scripts/lib/` (validación del plan y zonas de cambio).
+`npm test` corre las pruebas de `scripts/lib/`: validación del plan, zonas de cambio y el cliente del API (contra un servidor falso, sin red).

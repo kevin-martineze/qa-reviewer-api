@@ -23,7 +23,9 @@ test('tamaños distintos no se comparan', () => {
 });
 
 test('un bloque cambiado sale en fracciones, alineado a la celda', () => {
-  const after = image(128, 64, (x, y) => (x >= 32 && x < 64 && y < 16 ? [0, 0, 0] : [255, 255, 255]));
+  const after = image(128, 64, (x, y) =>
+    x >= 32 && x < 64 && y < 16 ? [0, 0, 0] : [255, 255, 255],
+  );
   assert.deepEqual(changedRegions(image(128, 64), after), [{ x: 0.25, y: 0, w: 0.25, h: 0.25 }]);
 });
 

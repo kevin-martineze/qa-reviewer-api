@@ -49,7 +49,8 @@ async function login(url, statePath) {
   page.on('framenavigated', save);
   await page.waitForEvent('close', { timeout: 0 });
   await browser.close();
-  if (!existsSync(statePath)) fail('No se guardó la sesión: navega al menos una vez antes de cerrar.');
+  if (!existsSync(statePath))
+    fail('No se guardó la sesión: navega al menos una vez antes de cerrar.');
   process.stdout.write(`Sesión guardada en ${statePath}\n`);
 }
 
@@ -176,7 +177,12 @@ async function run(planPath, outDir, previousDir) {
     const afterKey = `${screen.key}.png`;
     const afterPath = join(capturesDir, afterKey);
     try {
-      await shoot(page, plan, { ...screen, url: new URL(screen.path, plan.baseUrl).href }, afterPath);
+      await shoot(
+        page,
+        plan,
+        { ...screen, url: new URL(screen.path, plan.baseUrl).href },
+        afterPath,
+      );
       const png = await readPng(afterPath);
       const elements = await measure(page, screen, png, warnings);
 
@@ -209,7 +215,10 @@ async function run(planPath, outDir, previousDir) {
       screens.push({
         key: screen.key,
         route: screen.route,
-        viewport: { width: png.width, height: screen.fullPage ? png.height : screen.viewport.height },
+        viewport: {
+          width: png.width,
+          height: screen.fullPage ? png.height : screen.viewport.height,
+        },
         captures: { after, before },
         elements,
         ...(diff ? { diff } : {}),

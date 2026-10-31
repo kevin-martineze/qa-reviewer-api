@@ -123,6 +123,53 @@ Ver «API». Muestra el texto tal cual y propone el plan de corrección por pant
 
 ## API
 
-<!-- Sección a cargo del cliente del API (scripts/client.mjs): comandos project, submit y status, errores y reintentos. -->
+Todo pasa por `scripts/client.mjs`. Córrelo siempre con la URL del plugin:
 
-_Pendiente: la escribe quien implementa `scripts/client.mjs`._
+```bash
+export QA_REVIEWER_API_URL="${user_config.api_url}"
+node "${CLAUDE_PLUGIN_ROOT}/scripts/client.mjs" <comando>
+```
+
+La URL es la base, sin `/v1`: el cliente lo agrega. Si la variable ya viene definida, respétala. Los mensajes para el dev salen por stderr; lo que lees tú, por stdout.
+
+| Comando                                                                      | Para qué                                                                           | stdout                                                         |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `project`                                                                    | Paso 2: `maskSelectors`, `designRules`, `limits` y `minSkillVersion` del proyecto. | JSON del proyecto.                                             |
+| `submit .design-review/manifest.json --captures .design-review/out/captures` | Paso 7: crea la revisión (o la ronda), sube las capturas y publica.                | JSON `{ id, round, status, url, changed, uploaded, created }`. |
+| `status [--pr <n> \| --review <id>]`                                         | Feedback de la última ronda enviada. Sin opciones, toma el PR de la rama con `gh`. | Texto listo para mostrar.                                      |
+| `login`                                                                      | Entrar con el navegador. Los otros comandos lo hacen solos si hace falta.          | JSON de la cuenta y el proyecto.                               |
+| `whoami` / `logout`                                                          | Ver o borrar las credenciales de este API en el equipo.                            | JSON / nada.                                                   |
+
+### Cuenta
+
+- Sin credenciales, o con un token revocado, el comando abre QA Reviewer en `/device` y espera la aprobación (hasta 9 min). Dile al dev que apruebe el código que aparece en stderr.
+- Corre esos comandos con un timeout de Bash de 600000 ms. Si se corta igual (`device.waiting`), vuelve a correr el mismo comando: retoma el mismo código, no pide otro.
+- El token queda en `~/.config/qa-reviewer/credentials.json` (permiso 600), uno por URL del API. `QA_REVIEWER_TOKEN` tiene prioridad (CI). Nunca muestres ni copies el token.
+- Sin navegador (SSH): `QA_REVIEWER_NO_BROWSER=1`; el dev abre a mano el enlace de stderr.
+
+### Publicar
+
+- `submit` comprueba antes que cada captura del manifiesto exista en `--captures` con sus bytes y su SHA-256. Si no, `captures.mismatch` y no llama al API: vuelve a capturar o corrige el manifiesto.
+- Si el manifiesto no trae `project`, usa el del token; si trae otro, `manifest.project_mismatch`.
+- Qué crea según el PR:
+  - Sin revisión, o con la anterior cerrada (`closed`): revisión nueva, ronda 1.
+  - Con un borrador tuyo (un `submit` que se cortó antes de publicar): lo reemplaza y sigue.
+  - Con una revisión activa: ronda nueva. Si la ronda actual sigue en revisión, `reviews.stale_status`: espera el envío de diseño.
+- Repetir el mismo `submit` dentro de 10 minutos da la misma respuesta (Idempotency-Key): un reintento tras un corte no duplica nada.
+- La red caída y los 5xx se reintentan solos (3 intentos). Un 4xx no.
+
+### Errores
+
+stderr trae `✗ <clave>: <mensaje>`, a veces seguido de `details` en JSON. Código de salida: 0 bien, 1 error, 2 uso incorrecto, 3 skill desactualizada.
+
+| Clave                             | Qué hacer                                                                                          |
+| --------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `skill.outdated` (código 3)       | Para y pide al dev correr `/plugin update qa-reviewer`.                                            |
+| `network.unreachable`             | El API no responde: revisa la URL (`/plugin configure qa-reviewer@qa-reviewer`) o que esté arriba. |
+| `device.denied`, `device.expired` | El dev rechazó o no aprobó a tiempo: vuelve a correr el comando si quiere seguir.                  |
+| `auth.forbidden`                  | La cuenta no puede crear revisiones en el proyecto: que lo pida a quien administra.                |
+| `manifest.*`, `common.validation` | El manifiesto no cumple el v1 o los límites del proyecto: corrígelo según `details` y repite.      |
+| `captures.mismatch`               | Las capturas en disco no son las del manifiesto: recaptura o corrige.                              |
+| `reviews.stale_status`            | La revisión no admite ronda ahora (en revisión o cerrada): explícalo al dev.                       |
+| `reviews.not_found` (en `status`) | El PR no tiene revisión, o es de un proyecto que el token no ve.                                   |
+| `reviews.missing_uploads`         | Una subida no llegó: repite `submit`.                                                              |

@@ -94,9 +94,19 @@ export function validatePlan(plan) {
       if (!Array.isArray(screen.elements)) {
         errors.push(`${where}.elements: lista de componentes.`);
       } else {
+        // Sin archivo y línea el elemento no le sirve a Claude para ubicar el componente
+        // después, y el API lo rechaza: mejor no listarlo.
         screen.elements.forEach((el, j) => {
-          if (!isObject(el) || typeof el.name !== 'string' || typeof el.selector !== 'string') {
-            errors.push(`${where}.elements[${j}]: lleva al menos { name, selector }.`);
+          const ok =
+            isObject(el) &&
+            typeof el.name === 'string' &&
+            typeof el.selector === 'string' &&
+            typeof el.file === 'string' &&
+            el.file.trim() !== '' &&
+            Number.isInteger(el.line) &&
+            el.line >= 0;
+          if (!ok) {
+            errors.push(`${where}.elements[${j}]: lleva { name, selector, file, line } del diff.`);
           }
         });
       }

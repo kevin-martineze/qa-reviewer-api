@@ -37,6 +37,16 @@ test('pasos con una sola acción y su forma', () => {
   assert.match(errors[1], /exactamente uno/);
 });
 
+test('cada elemento lleva archivo y línea', () => {
+  const elements = [
+    { name: 'Stepper', selector: '[data-qty]', file: 'src/Stepper.svelte', line: 42 },
+    { name: 'Sin archivo', selector: 'table' },
+  ];
+  const errors = validatePlan({ ...plan, screens: [{ ...screen, elements }] });
+  assert.equal(errors.length, 1);
+  assert.match(errors[0], /elements\[1\]/);
+});
+
 test('maskSelectors es obligatorio aunque vaya vacío', () => {
   const { maskSelectors: _omit, ...rest } = plan;
   assert.match(validatePlan(rest)[0], /maskSelectors/);

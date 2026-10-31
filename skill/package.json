@@ -1,0 +1,17 @@
+{
+  "name": "design-review-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Skill /design-review de Claude Code: captura pantallas y las sube a qa-reviewer",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test scripts/lib/*.test.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.64.1",
+    "pngjs": "7.0.0"
+  }
+}

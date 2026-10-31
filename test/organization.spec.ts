@@ -27,7 +27,7 @@ describe('GET /organization y /users', () => {
   it('devuelve la organización envuelta en data', async () => {
     const res = await t.call<Organization>('GET', '/organization', await t.login(DEMO.kevin));
     expect(res.status).toBe(200);
-    expect(res.body.data).toEqual({ id: 'pangea', name: 'Pangea' });
+    expect(res.body.data).toEqual({ id: 'estudio-norte', name: 'Estudio Norte' });
   });
 
   it('lista a todas las personas con la forma del contrato', async () => {

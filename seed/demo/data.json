@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "exportedAt": "2026-10-29T01:28:03.699Z",
+  "exportedAt": "2026-10-31T13:57:21.276Z",
   "password": "demo1234",
   "org": {
-    "id": "pangea",
-    "name": "Pangea"
+    "id": "estudio-norte",
+    "name": "Estudio Norte"
   },
   "users": [
     {
@@ -14,8 +14,8 @@
       "orgRole": "member",
       "status": "active",
       "avatar": "a01",
-      "lastSeenAt": "2026-10-29T01:23:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-31T13:52:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u2",
@@ -24,8 +24,8 @@
       "orgRole": "admin",
       "status": "active",
       "avatar": "a02",
-      "lastSeenAt": "2026-10-29T01:16:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-31T13:45:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u3",
@@ -34,8 +34,8 @@
       "orgRole": "member",
       "status": "active",
       "avatar": "a03",
-      "lastSeenAt": "2026-10-28T22:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-31T10:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u4",
@@ -44,8 +44,8 @@
       "orgRole": "member",
       "status": "active",
       "avatar": "a04",
-      "lastSeenAt": "2026-10-28T01:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-30T13:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u5",
@@ -54,8 +54,8 @@
       "orgRole": "member",
       "status": "active",
       "avatar": "a05",
-      "lastSeenAt": "2026-10-28T23:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-31T11:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u6",
@@ -64,8 +64,8 @@
       "orgRole": "member",
       "status": "active",
       "avatar": "a06",
-      "lastSeenAt": "2026-10-26T01:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-28T13:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u7",
@@ -74,8 +74,8 @@
       "orgRole": "owner",
       "status": "active",
       "avatar": "a07",
-      "lastSeenAt": "2026-10-28T23:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-10-31T11:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     },
     {
       "id": "u8",
@@ -84,15 +84,15 @@
       "orgRole": "member",
       "status": "inactive",
       "avatar": "a08",
-      "lastSeenAt": "2026-08-28T01:28:03.551Z",
-      "createdAt": "2026-07-01T01:28:03.551Z"
+      "lastSeenAt": "2026-08-30T13:57:21.017Z",
+      "createdAt": "2026-07-03T13:57:21.017Z"
     }
   ],
   "projects": [
     {
       "id": "lideris",
       "name": "Lideris",
-      "repo": "pangea-soluciones/lideris-v2",
+      "repo": "estudio-norte/lideris-v2",
       "planeKey": "LIDER",
       "slaDays": 2,
       "strategy": "by_module",
@@ -117,7 +117,7 @@
       "integrations": {
         "github": {
           "connected": true,
-          "repo": "pangea-soluciones/lideris-v2",
+          "repo": "estudio-norte/lideris-v2",
           "checkName": "design-review",
           "commentOnPr": true
         },
@@ -143,7 +143,7 @@
     {
       "id": "auralis",
       "name": "Auralis",
-      "repo": "pangea-soluciones/auralis-admin",
+      "repo": "estudio-norte/auralis-admin",
       "planeKey": "AUR",
       "slaDays": 3,
       "strategy": "round_robin",
@@ -151,7 +151,7 @@
       "integrations": {
         "github": {
           "connected": true,
-          "repo": "pangea-soluciones/auralis-admin",
+          "repo": "estudio-norte/auralis-admin",
           "checkName": "design-review",
           "commentOnPr": false
         },
@@ -243,8 +243,8 @@
           "role": "designer"
         }
       ],
-      "createdAt": "2026-10-29T00:28:03.551Z",
-      "expiresAt": "2026-11-05T00:28:03.551Z",
+      "createdAt": "2026-10-31T12:57:21.017Z",
+      "expiresAt": "2026-11-07T12:57:21.017Z",
       "used": false,
       "revoked": false
     },
@@ -260,8 +260,8 @@
           "role": "viewer"
         }
       ],
-      "createdAt": "2026-10-21T01:28:03.551Z",
-      "expiresAt": "2026-10-28T01:28:03.551Z",
+      "createdAt": "2026-10-23T13:57:21.017Z",
+      "expiresAt": "2026-10-30T13:57:21.017Z",
       "used": false,
       "revoked": false
     },
@@ -277,8 +277,8 @@
           "role": "developer"
         }
       ],
-      "createdAt": "2026-10-26T01:28:03.551Z",
-      "expiresAt": "2026-11-02T01:28:03.551Z",
+      "createdAt": "2026-10-28T13:57:21.017Z",
+      "expiresAt": "2026-11-04T13:57:21.017Z",
       "used": true,
       "revoked": false
     },
@@ -289,8 +289,8 @@
       "inviter": "u2",
       "role": "admin",
       "projects": [],
-      "createdAt": "2026-10-27T01:28:03.551Z",
-      "expiresAt": "2026-11-03T01:28:03.551Z",
+      "createdAt": "2026-10-29T13:57:21.017Z",
+      "expiresAt": "2026-11-05T13:57:21.017Z",
       "used": false,
       "revoked": true
     }
@@ -299,19 +299,19 @@
     {
       "token": "recover-valid-0001",
       "userId": "u1",
-      "expiresAt": "2026-10-29T02:28:03.551Z",
+      "expiresAt": "2026-10-31T14:57:21.017Z",
       "used": false
     },
     {
       "token": "recover-expired-0001",
       "userId": "u2",
-      "expiresAt": "2026-10-29T00:28:03.551Z",
+      "expiresAt": "2026-10-31T12:57:21.017Z",
       "used": false
     },
     {
       "token": "recover-used-0001",
       "userId": "u3",
-      "expiresAt": "2026-10-29T02:28:03.551Z",
+      "expiresAt": "2026-10-31T14:57:21.017Z",
       "used": true
     }
   ],
@@ -322,8 +322,8 @@
       "label": "MacBook · Lideris",
       "prefix": "qa_pat_7f3a",
       "project": "lideris",
-      "createdAt": "2026-10-17T01:28:03.551Z",
-      "lastUsedAt": "2026-10-28T20:28:03.551Z"
+      "createdAt": "2026-10-19T13:57:21.017Z",
+      "lastUsedAt": "2026-10-31T08:57:21.017Z"
     },
     {
       "id": "t2",
@@ -331,7 +331,7 @@
       "label": "MacBook · Auralis",
       "prefix": "qa_pat_c91e",
       "project": "auralis",
-      "createdAt": "2026-09-19T01:28:03.551Z",
+      "createdAt": "2026-09-21T13:57:21.017Z",
       "lastUsedAt": null
     },
     {
@@ -340,8 +340,8 @@
       "label": "Portátil Mateo",
       "prefix": "qa_pat_02bd",
       "project": "lideris",
-      "createdAt": "2026-10-09T01:28:03.551Z",
-      "lastUsedAt": "2026-10-27T01:28:03.551Z"
+      "createdAt": "2026-10-11T13:57:21.017Z",
+      "lastUsedAt": "2026-10-29T13:57:21.017Z"
     }
   ],
   "reviews": [
@@ -352,7 +352,7 @@
       "card": "LIDER-628",
       "pr": {
         "number": 868,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/868",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/868",
         "base": "develop",
         "head": "feature/LIDER-628-pre-order-items-edit-develop",
         "state": "open",
@@ -368,9 +368,9 @@
       "status": "open",
       "round": 2,
       "priority": "medium",
-      "dueAt": "2026-10-29T21:28:03.551Z",
-      "createdAt": "2026-10-27T22:28:03.551Z",
-      "updatedAt": "2026-10-28T23:28:03.551Z",
+      "dueAt": "2026-11-01T09:57:21.017Z",
+      "createdAt": "2026-10-30T10:57:21.017Z",
+      "updatedAt": "2026-10-31T11:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -1330,7 +1330,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-10-27T22:28:03.551Z",
+          "createdAt": "2026-10-30T10:57:21.017Z",
           "note": "Primera versión: 7 pantallas capturadas por la skill.",
           "changed": [
             "a",
@@ -1352,7 +1352,7 @@
           },
           "submission": {
             "by": "u2",
-            "createdAt": "2026-10-28T01:28:03.551Z",
+            "createdAt": "2026-10-30T13:57:21.017Z",
             "result": "changes_requested",
             "approved": 5,
             "changes": 2,
@@ -1362,7 +1362,7 @@
         {
           "n": 2,
           "by": "u1",
-          "createdAt": "2026-10-28T23:28:03.551Z",
+          "createdAt": "2026-10-31T11:57:21.017Z",
           "note": "Fila editada con fondo primary/5 y borde de 2 px. La barra compacta la propongo para otra tarjeta (respuesta en el comentario de «Desplazamiento»).",
           "changed": [
             "c",
@@ -1417,7 +1417,7 @@
       "card": "LIDER-631",
       "pr": {
         "number": 870,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/870",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/870",
         "base": "develop",
         "head": "feature/LIDER-631-module-nav-child-pages",
         "state": "open",
@@ -1433,9 +1433,9 @@
       "status": "open",
       "round": 1,
       "priority": "high",
-      "dueAt": "2026-10-31T05:28:03.551Z",
-      "createdAt": "2026-10-28T22:28:03.551Z",
-      "updatedAt": "2026-10-29T00:28:03.551Z",
+      "dueAt": "2026-11-02T17:57:21.017Z",
+      "createdAt": "2026-10-31T10:57:21.017Z",
+      "updatedAt": "2026-10-31T12:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -1591,7 +1591,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-10-28T22:28:03.551Z",
+          "createdAt": "2026-10-31T10:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -1629,7 +1629,7 @@
       "card": "LIDER-629",
       "pr": {
         "number": 859,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/859",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/859",
         "base": "develop",
         "head": "feat/LIDER-629-supplier-missing-docs-alert-develop",
         "state": "open",
@@ -1646,8 +1646,8 @@
       "round": 1,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-10-27T01:28:03.551Z",
-      "updatedAt": "2026-10-28T03:28:03.551Z",
+      "createdAt": "2026-10-29T13:57:21.017Z",
+      "updatedAt": "2026-10-30T15:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -1756,7 +1756,7 @@
         {
           "n": 1,
           "by": "u5",
-          "createdAt": "2026-10-27T01:28:03.551Z",
+          "createdAt": "2026-10-29T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -1766,7 +1766,7 @@
           "verdicts": {},
           "submission": {
             "by": "u4",
-            "createdAt": "2026-10-28T03:28:03.551Z",
+            "createdAt": "2026-10-30T15:57:21.017Z",
             "result": "changes_requested",
             "approved": 2,
             "changes": 1,
@@ -1787,7 +1787,7 @@
       "card": "LIDER-624",
       "pr": {
         "number": 855,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/855",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/855",
         "base": "develop",
         "head": "feat/LIDER-624-requests-director",
         "state": "open",
@@ -1803,9 +1803,9 @@
       "status": "in_review",
       "round": 1,
       "priority": "urgent",
-      "dueAt": "2026-10-28T01:28:03.551Z",
-      "createdAt": "2026-10-26T01:28:03.551Z",
-      "updatedAt": "2026-10-27T01:28:03.551Z",
+      "dueAt": "2026-10-30T13:57:21.017Z",
+      "createdAt": "2026-10-28T13:57:21.017Z",
+      "updatedAt": "2026-10-29T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -1908,7 +1908,7 @@
         {
           "n": 1,
           "by": "u5",
-          "createdAt": "2026-10-26T01:28:03.551Z",
+          "createdAt": "2026-10-28T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -1932,7 +1932,7 @@
       "card": "LIDER-621",
       "pr": {
         "number": 850,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/850",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/850",
         "base": "develop",
         "head": "feat/LIDER-621-authorizations-filters",
         "state": "open",
@@ -1949,8 +1949,8 @@
       "round": 2,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-10-23T01:28:03.551Z",
-      "updatedAt": "2026-10-25T01:28:03.551Z",
+      "createdAt": "2026-10-25T13:57:21.017Z",
+      "updatedAt": "2026-10-27T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2021,7 +2021,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-10-23T01:28:03.551Z",
+          "createdAt": "2026-10-25T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2030,7 +2030,7 @@
           "verdicts": {},
           "submission": {
             "by": "u4",
-            "createdAt": "2026-10-24T01:28:03.551Z",
+            "createdAt": "2026-10-26T13:57:21.017Z",
             "result": "changes_requested",
             "approved": 1,
             "changes": 1,
@@ -2040,7 +2040,7 @@
         {
           "n": 2,
           "by": "u1",
-          "createdAt": "2026-10-24T22:28:03.551Z",
+          "createdAt": "2026-10-27T10:57:21.017Z",
           "note": "Contador de filtros activos en el botón.",
           "changed": [
             "b"
@@ -2051,7 +2051,7 @@
           },
           "submission": {
             "by": "u4",
-            "createdAt": "2026-10-25T01:28:03.551Z",
+            "createdAt": "2026-10-27T13:57:21.017Z",
             "result": "approved",
             "approved": 2,
             "changes": 0,
@@ -2072,7 +2072,7 @@
       "card": "LIDER-605",
       "pr": {
         "number": 830,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/830",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/830",
         "base": "develop",
         "head": "fix/LIDER-605-approve-dialog-amount",
         "state": "merged",
@@ -2089,8 +2089,8 @@
       "round": 1,
       "priority": "low",
       "dueAt": null,
-      "createdAt": "2026-10-19T01:28:03.551Z",
-      "updatedAt": "2026-10-21T01:28:03.551Z",
+      "createdAt": "2026-10-21T13:57:21.017Z",
+      "updatedAt": "2026-10-23T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2129,7 +2129,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-10-19T01:28:03.551Z",
+          "createdAt": "2026-10-21T13:57:21.017Z",
           "note": null,
           "changed": [
             "a"
@@ -2137,7 +2137,7 @@
           "verdicts": {},
           "submission": {
             "by": "u2",
-            "createdAt": "2026-10-20T01:28:03.551Z",
+            "createdAt": "2026-10-22T13:57:21.017Z",
             "result": "approved",
             "approved": 1,
             "changes": 0,
@@ -2158,7 +2158,7 @@
       "card": "AUR-88",
       "pr": {
         "number": 141,
-        "url": "https://github.com/pangea-soluciones/auralis-admin/pull/141",
+        "url": "https://github.com/estudio-norte/auralis-admin/pull/141",
         "base": "develop",
         "head": "feat/AUR-88-conversations-board",
         "state": "open",
@@ -2174,9 +2174,9 @@
       "status": "open",
       "round": 1,
       "priority": "medium",
-      "dueAt": "2026-11-01T01:28:03.551Z",
-      "createdAt": "2026-10-28T20:28:03.551Z",
-      "updatedAt": "2026-10-28T20:28:03.551Z",
+      "dueAt": "2026-11-03T13:57:21.017Z",
+      "createdAt": "2026-10-31T08:57:21.017Z",
+      "updatedAt": "2026-10-31T08:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2247,7 +2247,7 @@
         {
           "n": 1,
           "by": "u3",
-          "createdAt": "2026-10-28T20:28:03.551Z",
+          "createdAt": "2026-10-31T08:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2270,7 +2270,7 @@
       "card": "AUR-71",
       "pr": {
         "number": 132,
-        "url": "https://github.com/pangea-soluciones/auralis-admin/pull/132",
+        "url": "https://github.com/estudio-norte/auralis-admin/pull/132",
         "base": "develop",
         "head": "feat/AUR-71-clinic-form",
         "state": "merged",
@@ -2287,8 +2287,8 @@
       "round": 1,
       "priority": "low",
       "dueAt": null,
-      "createdAt": "2026-10-15T01:28:03.551Z",
-      "updatedAt": "2026-10-17T01:28:03.551Z",
+      "createdAt": "2026-10-17T13:57:21.017Z",
+      "updatedAt": "2026-10-19T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2359,7 +2359,7 @@
         {
           "n": 1,
           "by": "u3",
-          "createdAt": "2026-10-15T01:28:03.551Z",
+          "createdAt": "2026-10-17T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2368,7 +2368,7 @@
           "verdicts": {},
           "submission": {
             "by": "u2",
-            "createdAt": "2026-10-17T01:28:03.551Z",
+            "createdAt": "2026-10-19T13:57:21.017Z",
             "result": "approved",
             "approved": 2,
             "changes": 0,
@@ -2389,7 +2389,7 @@
       "card": "LIDER-571",
       "pr": {
         "number": 802,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/802",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/802",
         "base": "develop",
         "head": "feat/LIDER-571",
         "state": "merged",
@@ -2406,8 +2406,8 @@
       "round": 2,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-10-11T01:28:03.551Z",
-      "updatedAt": "2026-10-14T01:28:03.551Z",
+      "createdAt": "2026-10-13T13:57:21.017Z",
+      "updatedAt": "2026-10-16T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2478,7 +2478,7 @@
         {
           "n": 1,
           "by": "u5",
-          "createdAt": "2026-10-11T01:28:03.551Z",
+          "createdAt": "2026-10-13T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2487,7 +2487,7 @@
           "verdicts": {},
           "submission": {
             "by": "u3",
-            "createdAt": "2026-10-12T01:28:03.551Z",
+            "createdAt": "2026-10-14T13:57:21.017Z",
             "result": "changes_requested",
             "approved": 1,
             "changes": 1,
@@ -2497,7 +2497,7 @@
         {
           "n": 2,
           "by": "u5",
-          "createdAt": "2026-10-13T01:28:03.551Z",
+          "createdAt": "2026-10-15T13:57:21.017Z",
           "note": "Espaciado corregido.",
           "changed": [
             "a"
@@ -2511,7 +2511,7 @@
             "approved": 2,
             "changes": 0,
             "body": null,
-            "createdAt": "2026-10-14T01:28:03.551Z"
+            "createdAt": "2026-10-16T13:57:21.017Z"
           }
         }
       ],
@@ -2528,7 +2528,7 @@
       "card": "LIDER-548",
       "pr": {
         "number": 795,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/795",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/795",
         "base": "develop",
         "head": "feat/LIDER-548",
         "state": "merged",
@@ -2545,8 +2545,8 @@
       "round": 1,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-10-07T01:28:03.551Z",
-      "updatedAt": "2026-10-08T01:28:03.551Z",
+      "createdAt": "2026-10-09T13:57:21.017Z",
+      "updatedAt": "2026-10-10T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2649,7 +2649,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-10-07T01:28:03.551Z",
+          "createdAt": "2026-10-09T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2663,7 +2663,7 @@
             "approved": 3,
             "changes": 0,
             "body": null,
-            "createdAt": "2026-10-08T01:28:03.551Z"
+            "createdAt": "2026-10-10T13:57:21.017Z"
           }
         }
       ],
@@ -2680,7 +2680,7 @@
       "card": "LIDER-540",
       "pr": {
         "number": 781,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/781",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/781",
         "base": "develop",
         "head": "feat/LIDER-540",
         "state": "merged",
@@ -2697,8 +2697,8 @@
       "round": 2,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-10-02T01:28:03.551Z",
-      "updatedAt": "2026-10-05T01:28:03.551Z",
+      "createdAt": "2026-10-04T13:57:21.017Z",
+      "updatedAt": "2026-10-07T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2737,7 +2737,7 @@
         {
           "n": 1,
           "by": "u5",
-          "createdAt": "2026-10-02T01:28:03.551Z",
+          "createdAt": "2026-10-04T13:57:21.017Z",
           "note": null,
           "changed": [
             "a"
@@ -2745,7 +2745,7 @@
           "verdicts": {},
           "submission": {
             "by": "u2",
-            "createdAt": "2026-10-03T01:28:03.551Z",
+            "createdAt": "2026-10-05T13:57:21.017Z",
             "result": "changes_requested",
             "approved": 0,
             "changes": 1,
@@ -2755,7 +2755,7 @@
         {
           "n": 2,
           "by": "u5",
-          "createdAt": "2026-10-04T01:28:03.551Z",
+          "createdAt": "2026-10-06T13:57:21.017Z",
           "note": "Espaciado corregido.",
           "changed": [
             "a"
@@ -2767,7 +2767,7 @@
             "approved": 1,
             "changes": 0,
             "body": null,
-            "createdAt": "2026-10-05T01:28:03.551Z"
+            "createdAt": "2026-10-07T13:57:21.017Z"
           }
         }
       ],
@@ -2784,7 +2784,7 @@
       "card": "LIDER-546",
       "pr": {
         "number": 770,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/770",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/770",
         "base": "develop",
         "head": "feat/LIDER-546",
         "state": "open",
@@ -2801,8 +2801,8 @@
       "round": 1,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-09-26T01:28:03.551Z",
-      "updatedAt": "2026-09-27T01:28:03.551Z",
+      "createdAt": "2026-09-28T13:57:21.017Z",
+      "updatedAt": "2026-09-29T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2873,7 +2873,7 @@
         {
           "n": 1,
           "by": "u1",
-          "createdAt": "2026-09-26T01:28:03.551Z",
+          "createdAt": "2026-09-28T13:57:21.017Z",
           "note": null,
           "changed": [
             "a",
@@ -2886,7 +2886,7 @@
             "approved": 2,
             "changes": 0,
             "body": null,
-            "createdAt": "2026-09-27T01:28:03.551Z"
+            "createdAt": "2026-09-29T13:57:21.017Z"
           }
         }
       ],
@@ -2903,7 +2903,7 @@
       "card": "LIDER-485",
       "pr": {
         "number": 742,
-        "url": "https://github.com/pangea-soluciones/lideris-v2/pull/742",
+        "url": "https://github.com/estudio-norte/lideris-v2/pull/742",
         "base": "develop",
         "head": "feat/LIDER-485",
         "state": "merged",
@@ -2920,8 +2920,8 @@
       "round": 1,
       "priority": "medium",
       "dueAt": null,
-      "createdAt": "2026-09-18T01:28:03.551Z",
-      "updatedAt": "2026-09-19T01:28:03.551Z",
+      "createdAt": "2026-09-20T13:57:21.017Z",
+      "updatedAt": "2026-09-21T13:57:21.017Z",
       "screens": [
         {
           "key": "a",
@@ -2960,7 +2960,7 @@
         {
           "n": 1,
           "by": "u5",
-          "createdAt": "2026-09-18T01:28:03.551Z",
+          "createdAt": "2026-09-20T13:57:21.017Z",
           "note": null,
           "changed": [
             "a"
@@ -2972,7 +2972,7 @@
             "approved": 1,
             "changes": 0,
             "body": null,
-            "createdAt": "2026-09-19T01:28:03.551Z"
+            "createdAt": "2026-09-21T13:57:21.017Z"
           }
         }
       ],
@@ -2990,7 +2990,7 @@
       "screen": "c",
       "round": 1,
       "author": "u2",
-      "createdAt": "2026-10-28T01:16:03.551Z",
+      "createdAt": "2026-10-30T13:45:21.017Z",
       "body": "El anillo primary/60 se pierde con brillo alto. Probemos un fondo primary/5 en la fila editada, además del borde.",
       "anchor": {
         "x": 0.6,
@@ -3008,7 +3008,7 @@
         {
           "id": "r1",
           "author": "u1",
-          "createdAt": "2026-10-28T23:27:03.551Z",
+          "createdAt": "2026-10-31T11:56:21.017Z",
           "body": "Hecho en la ronda 2: fondo primary/5 y borde de 2 px."
         }
       ]
@@ -3019,7 +3019,7 @@
       "screen": "d",
       "round": 1,
       "author": "u2",
-      "createdAt": "2026-10-28T01:20:03.551Z",
+      "createdAt": "2026-10-30T13:49:21.017Z",
       "body": "A 720 px la barra se come mucho alto. ¿La bajamos a una sola línea con el contador a la izquierda?",
       "anchor": {
         "x": 0.6,
@@ -3037,7 +3037,7 @@
         {
           "id": "r2",
           "author": "u1",
-          "createdAt": "2026-10-28T23:27:03.551Z",
+          "createdAt": "2026-10-31T11:56:21.017Z",
           "body": "La barra es la misma en todas las pantallas de edición; propongo hacerla en otra tarjeta para no frenar esta."
         }
       ]
@@ -3048,7 +3048,7 @@
       "screen": "a",
       "round": 1,
       "author": "u2",
-      "createdAt": "2026-10-28T00:58:03.551Z",
+      "createdAt": "2026-10-30T13:27:21.017Z",
       "body": "Botón correcto. Variante outline está bien junto al buscador.",
       "anchor": {
         "x": 0.9,
@@ -3070,7 +3070,7 @@
       "screen": "a",
       "round": 1,
       "author": "u4",
-      "createdAt": "2026-10-28T02:28:03.551Z",
+      "createdAt": "2026-10-30T14:57:21.017Z",
       "body": "@Laura la alerta compite con el encabezado. ¿La llevamos a la tarjeta de documentos?",
       "anchor": {
         "x": 0.5,
@@ -3092,7 +3092,7 @@
       "actor": "u1",
       "review": "QR-0012",
       "text": "Kevin Martínez subió la ronda 2 de QR-0012: 4 pantallas cambiaron",
-      "createdAt": "2026-10-28T23:28:03.551Z",
+      "createdAt": "2026-10-31T11:57:21.017Z",
       "readAt": null
     },
     {
@@ -3104,7 +3104,7 @@
       "actor": "u1",
       "review": "QR-0012",
       "text": "Kevin Martínez respondió tu comentario en «Desplazamiento a 1280 × 720»",
-      "createdAt": "2026-10-28T23:27:03.551Z",
+      "createdAt": "2026-10-31T11:56:21.017Z",
       "readAt": null
     },
     {
@@ -3116,7 +3116,7 @@
       "actor": null,
       "review": "QR-0013",
       "text": "Te asignaron QR-0013 · Tablero de conversaciones del asistente",
-      "createdAt": "2026-10-28T20:28:03.551Z",
+      "createdAt": "2026-10-31T08:57:21.017Z",
       "readAt": null
     },
     {
@@ -3128,8 +3128,8 @@
       "actor": null,
       "review": "QR-0009",
       "text": "QR-0009 venció: Andrés Peña tiene la revisión asignada",
-      "createdAt": "2026-10-28T01:28:03.551Z",
-      "readAt": "2026-10-28T05:28:03.551Z"
+      "createdAt": "2026-10-30T13:57:21.017Z",
+      "readAt": "2026-10-30T17:57:21.017Z"
     },
     {
       "id": "n5",
@@ -3140,8 +3140,8 @@
       "actor": "u4",
       "review": "QR-0010",
       "text": "Sofía Vargas te mencionó en QR-0010: «¿La llevamos a la tarjeta de documentos?»",
-      "createdAt": "2026-10-28T02:28:03.551Z",
-      "readAt": "2026-10-28T03:28:03.551Z"
+      "createdAt": "2026-10-30T14:57:21.017Z",
+      "readAt": "2026-10-30T15:57:21.017Z"
     },
     {
       "id": "n6",
@@ -3152,8 +3152,8 @@
       "actor": "u2",
       "review": "QR-0012",
       "text": "Laura Ríos envió la ronda 1 de QR-0012: 5 aprobadas, 2 con ajuste",
-      "createdAt": "2026-10-28T01:28:03.551Z",
-      "readAt": "2026-10-28T22:28:03.551Z"
+      "createdAt": "2026-10-30T13:57:21.017Z",
+      "readAt": "2026-10-31T10:57:21.017Z"
     },
     {
       "id": "n7",
@@ -3164,7 +3164,7 @@
       "actor": null,
       "review": "QR-0011",
       "text": "QR-0011 quedó asignada a Andrés Peña (regla por módulo)",
-      "createdAt": "2026-10-28T22:28:03.551Z",
+      "createdAt": "2026-10-31T10:57:21.017Z",
       "readAt": null
     },
     {
@@ -3176,7 +3176,7 @@
       "actor": null,
       "review": "QR-0009",
       "text": "QR-0009 venció hace 1 día",
-      "createdAt": "2026-10-28T01:28:03.551Z",
+      "createdAt": "2026-10-30T13:57:21.017Z",
       "readAt": null
     },
     {
@@ -3188,7 +3188,7 @@
       "actor": null,
       "review": "QR-0011",
       "text": "Te asignaron QR-0011 · 2.ª navegación en las páginas hijas",
-      "createdAt": "2026-10-28T22:28:03.551Z",
+      "createdAt": "2026-10-31T10:57:21.017Z",
       "readAt": null
     }
   ],
@@ -3199,7 +3199,7 @@
       "actor": "u1",
       "review": "QR-0012",
       "text": "subió la ronda 2 desde la skill (4 pantallas cambiaron)",
-      "createdAt": "2026-10-28T23:28:03.551Z"
+      "createdAt": "2026-10-31T11:57:21.017Z"
     },
     {
       "id": "a2",
@@ -3207,7 +3207,7 @@
       "actor": "u1",
       "review": "QR-0012",
       "text": "respondió 2 comentarios de la ronda 1",
-      "createdAt": "2026-10-28T23:27:03.551Z"
+      "createdAt": "2026-10-31T11:56:21.017Z"
     },
     {
       "id": "a3",
@@ -3215,7 +3215,7 @@
       "actor": "u2",
       "review": "QR-0012",
       "text": "envió la ronda 1: 5 aprobadas, 2 con ajuste",
-      "createdAt": "2026-10-28T01:28:03.551Z"
+      "createdAt": "2026-10-30T13:57:21.017Z"
     },
     {
       "id": "a4",
@@ -3223,7 +3223,7 @@
       "actor": "u2",
       "review": "QR-0012",
       "text": "quedó asignada por la regla de módulo /preorders/*",
-      "createdAt": "2026-10-27T22:29:03.551Z"
+      "createdAt": "2026-10-30T10:58:21.017Z"
     },
     {
       "id": "a5",
@@ -3231,7 +3231,7 @@
       "actor": "u1",
       "review": "QR-0012",
       "text": "publicó la revisión (7 pantallas) desde la skill",
-      "createdAt": "2026-10-27T22:28:03.551Z"
+      "createdAt": "2026-10-30T10:57:21.017Z"
     },
     {
       "id": "a6",
@@ -3239,7 +3239,7 @@
       "actor": "u1",
       "review": "QR-0011",
       "text": "publicó la revisión (4 pantallas) desde la skill",
-      "createdAt": "2026-10-28T22:28:03.551Z"
+      "createdAt": "2026-10-31T10:57:21.017Z"
     },
     {
       "id": "a7",
@@ -3247,7 +3247,7 @@
       "actor": "u4",
       "review": "QR-0010",
       "text": "envió la revisión con 1 ajuste",
-      "createdAt": "2026-10-28T03:28:03.551Z"
+      "createdAt": "2026-10-30T15:57:21.017Z"
     },
     {
       "id": "a8",
@@ -3255,7 +3255,7 @@
       "actor": "u3",
       "review": "QR-0013",
       "text": "publicó la revisión (2 pantallas) desde la skill",
-      "createdAt": "2026-10-28T20:28:03.551Z"
+      "createdAt": "2026-10-31T08:57:21.017Z"
     }
   ],
   "audit": [
@@ -3265,7 +3265,7 @@
       "actor": "u2",
       "target": "mariana@ejemplo.co",
       "text": "invitó a mariana@ejemplo.co como diseñadora en Lideris",
-      "createdAt": "2026-10-29T00:28:03.551Z"
+      "createdAt": "2026-10-31T12:57:21.017Z"
     },
     {
       "id": "au2",
@@ -3273,7 +3273,7 @@
       "actor": "u1",
       "target": "qa_pat_7f3a",
       "text": "creó el token «MacBook · Lideris»",
-      "createdAt": "2026-10-17T01:28:03.551Z"
+      "createdAt": "2026-10-19T13:57:21.017Z"
     },
     {
       "id": "au3",
@@ -3281,7 +3281,7 @@
       "actor": "u7",
       "target": "u2",
       "text": "cambió el rol de Laura Ríos a admin de la organización",
-      "createdAt": "2026-10-09T01:28:03.551Z"
+      "createdAt": "2026-10-11T13:57:21.017Z"
     },
     {
       "id": "au5",
@@ -3289,7 +3289,7 @@
       "actor": "u7",
       "target": "lideris",
       "text": "cambió la asignación de Lideris a «por módulo»",
-      "createdAt": "2026-09-29T01:28:03.551Z"
+      "createdAt": "2026-10-01T13:57:21.017Z"
     },
     {
       "id": "au4",
@@ -3297,7 +3297,7 @@
       "actor": "u7",
       "target": "u8",
       "text": "desactivó a Julián Ospina",
-      "createdAt": "2026-08-30T01:28:03.551Z"
+      "createdAt": "2026-09-01T13:57:21.017Z"
     }
   ]
 }

@@ -113,6 +113,7 @@ La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en
 | `device.expired`                                                               | 410       | Pasaron los 10 minutos                                                                                    |
 | `device.used`                                                                  | 409       | El token ya se entregó, o la solicitud ya se aprobó o rechazó                                             |
 | `device.rate_limited`                                                          | 429       | Más de 10 solicitudes por minuto por IP, o 20 códigos inexistentes en 10 minutos                          |
+| `skill.token_required`                                                         | 400       | `GET /skill/project` o `GET /skill/reviews` con sesión: son solo para el token de la skill                |
 | `health.unavailable`                                                           | 503       | Mongo o el storage no responden                                                                           |
 
 Las claves de los módulos en construcción se agregan aquí con su endpoint.
@@ -182,6 +183,8 @@ Del `deviceCode` y del `userCode` se guarda solo el SHA-256. Aprobar o rechazar 
 4. Tras un envío de diseño, `POST /reviews/:id/rounds` (con su propia `Idempotency-Key`) calcula el diff de rondas: pide subir solo las pantallas nuevas o con otro `sha256`; las demás heredan captura y veredicto. Se publica igual que la ronda 1.
 5. `GET /reviews/:id/feedback` devuelve la revisión, los comentarios abiertos de la última ronda enviada y un texto listo para la sesión de Claude Code.
 
-El token de la skill (`qa_pat_…`) solo sirve en estos cuatro endpoints y en el proyecto para el que se creó.
+Antes de capturar, la skill pide `GET /skill/project`: selectores a tapar, reglas de diseño, límites del manifiesto y `minSkillVersion` (`MIN_SKILL_VERSION`; una skill más vieja pide `/plugin update`). Para `status`, `GET /skill/reviews?pr=<n>` da la revisión más reciente del PR (sin vencidas ni borradores de otra persona) y su enlace; luego `GET /reviews/:id/feedback`. Ambos son solo con token: el proyecto es el del token.
+
+El token de la skill (`qa_pat_…`) solo sirve en estos endpoints y en el proyecto para el que se creó.
 
 - Crear un proyecto y cada cambio de personas, roles, miembros y configuración dejan una entrada en `GET /audit`.

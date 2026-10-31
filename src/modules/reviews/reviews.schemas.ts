@@ -41,3 +41,6 @@ export const prioritySchema = Joi.object({
 export const reopenSchema = Joi.object({
   reason: Joi.string().trim().min(1).max(500).required(),
 });
+
+/** `GET /skill/reviews?pr=`. */
+export const prQuerySchema = Joi.object({ pr: Joi.number().integer().min(1).required() });

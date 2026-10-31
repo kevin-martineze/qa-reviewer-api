@@ -20,25 +20,26 @@
 
 Se validan con Joi al arrancar (`src/config/env.ts`): si falta algo obligatorio, el proceso no levanta. Plantilla: `.env.example`.
 
-| Variable                                                                                                        | Por defecto             | Notas                                                     |
-| --------------------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------- |
-| `NODE_ENV`                                                                                                      | `development`           | `production` prohíbe `MONGO_URI=memory` y `SEED`          |
-| `PORT`                                                                                                          | `3000`                  |                                                           |
-| `MONGO_URI`                                                                                                     | —                       | Obligatoria. `memory` = Mongo en memoria                  |
-| `SEED`                                                                                                          | vacío                   | `demo` borra la base y carga la demo al arrancar          |
-| `PUBLIC_WEB_URL`                                                                                                | `http://localhost:5173` | Links en correos, PR y tarjetas; origen CORS por defecto  |
-| `PUBLIC_API_URL`                                                                                                | `http://localhost:PORT` | Base de las URLs firmadas del storage local               |
-| `CORS_ORIGINS`                                                                                                  | vacío                   | Orígenes extra separados por coma                         |
-| `SESSION_TTL_DAYS`                                                                                              | `7`                     | Vencimiento deslizante de la sesión                       |
-| `STORAGE_DRIVER`                                                                                                | `local`                 | `local` o `s3`                                            |
-| `STORAGE_DIR` · `STORAGE_SECRET`                                                                                | `.data/storage` · dev   | Storage local; el secreto es obligatorio en producción    |
-| `S3_BUCKET` · `S3_REGION` · `S3_ENDPOINT` · `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` · `S3_FORCE_PATH_STYLE` |                         | S3 o compatible (MinIO, R2 con `S3_ENDPOINT`)             |
-| `MAIL_DRIVER` · `MAIL_FROM` · `RESEND_API_KEY`                                                                  | `log`                   | `resend` exige la API key                                 |
-| `GITHUB_API_URL` · `GITHUB_TOKEN` · `GITHUB_WEBHOOK_SECRET`                                                     |                         | Sin token, no se comenta en el PR ni se publica el check  |
-| `PLANE_API_URL` · `PLANE_TOKEN` · `PLANE_WORKSPACE`                                                             |                         | Sin token, no se comenta en la tarjeta                    |
-| `OUTBOX_INTERVAL_MS`                                                                                            | `5000`                  | Frecuencia del worker                                     |
-| `JOBS_ENABLED`                                                                                                  | `true`                  | `false` apaga worker y jobs (pruebas, réplicas solo HTTP) |
-| `RETENTION_DAYS`                                                                                                | `90`                    | Días que se conservan las capturas de revisiones cerradas |
+| Variable                                                                                                        | Por defecto             | Notas                                                                                                            |
+| --------------------------------------------------------------------------------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `NODE_ENV`                                                                                                      | `development`           | `production` prohíbe `MONGO_URI=memory` y `SEED`                                                                 |
+| `PORT`                                                                                                          | `3000`                  |                                                                                                                  |
+| `MONGO_URI`                                                                                                     | —                       | Obligatoria. `memory` = Mongo en memoria                                                                         |
+| `SEED`                                                                                                          | vacío                   | `demo` borra la base y carga la demo al arrancar                                                                 |
+| `PUBLIC_WEB_URL`                                                                                                | `http://localhost:5173` | Links en correos, PR y tarjetas; origen CORS por defecto                                                         |
+| `PUBLIC_API_URL`                                                                                                | `http://localhost:PORT` | Base de las URLs firmadas del storage local                                                                      |
+| `CORS_ORIGINS`                                                                                                  | vacío                   | Orígenes extra separados por coma                                                                                |
+| `SESSION_TTL_DAYS`                                                                                              | `7`                     | Vencimiento deslizante de la sesión                                                                              |
+| `MIN_SKILL_VERSION`                                                                                             | `0.1.0`                 | Versión mínima de la skill; `GET /skill/project` la informa y el cliente pide `/plugin update` si se quedó atrás |
+| `STORAGE_DRIVER`                                                                                                | `local`                 | `local` o `s3`                                                                                                   |
+| `STORAGE_DIR` · `STORAGE_SECRET`                                                                                | `.data/storage` · dev   | Storage local; el secreto es obligatorio en producción                                                           |
+| `S3_BUCKET` · `S3_REGION` · `S3_ENDPOINT` · `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` · `S3_FORCE_PATH_STYLE` |                         | S3 o compatible (MinIO, R2 con `S3_ENDPOINT`)                                                                    |
+| `MAIL_DRIVER` · `MAIL_FROM` · `RESEND_API_KEY`                                                                  | `log`                   | `resend` exige la API key                                                                                        |
+| `GITHUB_API_URL` · `GITHUB_TOKEN` · `GITHUB_WEBHOOK_SECRET`                                                     |                         | Sin token, no se comenta en el PR ni se publica el check                                                         |
+| `PLANE_API_URL` · `PLANE_TOKEN` · `PLANE_WORKSPACE`                                                             |                         | Sin token, no se comenta en la tarjeta                                                                           |
+| `OUTBOX_INTERVAL_MS`                                                                                            | `5000`                  | Frecuencia del worker                                                                                            |
+| `JOBS_ENABLED`                                                                                                  | `true`                  | `false` apaga worker y jobs (pruebas, réplicas solo HTTP)                                                        |
+| `RETENTION_DAYS`                                                                                                | `90`                    | Días que se conservan las capturas de revisiones cerradas                                                        |
 
 ## Semilla de demo
 

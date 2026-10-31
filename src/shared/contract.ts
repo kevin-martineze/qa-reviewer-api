@@ -403,6 +403,34 @@ export interface DeviceGrant {
   user: { id: string; name: string; email: string };
 }
 
+/* ── Skill: configuración y búsqueda ─────────────────────────────────── */
+
+/** `GET /skill/project`: lo que la skill necesita antes de capturar. */
+export interface SkillProject {
+  id: string;
+  name: string;
+  /** Selectores CSS que la captura tapa (`privacy.masked`). */
+  maskSelectors: string[];
+  designRules: string[];
+  limits: {
+    maxScreens: number;
+    maxBytes: number;
+    contentTypes: string[];
+    viewport: { min: number; max: number };
+  };
+  /** Semver: una skill más vieja debe actualizarse. */
+  minSkillVersion: string;
+}
+
+/** `GET /skill/reviews?pr=`: la revisión vigente de un PR. */
+export interface SkillReviewRef {
+  id: string;
+  status: ReviewStatus;
+  round: number;
+  /** Enlace a la revisión en la web. */
+  url: string;
+}
+
 /* ── Métricas ────────────────────────────────────────────────────────── */
 
 export interface ReportFilters {

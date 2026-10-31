@@ -14,6 +14,8 @@ export interface Env {
   PUBLIC_API_URL: string;
   CORS_ORIGINS: string;
   SESSION_TTL_DAYS: number;
+  /** Versión mínima de la skill (semver): una más vieja debe actualizarse con `/plugin update`. */
+  MIN_SKILL_VERSION: string;
 
   STORAGE_DRIVER: 'local' | 's3';
   STORAGE_DIR: string;
@@ -66,6 +68,10 @@ export const envSchema = Joi.object<Env>({
     .default((env: { PORT: number }) => `http://localhost:${env.PORT}`),
   CORS_ORIGINS: Joi.string().allow('').default(''),
   SESSION_TTL_DAYS: Joi.number().integer().min(1).max(30).default(7),
+  MIN_SKILL_VERSION: Joi.string()
+    .pattern(/^\d+\.\d+\.\d+$/)
+    .empty('')
+    .default('0.1.0'),
 
   STORAGE_DRIVER: Joi.string().valid('local', 's3').default('local'),
   STORAGE_DIR: Joi.string().default('.data/storage'),

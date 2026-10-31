@@ -424,6 +424,40 @@ export class DeviceGrantDto implements C.DeviceGrant {
   @ApiProperty({ type: DeviceUserDto }) user: DeviceUserDto;
 }
 
+/* ── Skill: configuración y búsqueda ──────────────────────────────── */
+
+@ApiSchema({ name: 'SkillViewport' })
+class SkillViewportDto {
+  @ApiProperty({ example: 1024 }) min: number;
+  @ApiProperty({ example: 1920 }) max: number;
+}
+
+@ApiSchema({ name: 'SkillLimits' })
+class SkillLimitsDto {
+  @ApiProperty({ example: 40 }) maxScreens: number;
+  @ApiProperty({ example: 5242880 }) maxBytes: number;
+  @ApiProperty({ type: [String], example: ['image/png', 'image/webp'] }) contentTypes: string[];
+  @ApiProperty({ type: SkillViewportDto }) viewport: SkillViewportDto;
+}
+
+@ApiSchema({ name: 'SkillProject' })
+export class SkillProjectDto implements C.SkillProject {
+  @ApiProperty({ example: 'lideris' }) id: string;
+  @ApiProperty() name: string;
+  @ApiProperty({ type: [String], example: ['[data-private]'] }) maskSelectors: string[];
+  @ApiProperty({ type: [String] }) designRules: string[];
+  @ApiProperty({ type: SkillLimitsDto }) limits: SkillLimitsDto;
+  @ApiProperty({ example: '0.1.0' }) minSkillVersion: string;
+}
+
+@ApiSchema({ name: 'SkillReviewRef' })
+export class SkillReviewRefDto implements C.SkillReviewRef {
+  @ApiProperty({ example: 'QR-0012' }) id: string;
+  @ApiProperty({ enum: REVIEW_STATUSES }) status: C.ReviewStatus;
+  @ApiProperty() round: number;
+  @ApiProperty({ example: 'http://localhost:5173/reviews/QR-0012' }) url: string;
+}
+
 /* ── Métricas ─────────────────────────────────────────────────────── */
 
 class DesignerLoadDto {

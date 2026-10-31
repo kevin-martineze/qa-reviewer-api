@@ -116,8 +116,8 @@ async function measure(page, screen, size, warnings) {
     const round = (n) => Math.round(n * 10_000) / 10_000;
     out.push({
       name: el.name,
-      file: el.file ?? null,
-      line: el.line ?? null,
+      file: el.file,
+      line: el.line,
       selector: el.selector,
       box: {
         x: round(x / size.width),

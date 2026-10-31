@@ -68,7 +68,7 @@ Escribe `.design-review/plan.json`:
 - `route` es el patrón de la ruta; `path`, la URL real con datos de prueba.
 - `beforeBaseUrl`: la app en la rama base, si la puedes levantar (p. ej. un worktree en otro puerto). Sin ella no hay «antes»; `null` es válido.
 - `steps`: uno por objeto, de `click`, `fill`, `hover`, `press`, `scroll`, `wait` (selector visible) o `waitMs`.
-- `elements`: los componentes que cambiaron, con archivo y línea del diff. El visor ancla comentarios a ellos y el feedback para Claude Code cita su archivo.
+- `elements`: los componentes que cambiaron, cada uno con `file` y `line` del diff (obligatorios). El visor ancla comentarios a ellos y el feedback para Claude Code cita su archivo. Un componente del que no sabes el archivo no va en la lista.
 - Anchos dentro de `limits.viewport`. Cubre al menos 1280 × 720; agrega 1024 y 1440 si el cambio afecta el layout.
 
 ### 4. Sesión del navegador

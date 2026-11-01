@@ -1,0 +1,10 @@
+# El build solo necesita package.json, el lockfile, la config de TypeScript y src/.
+*
+!package.json
+!pnpm-lock.yaml
+!tsconfig.json
+!tsconfig.build.json
+!nest-cli.json
+!.swcrc
+!src/
+src/**/*.spec.ts

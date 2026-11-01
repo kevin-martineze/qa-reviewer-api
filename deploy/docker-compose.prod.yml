@@ -1,0 +1,73 @@
+# Producción en una instancia: API, Mongo (replica set de un nodo, sin puerto publicado) y
+# Caddy con TLS automático. Vive en /opt/qa-reviewer junto a .env y Caddyfile.
+#   docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d
+name: qa-reviewer
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 20m
+    max-file: '5'
+
+services:
+  mongo:
+    image: mongo:7.0
+    # Replica set de un nodo: las transacciones del outbox lo necesitan.
+    command: ['--replSet', 'rs0', '--bind_ip_all', '--wiredTigerCacheSizeGB', '0.5']
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      # La primera vez inicia el replica set; sano cuando acepta escrituras.
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --eval
+        - >-
+          try { rs.status() } catch (e) {
+          rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }) }
+          quit(db.hello().isWritablePrimary ? 0 : 1)
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+    logging: *logging
+
+  api:
+    image: ${API_IMAGE:-ghcr.io/kevin-martineze/qa-reviewer-api:latest}
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: '3000'
+      LOG_FORMAT: json
+      MONGO_URI: mongodb://mongo:27017/qa_reviewer?replicaSet=rs0
+      PUBLIC_API_URL: https://${API_HOST:?falta API_HOST en .env}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *logging
+
+  caddy:
+    image: caddy:2.10
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    environment:
+      API_HOST: ${API_HOST:?falta API_HOST en .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  mongo-data:
+  caddy-data:
+  caddy-config:

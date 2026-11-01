@@ -62,9 +62,46 @@ Al cargar (`SEED=demo` o `pnpm seed`), `src/seed/demo-seed.ts`:
 
 `pnpm seed` no corre con `NODE_ENV=production` ni con `MONGO_URI=memory`.
 
+## Producción en EC2
+
+Una instancia `t4g.small` (arm64, Ubuntu 24.04) en `us-east-1` corre `deploy/docker-compose.prod.yml` en `/opt/qa-reviewer`:
+
+| Servicio | Imagen                                    | Qué hace                                                                                        |
+| -------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `api`    | `ghcr.io/kevin-martineze/qa-reviewer-api` | El API (`Dockerfile`: multi-stage, solo dependencias de producción, usuario `node`, logs JSON). |
+| `mongo`  | `mongo:7.0`                               | Replica set de un nodo (`rs0`) para las transacciones; sin puerto publicado.                    |
+| `caddy`  | `caddy:2.10`                              | TLS automático (Let's Encrypt) para `API_HOST` y proxy al API; único con puertos (80/443).      |
+
+- **Host:** sin dominio propio, `API_HOST=api.<ip-con-guiones>.sslip.io` resuelve a la Elastic IP. HTTPS es obligatorio para la skill y los webhooks de GitHub.
+- **Acceso:** el security group abre solo 80 y 443; no hay SSH ni key pair. Se entra con SSM (Session Manager o Run Command).
+- **Storage:** S3 con el rol de la instancia: `S3_ENDPOINT` y las llaves vacíos, el SDK toma las credenciales de IMDS. Con IMDSv2 obligatorio, la instancia necesita `HttpPutResponseHopLimit=2`: con 1, el contenedor no alcanza IMDS y readiness da 503.
+- **Logs:** `json-file` con rotación (20 MB × 5) por servicio; `LOG_FORMAT=json` en el API. `docker compose logs -f api`.
+- **Variables:** `/opt/qa-reviewer/.env` (permiso 600), a partir de `deploy/prod.env.example`. El compose fija `NODE_ENV`, `PORT`, `LOG_FORMAT`, `MONGO_URI` y `PUBLIC_API_URL`.
+
+Levantar o actualizar a mano (por SSM, en `/opt/qa-reviewer`):
+
+```bash
+docker compose -f docker-compose.prod.yml pull
+docker compose -f docker-compose.prod.yml up -d
+curl -fsS https://$API_HOST/healthcheck/readiness-probe
+```
+
+La primera vez, el healthcheck de `mongo` inicia el replica set (`rs.initiate`) y el API espera a que acepte escrituras.
+
+### Respaldos
+
+- `deploy/backup.sh` (cron diario): `mongodump --archive --gzip` por stdin a `s3://$BACKUP_BUCKET/mongo/`. El bucket expira los objetos a los 14 días.
+- Snapshots diarios del disco con DLM (volúmenes con `Backup=qa-reviewer`, 7 días) y recuperación automática de la instancia si falla el chequeo del sistema.
+- Restaurar un respaldo (reemplaza las colecciones):
+
+```bash
+aws s3 cp s3://$BACKUP_BUCKET/mongo/<archivo>.archive.gz - \
+  | docker compose -f docker-compose.prod.yml exec -T mongo mongorestore --archive --gzip --drop
+```
+
 ## Primer arranque en producción
 
-1. Configura las variables (al menos `MONGO_URI`, `PUBLIC_WEB_URL`, `PUBLIC_API_URL`, el storage y `STORAGE_SECRET` si es local).
+1. Crea `/opt/qa-reviewer/.env` desde `deploy/prod.env.example` y levanta el compose.
 2. `pnpm bootstrap --org "Mi organización" --owner tu@correo.com --name "Tu nombre"` crea la organización y el owner y muestra un enlace para definir la contraseña. _(En construcción.)_
 3. Desde la web, el owner crea proyectos, invita personas y emite tokens para la skill.
 
@@ -72,7 +109,7 @@ Al cargar (`SEED=demo` o `pnpm seed`), `src/seed/demo-seed.ts`:
 
 - `GET /healthcheck`: el proceso responde.
 - `GET /healthcheck/readiness-probe`: Mongo y el storage responden; si no, 503.
-- Logs de Nest en consola. Los errores inesperados se registran con su stack y responden 500 sin detalles.
+- Logs de Nest en consola (`LOG_FORMAT=json` en producción). Los errores inesperados se registran con su stack y responden 500 sin detalles.
 - Eventos `dead` en `qa_outbox` (`status: 'dead'`, `lastError`) son los que no se pudieron entregar tras 8 intentos.
 
 ## Webhook de GitHub

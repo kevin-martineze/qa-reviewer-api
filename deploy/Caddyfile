@@ -1,0 +1,10 @@
+# TLS automático con Let's Encrypt para API_HOST (p. ej. api.184-73-227-93.sslip.io).
+# Caddy reemplaza X-Forwarded-For con la IP real: el API (trustProxy) la usa en los límites.
+{$API_HOST} {
+	encode zstd gzip
+	reverse_proxy api:3000
+	log {
+		output stdout
+		format json
+	}
+}

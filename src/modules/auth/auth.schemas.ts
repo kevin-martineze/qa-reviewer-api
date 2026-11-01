@@ -14,12 +14,12 @@ export const acceptInviteSchema = Joi.object({
   name: personName.required(),
   password: password.required(),
   avatar: avatar.default(null),
-});
+}).meta({ className: 'AcceptInviteInput' });
 
 export const profileSchema = Joi.object({
   name: personName.required(),
   avatar: avatar.default(null),
-});
+}).meta({ className: 'ProfileInput' });
 
 export const changePasswordSchema = Joi.object({
   current: Joi.string().min(1).max(200).required(),

@@ -70,7 +70,7 @@ pnpm install
 pnpm demo          # API + Mongo en memoria + datos de demo en http://localhost:3000
 ```
 
-- Documentación interactiva en `http://localhost:3000/docs`; contrato OpenAPI en `/docs-json`.
+- Documentación interactiva en `http://localhost:3000/docs`; contrato OpenAPI en `/docs-json` y en `openapi.json` del repo (`pnpm openapi`).
 - Con la web: en `qa-reviewer`, `REVIEWS_SOURCE=api API_URL=http://localhost:3000 pnpm dev`.
 
 Cuentas de demo (contraseña `demo1234`, solo en la semilla):
@@ -94,17 +94,17 @@ pnpm dev           # terminal 2: API con recarga
 
 ## Scripts
 
-| Comando                                        | Qué hace                                                            |
-| ---------------------------------------------- | ------------------------------------------------------------------- |
-| `pnpm demo`                                    | API con Mongo en memoria y la demo cargada                          |
-| `pnpm db`                                      | Mongo local persistente para desarrollo                             |
-| `pnpm dev`                                     | API con recarga contra `MONGO_URI`                                  |
-| `pnpm seed`                                    | Borra la base de `MONGO_URI` y carga la demo                        |
-| `pnpm bootstrap`                               | Crea la organización y su owner en una base vacía (en construcción) |
-| `pnpm build` · `pnpm start`                    | Compila a `dist/` y arranca en producción                           |
-| `pnpm typecheck` · `pnpm lint` · `pnpm format` | Gates de calidad                                                    |
-| `pnpm test`                                    | Pruebas unitarias y de integración (Jest)                           |
-| `pnpm openapi`                                 | Escribe el contrato en `openapi.json` (en construcción)             |
+| Comando                                        | Qué hace                                                               |
+| ---------------------------------------------- | ---------------------------------------------------------------------- |
+| `pnpm demo`                                    | API con Mongo en memoria y la demo cargada                             |
+| `pnpm db`                                      | Mongo local persistente para desarrollo                                |
+| `pnpm dev`                                     | API con recarga contra `MONGO_URI`                                     |
+| `pnpm seed`                                    | Borra la base de `MONGO_URI` y carga la demo                           |
+| `pnpm bootstrap`                               | Crea la organización y su owner en una base vacía (en construcción)    |
+| `pnpm build` · `pnpm start`                    | Compila a `dist/` y arranca en producción                              |
+| `pnpm typecheck` · `pnpm lint` · `pnpm format` | Gates de calidad                                                       |
+| `pnpm test`                                    | Pruebas unitarias y de integración (Jest)                              |
+| `pnpm openapi`                                 | Escribe el contrato en `openapi.json`, con claves ordenadas, sin Mongo |
 
 La semilla (`seed/demo/`) se exporta desde el mock de la web con `pnpm seed:export` en `qa-reviewer`: la demo con el API muestra lo mismo que el modo mock.
 

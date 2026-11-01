@@ -10,4 +10,4 @@
 | [api.md](api.md)                   | Convenciones del contrato HTTP, autenticación y catálogo de errores             |
 | [operations.md](operations.md)     | Configuración, arranque local, semilla, jobs y puesta en producción             |
 
-El contrato exacto (rutas, cuerpos y respuestas) lo genera el código en `/docs-json`; la UI interactiva está en `/docs`. Las decisiones de arquitectura compartidas con la web están en los ADR de [`qa-reviewer/docs/adr`](https://github.com/kevin-martineze/qa-reviewer/tree/main/docs/adr).
+El contrato exacto (rutas, cuerpos y respuestas) lo genera el código en `/docs-json` y en `openapi.json` (`pnpm openapi`); la UI interactiva está en `/docs`. Las decisiones de arquitectura compartidas con la web están en los ADR de [`qa-reviewer/docs/adr`](https://github.com/kevin-martineze/qa-reviewer/tree/main/docs/adr).

@@ -49,6 +49,15 @@ El handler lo recibe con `@CurrentPrincipal()`. El `user` ya trae sus membresía
 
 `new JoiPipe(schema)` valida y normaliza (`convert`, `stripUnknown`); un error sale como 400 `common.validation` con `details.fields`. El mismo esquema se pasa a `@Endpoint({ body })`, que lo convierte a OpenAPI con `joi-to-swagger`. Documentación y validación no pueden divergir.
 
+## Contrato OpenAPI con nombres
+
+La web genera sus tipos (`openapi-typescript`) desde `openapi.json`, así que cada schema lleva el nombre de `src/shared/contract.ts`:
+
+- Las clases de `shared/docs/contract.dto.ts` terminan en `Dto`, pero `@ApiSchema({ name })` las publica sin el sufijo (`Review`, `Comment`…). Las listas paginadas salen como `ReviewPage` y `AuditPage`.
+- Las uniones del contrato salen como enums con nombre (`enumName`): `ReviewStatus`, `Verdict`, `NotificationType`… La lista de valores se arma con `all<C.Union>()([...])`, que no compila si falta uno.
+- Los bodies y queries que la web nombra llevan `.meta({ className })` en su esquema Joi (`NewComment`, `ProjectPatch`, `ReportFilters`…); `@Endpoint` los registra y `buildOpenApi` los agrega a `components.schemas`.
+- `pnpm openapi` arma el documento con Nest en modo `preview` (sin providers ni Mongo), ordena las claves y escribe `openapi.json`. `test/openapi.spec.ts` falla si el archivo no coincide con el código: un cambio de contrato entra con su `openapi.json`.
+
 ## Exception Filter
 
 `AllExceptionsFilter` da a todo error la forma `{ statusCode, messageKey, message, details? }`: los `ApiError` propios, las excepciones de Nest (ruta inexistente → `common.not_found`), los errores de Fastify (JSON inválido, cuerpo grande) y lo inesperado (500 `common.internal`, con el stack solo en el log).

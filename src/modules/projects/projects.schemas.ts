@@ -24,7 +24,7 @@ export const newProjectSchema = Joi.object({
   name: projectName.required(),
   repo: repo.default(''),
   planeKey: planeKey.default(''),
-});
+}).meta({ className: 'NewProject' });
 
 /** `ProjectPatch` de la web: parcial, al menos un campo. */
 export const projectPatchSchema = Joi.object({
@@ -42,7 +42,9 @@ export const projectPatchSchema = Joi.object({
   integrations,
   maskSelectors: Joi.array().items(Joi.string().trim().min(1).max(200)).max(50),
   designRules: Joi.array().items(Joi.string().trim().min(1).max(500)).max(50),
-}).min(1);
+})
+  .min(1)
+  .meta({ className: 'ProjectPatch' });
 
 export const newMemberSchema = Joi.object({
   userId: id.required(),

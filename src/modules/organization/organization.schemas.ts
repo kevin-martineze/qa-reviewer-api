@@ -27,7 +27,7 @@ export const invitationSchema = Joi.object({
   email: email.required(),
   role: orgRole.required(),
   projects: Joi.array().items(membership).unique('projectId').max(50).default([]),
-});
+}).meta({ className: 'NewInvitation' });
 
 export const auditQuerySchema = Joi.object({
   type: Joi.string().valid(...AUDIT_TYPES),

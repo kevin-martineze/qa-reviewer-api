@@ -1,6 +1,6 @@
 # Contrato HTTP
 
-La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en `/docs`). Este documento fija las convenciones y el estado de cada grupo de endpoints. El detalle funcional por endpoint está en [`qa-reviewer/docs/architecture/api.md`](https://github.com/kevin-martineze/qa-reviewer/blob/main/docs/architecture/api.md).
+La fuente de verdad es el OpenAPI que genera el código: `GET /docs-json` (UI en `/docs`) y el archivo `openapi.json` del repo, del que la web genera sus tipos. Este documento fija las convenciones y el estado de cada grupo de endpoints. El detalle funcional por endpoint está en [`qa-reviewer/docs/architecture/api.md`](https://github.com/kevin-martineze/qa-reviewer/blob/main/docs/architecture/api.md).
 
 ## Convenciones
 

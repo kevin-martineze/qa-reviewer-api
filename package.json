@@ -22,7 +22,7 @@
     "format:check": "prettier --check .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "openapi": "tsx scripts/openapi.ts"
+    "openapi": "nest build && node dist/openapi"
   },
   "packageManager": "pnpm@10.30.0",
   "dependencies": {

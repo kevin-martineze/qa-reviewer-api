@@ -23,7 +23,7 @@ export const newCommentSchema = Joi.object({
   })
     .allow(null)
     .default(null),
-});
+}).meta({ className: 'NewComment' });
 
 export const replySchema = Joi.object({ body: body.required() });
 

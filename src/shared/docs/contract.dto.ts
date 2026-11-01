@@ -4,12 +4,40 @@ import type * as C from '../contract';
 
 import { ApiProperty, ApiSchema } from '@nestjs/swagger';
 
-const ORG_ROLES = ['owner', 'admin', 'member'];
-const PROJECT_ROLES = ['project_admin', 'design_lead', 'designer', 'developer', 'viewer'];
-const REVIEW_STATUSES = ['draft', 'open', 'in_review', 'changes_requested', 'approved', 'closed'];
-const VERDICTS = ['pending', 'approved', 'changes_requested'];
-const PRIORITIES = ['urgent', 'high', 'medium', 'low'];
-const AUDIT_TYPES = [
+/**
+ * Valores de una unión del contrato. Falla al compilar si falta alguno, así el OpenAPI no se
+ * queda atrás cuando el contrato crece.
+ */
+const all =
+  <T extends string>() =>
+  <const A extends readonly T[]>(values: A & ([T] extends [A[number]] ? unknown : never)) => [
+    ...values,
+  ];
+
+const ORG_ROLES = all<C.OrgRole>()(['owner', 'admin', 'member']);
+const USER_STATUSES = all<C.UserStatus>()(['active', 'inactive']);
+const PROJECT_ROLES = all<C.ProjectRole>()([
+  'project_admin',
+  'design_lead',
+  'designer',
+  'developer',
+  'viewer',
+]);
+const STRATEGIES = all<C.AssignmentStrategy>()(['manual', 'round_robin', 'by_module']);
+const INVITE_STATUSES = all<C.InviteStatus>()(['valid', 'expired', 'used', 'revoked']);
+const RECOVERY_STATUSES = all<C.RecoveryStatus>()(['valid', 'expired', 'used']);
+const REVIEW_STATUSES = all<C.ReviewStatus>()([
+  'draft',
+  'open',
+  'in_review',
+  'changes_requested',
+  'approved',
+  'closed',
+]);
+const VERDICTS = all<C.Verdict>()(['pending', 'approved', 'changes_requested']);
+const PRIORITIES = all<C.Priority>()(['urgent', 'high', 'medium', 'low']);
+const FOLLOW_UPS = all<Exclude<C.FollowUp, null>>()(['resolved', 'still']);
+const AUDIT_TYPES = all<C.AuditType>()([
   'user_invited',
   'user_deactivated',
   'user_reactivated',
@@ -20,8 +48,8 @@ const AUDIT_TYPES = [
   'token_revoked',
   'project_created',
   'project_updated',
-];
-const NOTIFICATION_TYPES = [
+]);
+const NOTIFICATION_TYPES = all<C.NotificationType>()([
   'review_assigned',
   'round_uploaded',
   'review_submitted',
@@ -29,78 +57,100 @@ const NOTIFICATION_TYPES = [
   'reply',
   'due_soon',
   'overdue',
-];
+]);
+const ACTIVITY_TYPES = all<C.ActivityType>()([
+  'review_published',
+  'round_uploaded',
+  'review_assigned',
+  'verdict_set',
+  'comment_created',
+  'comment_replied',
+  'comment_resolved',
+  'review_submitted',
+  'review_reopened',
+  'review_closed',
+]);
 
 /* ── Personas ─────────────────────────────────────────────────────── */
 
+@ApiSchema({ name: 'Organization' })
 export class OrganizationDto implements C.Organization {
   @ApiProperty({ example: 'acme' }) id: string;
   @ApiProperty({ example: 'Acme' }) name: string;
 }
 
+@ApiSchema({ name: 'Membership' })
 export class MembershipDto implements C.Membership {
   @ApiProperty({ example: 'lideris' }) projectId: string;
-  @ApiProperty({ enum: PROJECT_ROLES }) role: C.ProjectRole;
+  @ApiProperty({ enum: PROJECT_ROLES, enumName: 'ProjectRole' }) role: C.ProjectRole;
 }
 
+@ApiSchema({ name: 'User' })
 export class UserDto implements C.User {
   @ApiProperty() id: string;
   @ApiProperty() name: string;
   @ApiProperty() email: string;
-  @ApiProperty({ enum: ORG_ROLES }) orgRole: C.OrgRole;
-  @ApiProperty({ enum: ['active', 'inactive'] }) status: C.UserStatus;
+  @ApiProperty({ enum: ORG_ROLES, enumName: 'OrgRole' }) orgRole: C.OrgRole;
+  @ApiProperty({ enum: USER_STATUSES, enumName: 'UserStatus' }) status: C.UserStatus;
   @ApiProperty({ type: String, nullable: true, example: 'a01' }) avatar: string | null;
   @ApiProperty({ type: String, nullable: true, format: 'date-time' }) lastSeenAt: string | null;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
 }
 
+@ApiSchema({ name: 'SessionUser' })
 export class SessionUserDto implements C.SessionUser {
   @ApiProperty() id: string;
   @ApiProperty() name: string;
   @ApiProperty() email: string;
-  @ApiProperty({ enum: ORG_ROLES }) orgRole: C.OrgRole;
-  @ApiProperty({ enum: ['active', 'inactive'] }) status: C.UserStatus;
+  @ApiProperty({ enum: ORG_ROLES, enumName: 'OrgRole' }) orgRole: C.OrgRole;
+  @ApiProperty({ enum: USER_STATUSES, enumName: 'UserStatus' }) status: C.UserStatus;
   @ApiProperty({ type: String, nullable: true }) avatar: string | null;
   @ApiProperty({ type: [MembershipDto] }) memberships: MembershipDto[];
 }
 
+@ApiSchema({ name: 'LoginResult' })
 export class LoginResultDto implements C.LoginResult {
   @ApiProperty({ example: 'qa_sess_…', description: 'Se guarda en una cookie httpOnly' })
   token: string;
   @ApiProperty({ type: SessionUserDto }) user: SessionUserDto;
 }
 
+@ApiSchema({ name: 'InviteInfo' })
 export class InviteInfoDto implements C.InviteInfo {
-  @ApiProperty({ enum: ['valid', 'expired', 'used', 'revoked'] }) status: C.InviteStatus;
+  @ApiProperty({ enum: INVITE_STATUSES, enumName: 'InviteStatus' }) status: C.InviteStatus;
   @ApiProperty() email: string;
   @ApiProperty() org: string;
   @ApiProperty() inviter: string;
-  @ApiProperty({ enum: ORG_ROLES }) role: C.OrgRole;
+  @ApiProperty({ enum: ORG_ROLES, enumName: 'OrgRole' }) role: C.OrgRole;
   @ApiProperty({ type: [String], description: 'Nombres de los proyectos' }) projects: string[];
 }
 
+@ApiSchema({ name: 'Invitation' })
 export class InvitationDto implements C.Invitation {
   @ApiProperty() id: string;
   @ApiProperty() email: string;
-  @ApiProperty({ enum: ORG_ROLES }) role: C.OrgRole;
+  @ApiProperty({ enum: ORG_ROLES, enumName: 'OrgRole' }) role: C.OrgRole;
   @ApiProperty({ type: [MembershipDto] }) projects: MembershipDto[];
   @ApiProperty() invitedBy: string;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
   @ApiProperty({ format: 'date-time' }) expiresAt: string;
-  @ApiProperty({ enum: ['valid', 'expired', 'used', 'revoked'] }) status: C.InviteStatus;
+  @ApiProperty({ enum: INVITE_STATUSES, enumName: 'InviteStatus' }) status: C.InviteStatus;
 }
 
+@ApiSchema({ name: 'RecoveryInfo' })
 export class RecoveryInfoDto implements C.RecoveryInfo {
-  @ApiProperty({ enum: ['valid', 'expired', 'used'] }) status: C.RecoveryStatus;
+  @ApiProperty({ enum: RECOVERY_STATUSES, enumName: 'RecoveryStatus' }) status: C.RecoveryStatus;
 }
 
 /* ── Proyectos ────────────────────────────────────────────────────── */
 
+@ApiSchema({ name: 'ModuleRule' })
 export class ModuleRuleDto implements C.ModuleRule {
   @ApiProperty({ example: '/preorders/*' }) pattern: string;
   @ApiProperty() userId: string;
 }
 
+@ApiSchema({ name: 'GithubIntegration' })
 class GithubIntegrationDto {
   @ApiProperty() connected: boolean;
   @ApiProperty({ example: 'acme/web' }) repo: string;
@@ -108,24 +158,27 @@ class GithubIntegrationDto {
   @ApiProperty() commentOnPr: boolean;
 }
 
+@ApiSchema({ name: 'PlaneIntegration' })
 class PlaneIntegrationDto {
   @ApiProperty() connected: boolean;
   @ApiProperty({ example: 'WEB' }) projectKey: string;
   @ApiProperty() commentOnCard: boolean;
 }
 
+@ApiSchema({ name: 'ProjectIntegrations' })
 export class ProjectIntegrationsDto implements C.ProjectIntegrations {
   @ApiProperty({ type: GithubIntegrationDto }) github: GithubIntegrationDto;
   @ApiProperty({ type: PlaneIntegrationDto }) plane: PlaneIntegrationDto;
 }
 
+@ApiSchema({ name: 'Project' })
 export class ProjectDto implements C.Project {
   @ApiProperty({ example: 'lideris', description: 'Slug; no cambia' }) id: string;
   @ApiProperty() name: string;
   @ApiProperty() repo: string;
   @ApiProperty() planeKey: string;
   @ApiProperty({ minimum: 1, maximum: 15 }) slaDays: number;
-  @ApiProperty({ enum: ['manual', 'round_robin', 'by_module'] }) strategy: C.AssignmentStrategy;
+  @ApiProperty({ enum: STRATEGIES, enumName: 'AssignmentStrategy' }) strategy: C.AssignmentStrategy;
   @ApiProperty({ type: [ModuleRuleDto] }) moduleRules: ModuleRuleDto[];
   @ApiProperty({ type: ProjectIntegrationsDto }) integrations: ProjectIntegrationsDto;
   @ApiProperty({ type: [String] }) maskSelectors: string[];
@@ -133,14 +186,16 @@ export class ProjectDto implements C.Project {
   @ApiProperty() reviewsCount: number;
 }
 
+@ApiSchema({ name: 'ProjectMember' })
 export class ProjectMemberDto implements C.ProjectMember {
   @ApiProperty() userId: string;
   @ApiProperty() projectId: string;
-  @ApiProperty({ enum: PROJECT_ROLES }) role: C.ProjectRole;
+  @ApiProperty({ enum: PROJECT_ROLES, enumName: 'ProjectRole' }) role: C.ProjectRole;
 }
 
 /* ── Revisiones ───────────────────────────────────────────────────── */
 
+@ApiSchema({ name: 'Box' })
 export class BoxDto implements C.Box {
   @ApiProperty({ minimum: 0, maximum: 1 }) x: number;
   @ApiProperty({ minimum: 0, maximum: 1 }) y: number;
@@ -148,6 +203,7 @@ export class BoxDto implements C.Box {
   @ApiProperty({ minimum: 0, maximum: 1 }) h: number;
 }
 
+@ApiSchema({ name: 'ElementRef' })
 export class ElementRefDto implements C.ElementRef {
   @ApiProperty({ example: 'QuantityStepper' }) name: string;
   @ApiProperty({ example: 'src/lib/components/QuantityStepper.svelte' }) file: string;
@@ -155,11 +211,13 @@ export class ElementRefDto implements C.ElementRef {
   @ApiProperty({ example: '[data-qty-stepper]' }) selector: string;
 }
 
+@ApiSchema({ name: 'ScreenElement' })
 export class ScreenElementDto extends ElementRefDto implements C.ScreenElement {
   @ApiProperty() id: string;
   @ApiProperty({ type: BoxDto }) box: BoxDto;
 }
 
+@ApiSchema({ name: 'Screen' })
 export class ScreenDto implements C.Screen {
   @ApiProperty({ example: 'edit-with-changes-1280' }) key: string;
   @ApiProperty() title: string;
@@ -177,9 +235,10 @@ export class ScreenDto implements C.Screen {
   @ApiProperty({ type: [ScreenElementDto] }) elements: ScreenElementDto[];
   @ApiProperty({ type: [String] }) changes: string[];
   @ApiProperty({ type: [String] }) questions: string[];
-  @ApiProperty({ enum: VERDICTS }) verdict: C.Verdict;
+  @ApiProperty({ enum: VERDICTS, enumName: 'Verdict' }) verdict: C.Verdict;
 }
 
+@ApiSchema({ name: 'RoundSubmission' })
 export class RoundSubmissionDto implements C.RoundSubmission {
   @ApiProperty() by: string;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
@@ -190,17 +249,19 @@ export class RoundSubmissionDto implements C.RoundSubmission {
   @ApiProperty({ type: String, nullable: true }) body: string | null;
 }
 
+@ApiSchema({ name: 'Round' })
 export class RoundDto implements C.Round {
   @ApiProperty() n: number;
   @ApiProperty() by: string;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
   @ApiProperty({ type: String, nullable: true }) note: string | null;
   @ApiProperty({ type: [String] }) changed: string[];
-  @ApiProperty({ type: 'object', additionalProperties: { type: 'string', enum: VERDICTS } })
+  @ApiProperty({ type: 'object', additionalProperties: { $ref: '#/components/schemas/Verdict' } })
   verdicts: Record<string, C.Verdict>;
   @ApiProperty({ type: RoundSubmissionDto, nullable: true }) submission: RoundSubmissionDto | null;
 }
 
+@ApiSchema({ name: 'PullRequest' })
 export class PullRequestDto implements C.PullRequest {
   @ApiProperty() number: number;
   @ApiProperty() url: string;
@@ -212,16 +273,19 @@ export class PullRequestDto implements C.PullRequest {
   @ApiProperty() commit: string;
 }
 
+@ApiSchema({ name: 'SummaryStep' })
 class SummaryStepDto {
   @ApiProperty() title: string;
   @ApiProperty() body: string;
 }
 
+@ApiSchema({ name: 'ReviewSummary' })
 export class ReviewSummaryDto implements C.ReviewSummary {
   @ApiProperty({ type: [SummaryStepDto] }) steps: SummaryStepDto[];
   @ApiProperty({ type: [String] }) rules: string[];
 }
 
+@ApiSchema({ name: 'Review' })
 export class ReviewDto implements C.Review {
   @ApiProperty({ example: 'QR-0012' }) id: string;
   @ApiProperty() title: string;
@@ -232,9 +296,9 @@ export class ReviewDto implements C.Review {
   @ApiProperty() module: string;
   @ApiProperty() author: string;
   @ApiProperty({ type: [String] }) assignees: string[];
-  @ApiProperty({ enum: REVIEW_STATUSES }) status: C.ReviewStatus;
+  @ApiProperty({ enum: REVIEW_STATUSES, enumName: 'ReviewStatus' }) status: C.ReviewStatus;
   @ApiProperty() round: number;
-  @ApiProperty({ enum: PRIORITIES }) priority: C.Priority;
+  @ApiProperty({ enum: PRIORITIES, enumName: 'Priority' }) priority: C.Priority;
   @ApiProperty({ type: String, nullable: true, format: 'date-time' }) dueAt: string | null;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
   @ApiProperty({ format: 'date-time' }) updatedAt: string;
@@ -244,26 +308,30 @@ export class ReviewDto implements C.Review {
   @ApiProperty({ type: [String] }) notCaptured: string[];
 }
 
+@ApiSchema({ name: 'Pagination' })
 export class PaginationDto implements C.Pagination {
   @ApiProperty() page: number;
   @ApiProperty() limit: number;
   @ApiProperty() total: number;
 }
 
+@ApiSchema({ name: 'ReviewPage' })
 export class ReviewPageDto implements C.PaginatedResponse<C.Review> {
   @ApiProperty({ type: [ReviewDto] }) items: ReviewDto[];
   @ApiProperty({ type: PaginationDto }) pagination: PaginationDto;
 }
 
+@ApiSchema({ name: 'ActivityEvent' })
 export class ActivityEventDto implements C.ActivityEvent {
   @ApiProperty() id: string;
-  @ApiProperty() type: C.ActivityType;
+  @ApiProperty({ enum: ACTIVITY_TYPES, enumName: 'ActivityType' }) type: C.ActivityType;
   @ApiProperty() actor: string;
   @ApiProperty() review: string;
   @ApiProperty() text: string;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
 }
 
+@ApiSchema({ name: 'Upload' })
 export class UploadDto {
   @ApiProperty() screenKey: string;
   @ApiProperty({ enum: ['after', 'before'] }) kind: 'after' | 'before';
@@ -273,6 +341,7 @@ export class UploadDto {
   @ApiProperty({ format: 'date-time' }) expiresAt: string;
 }
 
+@ApiSchema({ name: 'Draft' })
 export class DraftDto {
   @ApiProperty({ example: 'QR-0013' }) id: string;
   @ApiProperty({ example: 1 }) round: number;
@@ -284,6 +353,7 @@ export class DraftDto {
   @ApiProperty({ example: 'http://localhost:5173/reviews/QR-0013' }) url: string;
 }
 
+@ApiSchema({ name: 'FeedbackStatus' })
 export class FeedbackStatusDto {
   @ApiProperty({ type: ReviewDto }) review: ReviewDto;
   @ApiProperty({ type: () => [CommentDto] }) comments: CommentDto[];
@@ -292,11 +362,13 @@ export class FeedbackStatusDto {
 
 /* ── Comentarios ──────────────────────────────────────────────────── */
 
+@ApiSchema({ name: 'Anchor' })
 export class AnchorDto implements C.Anchor {
   @ApiProperty({ minimum: 0, maximum: 1 }) x: number;
   @ApiProperty({ minimum: 0, maximum: 1 }) y: number;
 }
 
+@ApiSchema({ name: 'CommentReply' })
 export class CommentReplyDto implements C.CommentReply {
   @ApiProperty() id: string;
   @ApiProperty() author: string;
@@ -304,6 +376,7 @@ export class CommentReplyDto implements C.CommentReply {
   @ApiProperty() body: string;
 }
 
+@ApiSchema({ name: 'Comment' })
 export class CommentDto implements C.Comment {
   @ApiProperty() id: string;
   @ApiProperty() review: string;
@@ -315,15 +388,16 @@ export class CommentDto implements C.Comment {
   @ApiProperty({ type: AnchorDto, nullable: true }) anchor: AnchorDto | null;
   @ApiProperty({ type: ElementRefDto, nullable: true }) el: ElementRefDto | null;
   @ApiProperty() resolved: boolean;
-  @ApiProperty({ type: String, enum: ['resolved', 'still'], nullable: true }) followUp: C.FollowUp;
+  @ApiProperty({ enum: FOLLOW_UPS, enumName: 'FollowUp', nullable: true }) followUp: C.FollowUp;
   @ApiProperty({ type: [CommentReplyDto] }) replies: CommentReplyDto[];
 }
 
 /* ── Notificaciones, auditoría, tokens ────────────────────────────── */
 
+@ApiSchema({ name: 'Notification' })
 export class NotificationDto implements C.Notification {
   @ApiProperty() id: string;
-  @ApiProperty({ enum: NOTIFICATION_TYPES }) type: C.NotificationType;
+  @ApiProperty({ enum: NOTIFICATION_TYPES, enumName: 'NotificationType' }) type: C.NotificationType;
   @ApiProperty({ type: String, nullable: true }) actor: string | null;
   @ApiProperty({ type: String, nullable: true }) review: string | null;
   @ApiProperty({ type: String, nullable: true }) screen: string | null;
@@ -333,6 +407,7 @@ export class NotificationDto implements C.Notification {
   @ApiProperty({ type: String, nullable: true, format: 'date-time' }) readAt: string | null;
 }
 
+@ApiSchema({ name: 'NotificationPrefs' })
 export class NotificationPrefsDto implements C.NotificationPrefs {
   @ApiProperty() review_assigned: boolean;
   @ApiProperty() round_uploaded: boolean;
@@ -343,20 +418,23 @@ export class NotificationPrefsDto implements C.NotificationPrefs {
   @ApiProperty() overdue: boolean;
 }
 
+@ApiSchema({ name: 'AuditEvent' })
 export class AuditEventDto implements C.AuditEvent {
   @ApiProperty() id: string;
-  @ApiProperty({ enum: AUDIT_TYPES }) type: C.AuditType;
+  @ApiProperty({ enum: AUDIT_TYPES, enumName: 'AuditType' }) type: C.AuditType;
   @ApiProperty() actor: string;
   @ApiProperty() target: string;
   @ApiProperty() text: string;
   @ApiProperty({ format: 'date-time' }) createdAt: string;
 }
 
+@ApiSchema({ name: 'AuditPage' })
 export class AuditPageDto implements C.PaginatedResponse<C.AuditEvent> {
   @ApiProperty({ type: [AuditEventDto] }) items: AuditEventDto[];
   @ApiProperty({ type: PaginationDto }) pagination: PaginationDto;
 }
 
+@ApiSchema({ name: 'ApiToken' })
 export class ApiTokenDto implements C.ApiToken {
   @ApiProperty() id: string;
   @ApiProperty() label: string;
@@ -366,6 +444,7 @@ export class ApiTokenDto implements C.ApiToken {
   @ApiProperty({ type: String, nullable: true, format: 'date-time' }) lastUsedAt: string | null;
 }
 
+@ApiSchema({ name: 'CreatedToken' })
 export class CreatedTokenDto implements C.CreatedToken {
   @ApiProperty({ type: ApiTokenDto }) token: ApiTokenDto;
   @ApiProperty({ example: 'qa_pat_…', description: 'Solo se entrega una vez' }) secret: string;
@@ -460,24 +539,28 @@ export class SkillReviewRefDto implements C.SkillReviewRef {
 
 /* ── Métricas ─────────────────────────────────────────────────────── */
 
+@ApiSchema({ name: 'DesignerLoad' })
 class DesignerLoadDto {
   @ApiProperty() userId: string;
   @ApiProperty() pending: number;
   @ApiProperty() overdue: number;
 }
 
+@ApiSchema({ name: 'ModuleChanges' })
 class ModuleChangesDto {
   @ApiProperty() module: string;
   @ApiProperty() changes: number;
   @ApiProperty() screens: number;
 }
 
+@ApiSchema({ name: 'Weekly' })
 class WeeklyDto {
   @ApiProperty({ example: '2026-10-26' }) week: string;
   @ApiProperty() opened: number;
   @ApiProperty() approved: number;
 }
 
+@ApiSchema({ name: 'ReportsOverview' })
 export class ReportsOverviewDto implements C.ReportsOverview {
   @ApiProperty() open: number;
   @ApiProperty() overdue: number;

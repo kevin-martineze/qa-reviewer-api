@@ -59,15 +59,42 @@ const errorSchema = (status: number, keys: string[]): SchemaObject => ({
   required: ['statusCode', 'messageKey', 'message'],
 });
 
+/**
+ * Esquemas Joi con `.meta({ className })`: salen en `components.schemas` con ese nombre (el
+ * front genera sus tipos de ahí). `buildOpenApi` los agrega al documento.
+ */
+export const JOI_COMPONENTS: Record<string, SchemaObject> = {};
+
+function fromJoi(schema: Joi.Schema): SchemaObject | ReferenceObject {
+  const { swagger, components } = joiToSwagger(schema);
+  for (const [name, component] of Object.entries(components?.schemas ?? {})) {
+    const known = JOI_COMPONENTS[name];
+    if (known && JSON.stringify(known) !== JSON.stringify(component)) {
+      throw new Error(`Dos esquemas Joi distintos se llaman ${name}`);
+    }
+    JOI_COMPONENTS[name] = component as SchemaObject;
+  }
+  return swagger as SchemaObject | ReferenceObject;
+}
+
+/** El objeto detrás de un `$ref` a un esquema Joi con nombre (para expandir la query). */
+function resolve(schema: SchemaObject | ReferenceObject): SchemaObject {
+  if (!('$ref' in schema)) return schema;
+  const name = schema.$ref.split('/').at(-1) ?? '';
+  const target = JOI_COMPONENTS[name];
+  if (!target) throw new Error(`Esquema Joi sin registrar: ${name}`);
+  return target;
+}
+
 /** Toda la documentación de un handler en un solo decorador. */
 export function Endpoint(spec: EndpointSpec) {
   const decorators = [ApiOperation({ summary: spec.summary, description: spec.description })];
   if (!spec.public) decorators.push(ApiBearerAuth());
   if (spec.body) {
-    decorators.push(ApiBody({ schema: joiToSwagger(spec.body).swagger as SchemaObject }));
+    decorators.push(ApiBody({ schema: fromJoi(spec.body) }));
   }
   if (spec.query) {
-    const swagger = joiToSwagger(spec.query).swagger as SchemaObject;
+    const swagger = resolve(fromJoi(spec.query));
     const required = new Set(swagger.required ?? []);
     for (const [name, schema] of Object.entries(swagger.properties ?? {})) {
       decorators.push(

@@ -7,6 +7,7 @@ import {
   ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
+  S3ServiceException,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -64,8 +65,10 @@ export class S3Storage implements StoragePort {
         new HeadObjectCommand({ Bucket: this.options.bucket, Key: key }),
       );
       return { bytes: res.ContentLength ?? 0, contentType: res.ContentType ?? '' };
-    } catch {
-      return null;
+    } catch (error) {
+      // Solo «no existe» es null; credenciales, permisos o red caída tienen que verse.
+      if (isNotFound(error)) return null;
+      throw error;
     }
   }
 
@@ -102,4 +105,12 @@ export class S3Storage implements StoragePort {
     } while (token);
     return deleted;
   }
+}
+
+/** HeadObject no trae cuerpo: el SDK da `NotFound` con status 404 (sin ListBucket, S3 da 403). */
+function isNotFound(error: unknown): boolean {
+  return (
+    error instanceof S3ServiceException &&
+    (error.name === 'NotFound' || error.$metadata.httpStatusCode === 404)
+  );
 }

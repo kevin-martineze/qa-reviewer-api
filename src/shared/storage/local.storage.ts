@@ -52,8 +52,9 @@ export class LocalStorage implements StoragePort {
       const info = await stat(this.path(key));
       const meta = await this.meta(key);
       return { bytes: info.size, contentType: meta?.contentType ?? contentTypeOf(key) };
-    } catch {
-      return null;
+    } catch (error) {
+      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return null;
+      throw error;
     }
   }
 

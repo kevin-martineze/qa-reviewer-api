@@ -96,7 +96,7 @@ La primera vez, el healthcheck de `mongo` inicia el replica set (`rs.initiate`) 
 2. **image:** construye el `Dockerfile` en un runner arm64 y publica `ghcr.io/kevin-martineze/qa-reviewer-api:<sha>` y `:latest`.
 3. **deploy:** asume el rol `qa-reviewer-deploy` por OIDC (sin llaves; solo `ssm:SendCommand` a la instancia) y manda por SSM Run Command los archivos de `deploy/` y `deploy/remote-deploy.sh <imagen:sha>`. El script instala el compose, el Caddyfile y el cron de respaldos, hace `pull` y `up -d`, y espera readiness 200 desde el contenedor. Después el workflow comprueba `https://$API_HOST/healthcheck/readiness-probe`.
 
-Variables del repo (no secretas; el ID de cuenta no va en el código): `AWS_DEPLOY_ROLE_ARN`, `EC2_INSTANCE_ID` y `API_HOST`. El `.env` de la instancia no lo toca el workflow: si falta, el deploy falla con «falta /opt/qa-reviewer/.env». Volver a una versión anterior: _Actions → deploy → Run workflow_ desde ese commit, o en la instancia `API_IMAGE=ghcr.io/kevin-martineze/qa-reviewer-api:<sha> docker compose -f docker-compose.prod.yml up -d`.
+Variables del repo (no secretas; el ID de cuenta no va en el código): `AWS_DEPLOY_ROLE_ARN`, `EC2_INSTANCE_ID`, `API_HOST`, `PUBLIC_WEB_URL`, `S3_BUCKET` y `BACKUP_BUCKET`. Si la instancia no tiene `/opt/qa-reviewer/.env`, el deploy lo crea con esos valores, `STORAGE_DRIVER=s3` y `MAIL_DRIVER=log`; si ya existe, no lo toca. Los secretos (`RESEND_API_KEY`, `GITHUB_WEBHOOK_SECRET`…) se agregan a mano por SSM. Volver a una versión anterior: _Actions → deploy → Run workflow_ desde ese commit, o en la instancia `API_IMAGE=ghcr.io/kevin-martineze/qa-reviewer-api:<sha> docker compose -f docker-compose.prod.yml up -d`.
 
 ### Respaldos
 

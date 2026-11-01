@@ -3,6 +3,7 @@
 #   AWS_DEPLOY_ROLE_ARN  rol OIDC qa-reviewer-deploy (solo ssm:SendCommand a la instancia)
 #   EC2_INSTANCE_ID      instancia del API
 #   API_HOST             host público (Caddy saca el certificado)
+#   PUBLIC_WEB_URL · S3_BUCKET · BACKUP_BUCKET  para el .env del primer deploy
 name: deploy
 
 on:
@@ -81,15 +82,29 @@ jobs:
         env:
           INSTANCE_ID: ${{ vars.EC2_INSTANCE_ID }}
           TAG: ${{ env.IMAGE }}:${{ github.sha }}
+          API_HOST: ${{ vars.API_HOST }}
+          PUBLIC_WEB_URL: ${{ vars.PUBLIC_WEB_URL }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          BACKUP_BUCKET: ${{ vars.BACKUP_BUCKET }}
         run: |
           b64() { base64 -w0 "$1"; }
           dir=/opt/qa-reviewer
+          # .env del primer deploy, sin secretos: la instancia lo usa solo si no tiene uno.
+          printf '%s\n' \
+            "API_HOST=$API_HOST" \
+            "PUBLIC_WEB_URL=$PUBLIC_WEB_URL" \
+            "STORAGE_DRIVER=s3" \
+            "S3_BUCKET=$S3_BUCKET" \
+            "S3_REGION=us-east-1" \
+            "BACKUP_BUCKET=$BACKUP_BUCKET" \
+            "MAIL_DRIVER=log" > env.defaults
           # AWS-RunShellScript corre con sh: sin pipefail aquí; el script remoto usa bash.
           params=$(jq -n \
             --arg compose "$(b64 deploy/docker-compose.prod.yml)" \
             --arg caddy "$(b64 deploy/Caddyfile)" \
             --arg backup "$(b64 deploy/backup.sh)" \
             --arg remote "$(b64 deploy/remote-deploy.sh)" \
+            --arg envdefaults "$(b64 env.defaults)" \
             --arg dir "$dir" --arg tag "$TAG" \
             '{commands: [
               "set -eu",
@@ -97,6 +112,7 @@ jobs:
               "echo \($compose) | base64 -d > \($dir)/incoming/docker-compose.prod.yml",
               "echo \($caddy) | base64 -d > \($dir)/incoming/Caddyfile",
               "echo \($backup) | base64 -d > \($dir)/incoming/backup.sh",
+              "echo \($envdefaults) | base64 -d > \($dir)/incoming/env.defaults",
               "echo \($remote) | base64 -d > \($dir)/remote-deploy.sh",
               "bash \($dir)/remote-deploy.sh \($tag)"
             ], executionTimeout: ["900"]}')

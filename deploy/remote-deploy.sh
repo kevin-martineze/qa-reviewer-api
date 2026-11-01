@@ -10,13 +10,19 @@ dir=/opt/qa-reviewer
 compose=(docker compose -f "$dir/docker-compose.prod.yml")
 cd "$dir"
 
+# Primer deploy: .env con los valores no secretos que manda el workflow. Si ya existe, no se
+# toca (los secretos, como RESEND_API_KEY, se agregan a mano por SSM).
 if [[ ! -f .env ]]; then
-  echo "deploy: falta $dir/.env (ver deploy/prod.env.example)" >&2
-  exit 1
+  if [[ ! -f incoming/env.defaults ]]; then
+    echo "deploy: falta $dir/.env (ver deploy/prod.env.example)" >&2
+    exit 1
+  fi
+  install -m 600 incoming/env.defaults .env
+  echo "deploy: .env creado con los valores por defecto"
 fi
 chmod 600 .env
 
-# Archivos que el workflow dejó en $dir/incoming (docker-compose, Caddyfile, backup.sh).
+# Archivos que el workflow dejó en $dir/incoming (compose, Caddyfile, backup.sh, env.defaults).
 install -m 644 incoming/docker-compose.prod.yml docker-compose.prod.yml
 install -m 644 incoming/Caddyfile Caddyfile
 install -m 755 incoming/backup.sh backup.sh

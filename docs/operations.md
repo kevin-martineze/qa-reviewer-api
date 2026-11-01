@@ -88,6 +88,16 @@ curl -fsS https://$API_HOST/healthcheck/readiness-probe
 
 La primera vez, el healthcheck de `mongo` inicia el replica set (`rs.initiate`) y el API espera a que acepte escrituras.
 
+### Deploy
+
+`.github/workflows/deploy.yml` corre en cada push a `main`:
+
+1. **gates:** typecheck, lint, formato, pruebas y build.
+2. **image:** construye el `Dockerfile` en un runner arm64 y publica `ghcr.io/kevin-martineze/qa-reviewer-api:<sha>` y `:latest`.
+3. **deploy:** asume el rol `qa-reviewer-deploy` por OIDC (sin llaves; solo `ssm:SendCommand` a la instancia) y manda por SSM Run Command los archivos de `deploy/` y `deploy/remote-deploy.sh <imagen:sha>`. El script instala el compose, el Caddyfile y el cron de respaldos, hace `pull` y `up -d`, y espera readiness 200 desde el contenedor. Después el workflow comprueba `https://$API_HOST/healthcheck/readiness-probe`.
+
+Variables del repo (no secretas; el ID de cuenta no va en el código): `AWS_DEPLOY_ROLE_ARN`, `EC2_INSTANCE_ID` y `API_HOST`. El `.env` de la instancia no lo toca el workflow: si falta, el deploy falla con «falta /opt/qa-reviewer/.env». Volver a una versión anterior: _Actions → deploy → Run workflow_ desde ese commit, o en la instancia `API_IMAGE=ghcr.io/kevin-martineze/qa-reviewer-api:<sha> docker compose -f docker-compose.prod.yml up -d`.
+
 ### Respaldos
 
 - `deploy/backup.sh` (cron diario): `mongodump --archive --gzip` por stdin a `s3://$BACKUP_BUCKET/mongo/`. El bucket expira los objetos a los 14 días.

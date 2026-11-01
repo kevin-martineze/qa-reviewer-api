@@ -53,7 +53,9 @@ export class LocalStorage implements StoragePort {
       const meta = await this.meta(key);
       return { bytes: info.size, contentType: meta?.contentType ?? contentTypeOf(key) };
     } catch (error) {
-      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return null;
+      // Sin `instanceof Error`: los errores de fs vienen de otro realm bajo Jest.
+      if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT')
+        return null;
       throw error;
     }
   }

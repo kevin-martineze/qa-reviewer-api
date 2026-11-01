@@ -352,6 +352,23 @@
         ],
         "type": "object"
       },
+      "CreatedInvitation": {
+        "properties": {
+          "acceptUrl": {
+            "description": "Enlace para aceptar; solo se entrega al crear o renovar",
+            "example": "https://qa-reviewer.vercel.app/invite/…",
+            "type": "string"
+          },
+          "invitation": {
+            "$ref": "#/components/schemas/Invitation"
+          }
+        },
+        "required": [
+          "invitation",
+          "acceptUrl"
+        ],
+        "type": "object"
+      },
       "CreatedToken": {
         "properties": {
           "secret": {
@@ -4664,7 +4681,7 @@
         ]
       },
       "post": {
-        "description": "Envía el correo con el enlace (vence en 7 días). Invitar como owner exige `org:manage`.",
+        "description": "Encola el correo y devuelve el enlace (`acceptUrl`, vence en 7 días) para copiarlo: el API no lo vuelve a entregar. Invitar como owner exige `org:manage`.",
         "operationId": "OrganizationController_invite_v1",
         "parameters": [],
         "requestBody": {
@@ -4684,7 +4701,7 @@
                 "schema": {
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Invitation"
+                      "$ref": "#/components/schemas/CreatedInvitation"
                     },
                     "messageKey": {
                       "example": "ok",
@@ -4979,6 +4996,194 @@
           }
         ],
         "summary": "Revocar una invitación",
+        "tags": [
+          "Organización"
+        ]
+      }
+    },
+    "/v1/invitations/{id}/link": {
+      "post": {
+        "description": "Rota el token (el enlace anterior deja de servir), vuelve a contar 7 días y reenvía el correo.",
+        "operationId": "OrganizationController_renewInvitationLink_v1",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/CreatedInvitation"
+                    },
+                    "messageKey": {
+                      "example": "ok",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "messageKey",
+                    "data"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "type": "object"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "messageKey": {
+                      "enum": [
+                        "auth.required",
+                        "auth.session_expired"
+                      ],
+                      "example": "auth.required",
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "example": 401,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "messageKey",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "auth.required · auth.session_expired"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "type": "object"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "messageKey": {
+                      "enum": [
+                        "auth.forbidden"
+                      ],
+                      "example": "auth.forbidden",
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "example": 403,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "messageKey",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "auth.forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "type": "object"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "messageKey": {
+                      "enum": [
+                        "invite.not_found"
+                      ],
+                      "example": "invite.not_found",
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "example": 404,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "messageKey",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "invite.not_found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "details": {
+                      "type": "object"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "messageKey": {
+                      "enum": [
+                        "invite.closed",
+                        "invite.pending"
+                      ],
+                      "example": "invite.closed",
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "example": 409,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "messageKey",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "invite.closed · invite.pending"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Enlace nuevo para una invitación vigente o vencida",
         "tags": [
           "Organización"
         ]

@@ -1,9 +1,15 @@
-import type { AuditEvent, Invitation, Organization, User } from '../src/shared/contract';
+import type {
+  AuditEvent,
+  CreatedInvitation,
+  Invitation,
+  Organization,
+  User,
+} from '../src/shared/contract';
 import type { Model } from 'mongoose';
 
 import { getModelToken } from '@nestjs/mongoose';
 
-import { OutboxDoc } from '../src/shared/schemas';
+import { InvitationDoc, OutboxDoc } from '../src/shared/schemas';
 
 import { DEMO, startTestApp, type TestApp } from './support/app';
 
@@ -167,31 +173,85 @@ describe('Invitaciones', () => {
     expect([res.status, res.body.messageKey]).toEqual([400, 'invite.invalid_projects']);
   });
 
-  it('crea la invitación, publica el correo y el enlace funciona', async () => {
-    const res = await t.call<Invitation>('POST', '/invitations', await t.login(DEMO.laura), {
+  it('crea la invitación, devuelve el enlace una vez y encola el mismo enlace por correo', async () => {
+    const res = await t.call<CreatedInvitation>('POST', '/invitations', await t.login(DEMO.laura), {
       email: 'Nueva@Ejemplo.co',
       role: 'member',
       projects: [{ projectId: 'lideris', role: 'designer' }],
     });
     expect(res.status).toBe(201);
-    expect(res.body.data).toMatchObject({
+    expect(res.body.data?.invitation).toMatchObject({
       email: 'nueva@ejemplo.co',
       role: 'member',
       projects: [{ projectId: 'lideris', role: 'designer' }],
       invitedBy: 'u2',
       status: 'valid',
     });
+    const url = res.body.data?.acceptUrl ?? '';
+    expect(url).toMatch(/^http:\/\/localhost:5173\/invite\/[\w-]{43}$/);
 
     const outbox = t.app.get<Model<OutboxDoc>>(getModelToken(OutboxDoc.name));
     const event = await outbox.findOne({ type: 'InvitationCreated' }).lean();
-    const url = String(event?.payload.url);
-    expect(url).toMatch(/\/invite\/[\w-]+$/);
+    expect(event?.payload.url).toBe(url);
     const token = url.split('/').pop() ?? '';
     const info = await t.call<{ status: string; projects: string[] }>(
       'GET',
       `/invitations/${token}`,
     );
     expect(info.body.data).toMatchObject({ status: 'valid', projects: ['Lideris'] });
+
+    // El listado nunca trae el token ni el enlace.
+    const list = await t.call<Invitation[]>('GET', '/invitations', await t.login(DEMO.laura));
+    expect(JSON.stringify(list.body)).not.toContain(token);
+  });
+
+  it('un enlace nuevo invalida el anterior y vuelve a contar 7 días', async () => {
+    const laura = await t.login(DEMO.laura);
+    const created = await t.call<CreatedInvitation>('POST', '/invitations', laura, {
+      email: 'rotar@ejemplo.co',
+      role: 'member',
+      projects: [],
+    });
+    const id = created.body.data?.invitation.id ?? '';
+    const oldToken = created.body.data?.acceptUrl.split('/').pop() ?? '';
+
+    const renewed = await t.call<CreatedInvitation>('POST', `/invitations/${id}/link`, laura);
+    expect(renewed.status).toBe(200);
+    const newToken = renewed.body.data?.acceptUrl.split('/').pop() ?? '';
+    expect(newToken).not.toBe(oldToken);
+    expect(renewed.body.data?.invitation).toMatchObject({ id, status: 'valid' });
+
+    expect((await t.call('GET', `/invitations/${oldToken}`)).status).toBe(404);
+    expect((await t.call('GET', `/invitations/${newToken}`)).status).toBe(200);
+    const outbox = t.app.get<Model<OutboxDoc>>(getModelToken(OutboxDoc.name));
+    const mails = await outbox
+      .find({ type: 'InvitationCreated', 'payload.email': 'rotar@ejemplo.co' })
+      .lean();
+    expect(mails).toHaveLength(2);
+  });
+
+  it('renovar: vencida sí; revocada 409; sin permiso 403; inexistente 404', async () => {
+    const laura = await t.login(DEMO.laura);
+    const invitations = t.app.get<Model<InvitationDoc>>(getModelToken(InvitationDoc.name));
+    const created = await t.call<CreatedInvitation>('POST', '/invitations', laura, {
+      email: 'vencida@ejemplo.co',
+      role: 'member',
+      projects: [],
+    });
+    const id = created.body.data?.invitation.id ?? '';
+    await invitations.updateOne({ _id: id }, { expiresAt: new Date('2020-01-01T00:00:00Z') });
+    const expired = await t.call<CreatedInvitation>('POST', `/invitations/${id}/link`, laura);
+    expect(expired.body.data?.invitation.status).toBe('valid');
+
+    const kevin = await t.call('POST', `/invitations/${id}/link`, await t.login(DEMO.kevin));
+    expect(kevin.status).toBe(403);
+
+    await t.call('DELETE', `/invitations/${id}`, laura);
+    const revoked = await t.call('POST', `/invitations/${id}/link`, laura);
+    expect([revoked.status, revoked.body.messageKey]).toEqual([409, 'invite.closed']);
+
+    const missing = await t.call('POST', '/invitations/nada/link', laura);
+    expect([missing.status, missing.body.messageKey]).toEqual([404, 'invite.not_found']);
   });
 
   it('una invitación vencida no bloquea invitar de nuevo', async () => {

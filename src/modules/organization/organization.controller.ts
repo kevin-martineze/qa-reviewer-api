@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CurrentPrincipal } from '../../shared/auth/decorators';
 import {
   AuditPageDto,
+  CreatedInvitationDto,
   InvitationDto,
   OrganizationDto,
   UserDto,
@@ -74,9 +75,9 @@ export class OrganizationController {
   @Endpoint({
     summary: 'Invitar a una persona',
     description:
-      'Envía el correo con el enlace (vence en 7 días). Invitar como owner exige `org:manage`.',
+      'Encola el correo y devuelve el enlace (`acceptUrl`, vence en 7 días) para copiarlo: el API no lo vuelve a entregar. Invitar como owner exige `org:manage`.',
     body: invitationSchema,
-    ok: InvitationDto,
+    ok: CreatedInvitationDto,
     status: 201,
     errors: {
       400: ['invite.invalid_projects'],
@@ -89,6 +90,23 @@ export class OrganizationController {
     @Body(new JoiPipe(invitationSchema)) body: NewInvitation,
   ) {
     return this.org.invite(principal, body);
+  }
+
+  @Post('invitations/:id/link')
+  @HttpCode(200)
+  @Endpoint({
+    summary: 'Enlace nuevo para una invitación vigente o vencida',
+    description:
+      'Rota el token (el enlace anterior deja de servir), vuelve a contar 7 días y reenvía el correo.',
+    ok: CreatedInvitationDto,
+    errors: {
+      403: ['auth.forbidden'],
+      404: ['invite.not_found'],
+      409: ['invite.closed', 'invite.pending'],
+    },
+  })
+  renewInvitationLink(@CurrentPrincipal() principal: Principal, @Param('id') id: string) {
+    return this.org.renewInvitationLink(principal, id);
   }
 
   @Delete('invitations/:id')

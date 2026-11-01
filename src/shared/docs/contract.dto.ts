@@ -137,6 +137,16 @@ export class InvitationDto implements C.Invitation {
   @ApiProperty({ enum: INVITE_STATUSES, enumName: 'InviteStatus' }) status: C.InviteStatus;
 }
 
+@ApiSchema({ name: 'CreatedInvitation' })
+export class CreatedInvitationDto implements C.CreatedInvitation {
+  @ApiProperty({ type: InvitationDto }) invitation: InvitationDto;
+  @ApiProperty({
+    example: 'https://qa-reviewer.vercel.app/invite/…',
+    description: 'Enlace para aceptar; solo se entrega al crear o renovar',
+  })
+  acceptUrl: string;
+}
+
 @ApiSchema({ name: 'RecoveryInfo' })
 export class RecoveryInfoDto implements C.RecoveryInfo {
   @ApiProperty({ enum: RECOVERY_STATUSES, enumName: 'RecoveryStatus' }) status: C.RecoveryStatus;

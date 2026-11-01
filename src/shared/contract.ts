@@ -121,6 +121,13 @@ export interface Invitation {
   status: InviteStatus;
 }
 
+/** Respuesta de crear o renovar una invitación: el enlace solo se entrega aquí. */
+export interface CreatedInvitation {
+  invitation: Invitation;
+  /** `<web>/invite/<token>`; el API guarda solo el SHA-256 del token y no lo vuelve a entregar. */
+  acceptUrl: string;
+}
+
 export interface RecoveryInfo {
   status: RecoveryStatus;
 }

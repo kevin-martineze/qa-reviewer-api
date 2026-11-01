@@ -3,6 +3,7 @@ import type { Principal } from '../../shared/auth/principal';
 import type {
   AuditEvent,
   AuditType,
+  CreatedInvitation,
   Invitation,
   Membership,
   Organization,
@@ -10,7 +11,7 @@ import type {
   PaginatedResponse,
   User,
 } from '../../shared/contract';
-import type { Model } from 'mongoose';
+import type { ClientSession, Model } from 'mongoose';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -39,6 +40,9 @@ import { TransactionService } from '../../shared/util/transaction.service';
 import { denialOf, permissionFor } from './domain/user-change';
 
 export const INVITE_TTL_DAYS = 7;
+
+const INVITE_CLOSED = () =>
+  conflict('invite.closed', 'La invitación ya se usó o se revocó: crea una nueva.');
 
 export interface NewInvitation {
   email: string;
@@ -162,7 +166,7 @@ export class OrganizationService {
     );
   }
 
-  async invite(principal: Principal, input: NewInvitation): Promise<Envelope<Invitation>> {
+  async invite(principal: Principal, input: NewInvitation): Promise<Envelope<CreatedInvitation>> {
     const actor = principal.user;
     this.access.assert(actor, 'users:invite', null);
     if (input.role === 'owner') this.access.assert(actor, 'org:manage', null);
@@ -186,7 +190,6 @@ export class OrganizationService {
     }
 
     const token = randomToken(32);
-    const org = await this.orgs.findOne().lean();
     const doc = await this.tx.run(async (session) => {
       const [created] = await this.invitations.create(
         [
@@ -203,17 +206,7 @@ export class OrganizationService {
         { session },
       );
       if (!created) throw new Error('No se creó la invitación');
-      await this.outbox.publish(
-        'InvitationCreated',
-        {
-          email: input.email,
-          inviter: actor.name,
-          org: org?.name ?? '',
-          url: `${this.env.PUBLIC_WEB_URL.replace(/\/$/, '')}/invite/${token}`,
-          expiresAt: created.expiresAt.toISOString(),
-        },
-        session,
-      );
+      await this.publishInvite(actor.name, created.email, created.expiresAt, token, session);
       await this.audit.log(
         'user_invited',
         actor.id,
@@ -223,7 +216,90 @@ export class OrganizationService {
       );
       return created.toObject();
     });
-    return envelope('invitations.created', toInvitation(doc, now));
+    return envelope('invitations.created', {
+      invitation: toInvitation(doc, now),
+      acceptUrl: this.acceptUrl(token),
+    });
+  }
+
+  /**
+   * Enlace nuevo para una invitación vigente o vencida: rota el token (el anterior deja de
+   * servir), vuelve a contar 7 días y reenvía el correo.
+   */
+  async renewInvitationLink(
+    principal: Principal,
+    invitationId: string,
+  ): Promise<Envelope<CreatedInvitation>> {
+    const actor = principal.user;
+    this.access.assert(actor, 'users:invite', null);
+    const invite = await this.invitations.findById(invitationId).lean();
+    if (!invite) throw notFound('invite.not_found', 'Invitación no encontrada.');
+    if (invite.role === 'owner') this.access.assert(actor, 'org:manage', null);
+    if (invite.usedAt || invite.revokedAt) throw INVITE_CLOSED();
+
+    const now = this.clock.now();
+    const other = await this.invitations.exists({
+      _id: { $ne: invite._id },
+      email: invite.email,
+      usedAt: null,
+      revokedAt: null,
+      expiresAt: { $gt: now },
+    });
+    if (other) throw conflict('invite.pending', 'Ya hay otra invitación vigente para ese correo.');
+
+    const token = randomToken(32);
+    const doc = await this.tx.run(async (session) => {
+      const updated = await this.invitations
+        .findOneAndUpdate(
+          { _id: invite._id, usedAt: null, revokedAt: null },
+          {
+            tokenHash: sha256(token),
+            expiresAt: new Date(now.getTime() + INVITE_TTL_DAYS * DAY),
+          },
+          { new: true, session },
+        )
+        .lean();
+      // Se aceptó o revocó entre la lectura y la escritura.
+      if (!updated) throw INVITE_CLOSED();
+      await this.publishInvite(actor.name, updated.email, updated.expiresAt, token, session);
+      await this.audit.log(
+        'user_invited',
+        actor.id,
+        updated.email,
+        `renovó el enlace de invitación de ${updated.email}`,
+        session,
+      );
+      return updated;
+    });
+    return envelope('invitations.link_renewed', {
+      invitation: toInvitation(doc, now),
+      acceptUrl: this.acceptUrl(token),
+    });
+  }
+
+  private acceptUrl(token: string): string {
+    return `${this.env.PUBLIC_WEB_URL.replace(/\/$/, '')}/invite/${token}`;
+  }
+
+  private async publishInvite(
+    inviter: string,
+    email: string,
+    expiresAt: Date,
+    token: string,
+    session: ClientSession,
+  ): Promise<void> {
+    const org = await this.orgs.findOne().session(session).lean();
+    await this.outbox.publish(
+      'InvitationCreated',
+      {
+        email,
+        inviter,
+        org: org?.name ?? '',
+        url: this.acceptUrl(token),
+        expiresAt: expiresAt.toISOString(),
+      },
+      session,
+    );
   }
 
   async revokeInvitation(principal: Principal, invitationId: string): Promise<void> {

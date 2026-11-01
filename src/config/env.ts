@@ -16,6 +16,8 @@ export interface Env {
   SESSION_TTL_DAYS: number;
   /** Versión mínima de la skill (semver): una más vieja debe actualizarse con `/plugin update`. */
   MIN_SKILL_VERSION: string;
+  /** `json`: una línea JSON por evento (producción, para docker logs y CloudWatch). */
+  LOG_FORMAT: 'text' | 'json';
 
   STORAGE_DRIVER: 'local' | 's3';
   STORAGE_DIR: string;
@@ -72,6 +74,7 @@ export const envSchema = Joi.object<Env>({
     .pattern(/^\d+\.\d+\.\d+$/)
     .empty('')
     .default('0.1.0'),
+  LOG_FORMAT: Joi.string().valid('text', 'json').default('text'),
 
   STORAGE_DRIVER: Joi.string().valid('local', 's3').default('local'),
   STORAGE_DIR: Joi.string().default('.data/storage'),

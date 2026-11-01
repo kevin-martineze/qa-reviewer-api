@@ -111,9 +111,22 @@ aws s3 cp s3://$BACKUP_BUCKET/mongo/<archivo>.archive.gz - \
 
 ## Primer arranque en producción
 
-1. Crea `/opt/qa-reviewer/.env` desde `deploy/prod.env.example` y levanta el compose.
-2. `pnpm bootstrap --org "Mi organización" --owner tu@correo.com --name "Tu nombre"` crea la organización y el owner y muestra un enlace para definir la contraseña. _(En construcción.)_
-3. Desde la web, el owner crea proyectos, invita personas y emite tokens para la skill.
+La base empieza vacía. `bootstrap` crea la organización y su owner, y deja un enlace de un solo uso (24 h) para que el owner defina su contraseña en la web (`/recover/<token>`). Solo corre si no hay organizaciones ni personas; el token se guarda como SHA-256.
+
+En la instancia, desde CloudShell (sin SSH; la salida con el enlace queda en la consola de AWS, no en GitHub):
+
+```bash
+id=$(aws ssm send-command --region us-east-1 --instance-ids <instancia> \
+  --document-name AWS-RunShellScript \
+  --parameters 'commands=["cd /opt/qa-reviewer && docker compose -f docker-compose.prod.yml exec -T api node dist/cli/bootstrap --org \"Mi organización\" --owner tu@correo.com --name \"Tu nombre\""]' \
+  --query Command.CommandId --output text)
+sleep 8; aws ssm get-command-invocation --region us-east-1 --command-id "$id" \
+  --instance-id <instancia> --query '[Status,StandardOutputContent,StandardErrorContent]' --output text
+```
+
+En desarrollo: `pnpm bootstrap --org "Mi organización" --owner tu@correo.com --name "Tu nombre"` contra `MONGO_URI`. `--id` fija el slug de la organización (por defecto, el del nombre).
+
+Después, desde la web, el owner crea proyectos, invita personas y emite tokens para la skill.
 
 ## Salud y observabilidad
 

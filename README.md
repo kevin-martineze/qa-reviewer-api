@@ -100,7 +100,7 @@ pnpm dev           # terminal 2: API con recarga
 | `pnpm db`                                      | Mongo local persistente para desarrollo                                |
 | `pnpm dev`                                     | API con recarga contra `MONGO_URI`                                     |
 | `pnpm seed`                                    | Borra la base de `MONGO_URI` y carga la demo                           |
-| `pnpm bootstrap`                               | Crea la organización y su owner en una base vacía (en construcción)    |
+| `pnpm bootstrap`                               | Crea la organización y su owner en una base vacía                      |
 | `pnpm build` · `pnpm start`                    | Compila a `dist/` y arranca en producción                              |
 | `pnpm typecheck` · `pnpm lint` · `pnpm format` | Gates de calidad                                                       |
 | `pnpm test`                                    | Pruebas unitarias y de integración (Jest)                              |
@@ -128,7 +128,7 @@ src/
 ├── modules/                un módulo de Nest por dominio (health, auth, …)
 └── seed/                   carga de la demo
 seed/demo/                  datos y capturas de la demo
-scripts/                    Mongo local, semilla, bootstrap
+scripts/                    Mongo local y semilla
 docs/                       documentación del API
 ```
 
